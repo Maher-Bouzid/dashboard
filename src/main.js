@@ -17,7 +17,9 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import App from "./App";
-
+import axios from "axios";
+//store
+import store from "./store";
 // router setup
 import routes from "./routes/routes";
 
@@ -47,11 +49,40 @@ Vue.use(GlobalDirectives);
 Vue.use(Notifications);
 Vue.use(require("vue-moment"));
 
+//interceptors
+axios.interceptors.request.use(
+  request => {
+    if (localStorage.getItem("x-token")) {
+      request.headers["x-token"] = localStorage.getItem("x-token");
+    }
+    if (localStorage.getItem("x-refresh-token")) {
+      request.headers["x-refresh-token"] = localStorage.getItem("x-refresh-token");
+    }
+    return request;
+  },
+  function(error) {
+    return Promise.reject(error);
+  }
+);
+
+axios.interceptors.response.use(
+  function(response) {
+    if (response.headers["x-token"]) {
+      localStorage.setItem("x-token", response.headers["x-token"]);
+      localStorage.setItem("x-refresh-token", response.headers["x-refresh-token"]);
+    }
+    return response;
+  },
+  function(error) {
+    return Promise.reject(error);
+  }
+);
 /* eslint-disable no-new */
 new Vue({
   el: "#app",
   render: h => h(App),
   router,
+  store,
   data: {
     Chartist: Chartist
   }
