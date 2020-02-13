@@ -79,12 +79,7 @@
 <script>
 export default {
   name: "edit-profile-form",
-  props: {
-    dataBackgroundColor: {
-      type: String,
-      default: ""
-    }
-  },
+
   data() {
     return {
       username: null,
