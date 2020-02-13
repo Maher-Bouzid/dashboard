@@ -87,3 +87,4 @@ new Vue({
     Chartist: Chartist
   }
 });
+export default router;
