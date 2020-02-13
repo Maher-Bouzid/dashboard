@@ -26,7 +26,6 @@ export default new Vuex.Store({
       axios
         .get("http://localhost:3000/api/brand/verifytoken")
         .then(res => {
-          console.log("-------------------------------------------------------", res);
           this.commit("UPDATE_LOGIN", true);
         })
         .catch(err => {
