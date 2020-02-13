@@ -31,94 +31,68 @@
               <form>
                 <md-card>
                   <md-card-header data-background-color="green">
-                    <h4 class="title">Edit Profile</h4>
-                    <p class="category">Complete your profile</p>
+                    <h4 class="title">Welcome</h4>
+                    <p class="category">Please complete your profile</p>
                   </md-card-header>
 
                   <md-card-content>
                     <div class="md-layout">
-                      <div class="md-layout-item md-small-size-100 md-size-33">
-                        <md-field>
-                          <label>Company (disabled)</label>
-                          <md-input v-model="disabled" disabled></md-input>
-                        </md-field>
+                      <md-field class="md-form-group" :class="getValidationClass('brandName')">
+                        <md-icon>star</md-icon>
+                        <label for="brandName">Brand Name...</label>
+                        <md-input name="brandName" id="brandName" v-model="brandName" type="text"></md-input>
+                        <span class="md-error" v-if="!$v.brandName.required">Name is required</span>
+                      </md-field>
+                      <md-field class="md-form-group" :class="getValidationClass('email')">
+                        <md-icon>email</md-icon>
+                        <label for="email">Email...</label>
+                        <md-input name="email" id="email" v-model="email" type="email"></md-input>
+                        <span class="md-error" v-if="!$v.email.required">Email is required</span>
+                        <span class="md-error" v-else-if="!$v.email.email">Invalid email</span>
+                      </md-field>
+                      <md-field class="md-form-group" :class="getValidationClass('password')">
+                        <md-icon>lock_outline</md-icon>
+                        <label for="password">Password...</label>
+                        <md-input name="password" id="password" v-model="password" type="password"></md-input>
+                        <span class="md-error" v-if="!$v.password.required">Password is required</span>
+                        <span class="md-error" v-else-if="!$v.password.minlength">Your password should have a minimum of 8 characters</span>
+                      </md-field>
+                      <md-field class="md-form-group" :class="getValidationClass('tmpImg')">
+                        <md-icon>image</md-icon>
+                        <label for="tmpImg">Temporary Brand Image...</label>
+                        <md-input name="tmpImg" id="tmpImg" v-model="tmpImg" type="text"></md-input>
+                        <span class="md-error" v-if="!$v.tmpImg.required">Image is required</span>
+                      </md-field>
+                      <div class="col-md-12 text-center">
+                        <div class="fileinput fileinput-new text-center" data-provides="fileinput">
+                          <div class="fileinput-new thumbnail">
+                            <img :src="defaultImage" alt="..." />
+                          </div>
+                          <div class="fileinput-preview fileinput-exists thumbnail"></div>
+                          <div>
+                            <span class="btn btn-rose btn-round btn-file">
+                              <span v-if="isDefault" class="fileinput-new">Select image</span>
+                              <span v-else class="fileinput-new">Change</span>
+                              <input type="file" name="..." @change="imageChange" />
+                            </span>
+                            <span v-if="!isDefault" @click="imageRemove" class="btn btn-danger btn-round btn-file">
+                              <span class="fileinput-new"><i class="fa fa-times"></i> Remove</span>
+                            </span>
+                          </div>
+                        </div>
                       </div>
-                      <div class="md-layout-item md-small-size-100 md-size-33">
-                        <md-field>
-                          <label>User Name</label>
-                          <md-input v-model="username" type="text"></md-input>
-                        </md-field>
-                      </div>
-                      <div class="md-layout-item md-small-size-100 md-size-33">
-                        <md-field>
-                          <label>Email Address</label>
-                          <md-input v-model="emailadress" type="email"></md-input>
-                        </md-field>
-                      </div>
-                      <div class="md-layout-item md-small-size-100 md-size-50">
-                        <md-field>
-                          <label>First Name</label>
-                          <md-input v-model="firstname" type="text"></md-input>
-                        </md-field>
-                      </div>
-                      <div class="md-layout-item md-small-size-100 md-size-50">
-                        <md-field>
-                          <label>Last Name</label>
-                          <md-input v-model="lastname" type="text"></md-input>
-                        </md-field>
-                      </div>
-                      <div class="md-layout-item md-small-size-100 md-size-100">
-                        <md-field>
-                          <label>Adress</label>
-                          <md-input v-model="address" type="text"></md-input>
-                        </md-field>
-                      </div>
-                      <div class="md-layout-item md-small-size-100 md-size-33">
-                        <md-field>
-                          <label>City</label>
-                          <md-input v-model="city" type="text"></md-input>
-                        </md-field>
-                      </div>
-                      <div class="md-layout-item md-small-size-100 md-size-33">
-                        <md-field>
-                          <label>Country</label>
-                          <md-input v-model="country" type="text"></md-input>
-                        </md-field>
-                      </div>
-                      <div class="md-layout-item md-small-size-100 md-size-33">
-                        <md-field>
-                          <label>Postal Code</label>
-                          <md-input v-model="code" type="number"></md-input>
-                        </md-field>
-                      </div>
-                      <div class="md-layout-item md-size-100">
-                        <md-field maxlength="5">
-                          <label>About Me</label>
-                          <md-textarea v-model="aboutme"></md-textarea>
-                        </md-field>
-                      </div>
-                      <div class="md-layout-item md-size-100 text-right">
-                        <md-button class="md-raised md-success">Update Profile</md-button>
+
+                      <div class="md-layout-item md-size-100 text-right" style="display: flex; flex-direction: column-reverse;">
+                        <md-progress-bar style="width: 100%" md-mode="indeterminate" v-if="sending" />
+                        <md-button @click="validateUser" class="md-raised md-success">Update Profile</md-button>
                       </div>
                     </div>
                   </md-card-content>
                 </md-card>
               </form>
-              <!-- </div>
-                <div class="card-footer justify-content-center" style="display: flex; flex-direction: column-reverse;">
-                  <md-progress-bar style="width: 100%" md-mode="indeterminate" v-if="sending" />
-                  <md-button @click="validateUser" class="md-simple md-success md-lg">Log In</md-button>
-                </div>
-              </div> -->
             </div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="content">
-      <div class="md-layout">
-        <div class="md-layout-item md-medium-size-100 md-size-100"></div>
       </div>
     </div>
 
@@ -163,19 +137,13 @@ export default {
       wrongUsernameNotif: false,
       wrongPasswordNotif: false,
       sending: false,
+      brandName: null,
       email: null,
       password: null,
-      //change here
-      username: null,
-      disabled: null,
-      emailadress: null,
-      lastname: null,
-      firstname: null,
-      address: null,
-      city: null,
-      country: null,
-      code: null,
-      aboutme: "Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo."
+      image: null,
+      isDefault: true,
+      tmpImg: null,
+      defaultImage: require("@/assets/img/image_placeholder.jpg")
     };
   },
   validations: {
@@ -183,9 +151,18 @@ export default {
       required,
       email
     },
+    brandName: {
+      required
+    },
     password: {
       required,
       minLength: minLength(8)
+    },
+    brandImage: {
+      required
+    },
+    tmpImg: {
+      required
     }
   },
   methods: {
@@ -237,6 +214,20 @@ export default {
     },
     removeNotify(notifyClass) {
       this[notifyClass] = false;
+    },
+    imageChange(e) {
+      e.preventDefault();
+      let reader = new FileReader();
+      let file = e.target.files[0];
+      reader.onloadend = () => {
+        this.defaultImage = reader.result;
+      };
+      this.isDefault = false;
+      reader.readAsDataURL(file);
+    },
+    imageRemove(e) {
+      this.defaultImage = require("@/assets/img/image_placeholder.jpg");
+      this.isDefault = true;
     }
   }
 };
@@ -967,6 +958,13 @@ h4,
   box-shadow: none;
 }
 
+.btn.btn-danger {
+  color: #fff;
+  background-color: #f44336;
+  border-color: #f44336;
+  box-shadow: 0 2px 2px 0 rgba(244, 67, 54, 0.14), 0 3px 1px -2px rgba(244, 67, 54, 0.2), 0 1px 5px 0 rgba(244, 67, 54, 0.12);
+}
+
 .btn,
 .btn.btn-default {
   color: #fff;
@@ -1472,5 +1470,95 @@ a {
   margin-top: 10px;
   margin-bottom: 10px;
   font-weight: 700;
+}
+
+img {
+  vertical-align: middle;
+  border-style: none;
+}
+
+::-webkit-file-upload-button {
+  font: inherit;
+  -webkit-appearance: button;
+}
+
+.btn-file {
+  position: relative;
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+.thumbnail {
+  border: 0 none;
+  border-radius: 4px;
+  padding: 0;
+}
+
+.btn-file > input {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  font-size: 23px;
+  cursor: pointer;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  direction: ltr;
+}
+
+.fileinput {
+  display: inline-block;
+  margin-bottom: 9px;
+}
+
+.fileinput .thumbnail {
+  display: inline-block;
+  margin-bottom: 10px;
+  overflow: hidden;
+  text-align: center;
+  vertical-align: middle;
+  max-width: 250px;
+  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.42), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
+}
+
+.fileinput .thumbnail > img {
+  max-height: 100%;
+  width: 100%;
+}
+
+.fileinput .btn {
+  vertical-align: middle;
+}
+
+.fileinput-exists .fileinput-new,
+.fileinput-new .fileinput-exists {
+  display: none;
+}
+
+.fileinput .thumbnail.img-circle {
+  border-radius: 50%;
+  max-width: 100px;
+}
+
+.fileinput .thumbnail > img {
+  max-height: 100%;
+  width: 100%;
+}
+
+.fileinput .btn {
+  vertical-align: middle;
+}
+
+.fileinput-exists .fileinput-new,
+.fileinput-new .fileinput-exists {
+  display: none;
+}
+
+.thumbnail {
+  border: 0 none;
+  border-radius: 4px;
+  padding: 0;
 }
 </style>

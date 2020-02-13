@@ -79,7 +79,12 @@
 <script>
 export default {
   name: "edit-profile-form",
-
+  props: {
+    dataBackgroundColor: {
+      type: String,
+      default: ""
+    }
+  },
   data() {
     return {
       username: null,
@@ -91,8 +96,7 @@ export default {
       city: null,
       country: null,
       code: null,
-      aboutme:
-        "Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo."
+      aboutme: "Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo."
     };
   }
 };

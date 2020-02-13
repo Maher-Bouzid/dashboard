@@ -21,8 +21,7 @@ import axios from "axios";
 //store
 import store from "./store";
 // router setup
-import routes from "./routes/routes";
-
+import router from "./routes/routes";
 // Plugins
 import GlobalComponents from "./globalComponents";
 import GlobalDirectives from "./globalDirectives";
@@ -34,15 +33,14 @@ import MaterialDashboard from "./material-dashboard";
 import Chartist from "chartist";
 
 // configure router
-const router = new VueRouter({
-  mode: "history",
-  routes, // short for routes: routes
-  linkExactActiveClass: "nav-item active"
-});
+// const router = new VueRouter({
+//   mode: "history",
+//   routes, // short for routes: routes
+//   linkExactActiveClass: "nav-item active"
+// });
 
 Vue.prototype.$Chartist = Chartist;
 
-Vue.use(VueRouter);
 Vue.use(MaterialDashboard);
 Vue.use(GlobalComponents);
 Vue.use(GlobalDirectives);
@@ -52,6 +50,8 @@ Vue.use(require("vue-moment"));
 //interceptors
 axios.interceptors.request.use(
   request => {
+    console.log(request);
+    console.log("okkkkkkkkkkk");
     if (localStorage.getItem("x-token")) {
       request.headers["x-token"] = localStorage.getItem("x-token");
     }
