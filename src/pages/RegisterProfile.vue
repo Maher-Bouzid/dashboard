@@ -6,16 +6,15 @@
         filter-color="black"
         style="background-image: url(https://images.unsplash.com/photo-1495105787522-5334e3ffa0ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80); background-size: cover; background-position: top center;"
       >
-        <!--   you can change the color of the filter page using: data-color="blue | purple | green | orange | red | rose " -->
         <div class="container" style="max-width:1600px;">
           <div class="row">
             <div class="col-lg-4 col-md-6 col-sm-8 ml-auto mr-auto">
-              <div class="card card-login card-hidden">
+              <!-- <div class="card card-login card-hidden">
                 <div class="card-header card-header-rose text-center" style="padding: 20px">
                   <h4 class="card-title">Login</h4>
                 </div>
-                <div class="card-body" style="padding: 0px 30px 0px 30px;">
-                  <md-field class="md-form-group" :class="getValidationClass('email')">
+                <div class="card-body" style="padding: 0px 30px 0px 30px;"> -->
+              <!-- <md-field class="md-form-group" :class="getValidationClass('email')">
                     <md-icon>email</md-icon>
                     <label for="email">Email...</label>
                     <md-input name="email" id="email" v-model="email" type="email"></md-input>
@@ -27,20 +26,70 @@
                     <label for="password">Password...</label>
                     <md-input name="password" id="password" v-model="password" type="password"></md-input>
                     <span class="md-error" v-if="!$v.password.required">Password is required</span>
-                    <span
-                      class="md-error"
-                      v-else-if="!$v.password.minlength"
-                    >Your password should have a minimum of 8 characters</span>
-                  </md-field>
-                </div>
-                <div
-                  class="card-footer justify-content-center"
-                  style="display: flex; flex-direction: column-reverse;"
-                >
-                  <md-progress-bar style="width: 100%" md-mode="indeterminate" v-if="sending" />
-                  <md-button @click="validateUser" class="md-simple md-success md-lg">Log In</md-button>
-                </div>
-              </div>
+                    <span class="md-error" v-else-if="!$v.password.minlength">Your password should have a minimum of 8 characters</span>
+                  </md-field> -->
+              <form>
+                <md-card>
+                  <md-card-header data-background-color="green">
+                    <h4 class="title">Welcome</h4>
+                    <p class="category">Please complete your profile</p>
+                  </md-card-header>
+
+                  <md-card-content>
+                    <div class="md-layout">
+                      <md-field class="md-form-group" :class="getValidationClass('brandName')">
+                        <md-icon>star</md-icon>
+                        <label for="brandName">Brand Name...</label>
+                        <md-input name="brandName" id="brandName" v-model="brandName" type="text"></md-input>
+                        <span class="md-error" v-if="!$v.brandName.required">Name is required</span>
+                      </md-field>
+                      <md-field class="md-form-group" :class="getValidationClass('email')">
+                        <md-icon>email</md-icon>
+                        <label for="email">Email...</label>
+                        <md-input name="email" id="email" v-model="email" type="email"></md-input>
+                        <span class="md-error" v-if="!$v.email.required">Email is required</span>
+                        <span class="md-error" v-else-if="!$v.email.email">Invalid email</span>
+                      </md-field>
+                      <md-field class="md-form-group" :class="getValidationClass('password')">
+                        <md-icon>lock_outline</md-icon>
+                        <label for="password">Password...</label>
+                        <md-input name="password" id="password" v-model="password" type="password"></md-input>
+                        <span class="md-error" v-if="!$v.password.required">Password is required</span>
+                        <span class="md-error" v-else-if="!$v.password.minlength">Your password should have a minimum of 8 characters</span>
+                      </md-field>
+                      <md-field class="md-form-group" :class="getValidationClass('tmpImg')">
+                        <md-icon>image</md-icon>
+                        <label for="tmpImg">Temporary Brand Image...</label>
+                        <md-input name="tmpImg" id="tmpImg" v-model="tmpImg" type="text"></md-input>
+                        <span class="md-error" v-if="!$v.tmpImg.required">Image is required</span>
+                      </md-field>
+                      <div class="col-md-12 text-center">
+                        <div class="fileinput fileinput-new text-center" data-provides="fileinput">
+                          <div class="fileinput-new thumbnail">
+                            <img :src="defaultImage" alt="..." />
+                          </div>
+                          <div class="fileinput-preview fileinput-exists thumbnail"></div>
+                          <div>
+                            <span class="btn btn-rose btn-round btn-file">
+                              <span v-if="isDefault" class="fileinput-new">Select image</span>
+                              <span v-else class="fileinput-new">Change</span>
+                              <input type="file" name="..." @change="imageChange" />
+                            </span>
+                            <span v-if="!isDefault" @click="imageRemove" class="btn btn-danger btn-round btn-file">
+                              <span class="fileinput-new"><i class="fa fa-times"></i> Remove</span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="md-layout-item md-size-100 text-right" style="display: flex; flex-direction: column-reverse;">
+                        <md-progress-bar style="width: 100%" md-mode="indeterminate" v-if="sending" />
+                        <md-button @click="validateUser" class="md-raised md-success">Update Profile</md-button>
+                      </div>
+                    </div>
+                  </md-card-content>
+                </md-card>
+              </form>
             </div>
           </div>
         </div>
@@ -49,41 +98,20 @@
 
     <div id="notifications">
       <div v-if="successNotif" class="alert alertTop alert-danger">
-        <span>
-          <b>SUCCESS</b> : Yuhuuu! You're logged In!
-        </span>
-        <button
-          type="button"
-          aria-hidden="true"
-          class="close"
-          @click="removeNotify('successNotif')"
-        >
+        <span> <b>SUCCESS</b> : Yuhuuu! You're logged In! </span>
+        <button type="button" aria-hidden="true" class="close" @click="removeNotify('successNotif')">
           <md-icon style="color: white">clear</md-icon>
         </button>
       </div>
       <div v-if="wrongUsernameNotif" class="alert alertTop alert-danger">
-        <span>
-          <b>ERROR ALERT</b> : Wrong email, please make sure you register or verify that it is written correctly ...
-        </span>
-        <button
-          type="button"
-          aria-hidden="true"
-          class="close"
-          @click="removeNotify('wrongUsernameNotif')"
-        >
+        <span> <b>ERROR ALERT</b> : Wrong email, please make sure you register or verify that it is written correctly ... </span>
+        <button type="button" aria-hidden="true" class="close" @click="removeNotify('wrongUsernameNotif')">
           <md-icon style="color: white">clear</md-icon>
         </button>
       </div>
       <div v-if="wrongPasswordNotif" class="alert alertTop alert-danger">
-        <span>
-          <b>ERROR ALERT</b> : Wrong password, please make sure that it is written correctly ...
-        </span>
-        <button
-          type="button"
-          aria-hidden="true"
-          class="close"
-          @click="removeNotify('wrongPasswordNotif')"
-        >
+        <span> <b>ERROR ALERT</b> : Wrong password, please make sure that it is written correctly ... </span>
+        <button type="button" aria-hidden="true" class="close" @click="removeNotify('wrongPasswordNotif')">
           <md-icon style="color: white">clear</md-icon>
         </button>
       </div>
@@ -96,12 +124,10 @@ import router from "../../src/main";
 import { mapMutations, mapGetters } from "vuex";
 import axios from "axios";
 import { validationMixin } from "vuelidate";
-import {
-  required,
-  email,
-  minLength,
-  maxLength
-} from "vuelidate/lib/validators";
+import { required, email, minLength, maxLength } from "vuelidate/lib/validators";
+
+import { EditProfileForm } from "@/pages";
+
 export default {
   bodyClass: "login-page",
   mixins: [validationMixin],
@@ -111,8 +137,13 @@ export default {
       wrongUsernameNotif: false,
       wrongPasswordNotif: false,
       sending: false,
+      brandName: null,
       email: null,
-      password: null
+      password: null,
+      image: null,
+      isDefault: true,
+      tmpImg: null,
+      defaultImage: require("@/assets/img/image_placeholder.jpg")
     };
   },
   validations: {
@@ -120,9 +151,18 @@ export default {
       required,
       email
     },
+    brandName: {
+      required
+    },
     password: {
       required,
       minLength: minLength(8)
+    },
+    brandImage: {
+      required
+    },
+    tmpImg: {
+      required
     }
   },
   methods: {
@@ -174,6 +214,20 @@ export default {
     },
     removeNotify(notifyClass) {
       this[notifyClass] = false;
+    },
+    imageChange(e) {
+      e.preventDefault();
+      let reader = new FileReader();
+      let file = e.target.files[0];
+      reader.onloadend = () => {
+        this.defaultImage = reader.result;
+      };
+      this.isDefault = false;
+      reader.readAsDataURL(file);
+    },
+    imageRemove(e) {
+      this.defaultImage = require("@/assets/img/image_placeholder.jpg");
+      this.isDefault = true;
     }
   }
 };
@@ -728,8 +782,7 @@ h4,
   font-size: 1rem;
   line-height: 1.5;
   border-radius: 0.25rem;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .btn:not(:disabled):not(.disabled) {
@@ -806,12 +859,8 @@ h4,
 .input-group > .input-group-prepend > .input-group-text,
 .input-group > .input-group-append:not(:last-child) > .btn,
 .input-group > .input-group-append:not(:last-child) > .input-group-text,
-.input-group
-  > .input-group-append:last-child
-  > .btn:not(:last-child):not(.dropdown-toggle),
-.input-group
-  > .input-group-append:last-child
-  > .input-group-text:not(:last-child) {
+.input-group > .input-group-append:last-child > .btn:not(:last-child):not(.dropdown-toggle),
+.input-group > .input-group-append:last-child > .input-group-text:not(:last-child) {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
@@ -892,8 +941,7 @@ h4,
   border: 0;
   border-radius: 0.2rem;
   outline: 0;
-  transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1),
-    background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: box-shadow, transform;
 }
 
@@ -901,8 +949,7 @@ h4,
   color: #fff;
   background-color: #e91e63;
   border-color: #e91e63;
-  box-shadow: 0 2px 2px 0 rgba(233, 30, 99, 0.14),
-    0 3px 1px -2px rgba(233, 30, 99, 0.2), 0 1px 5px 0 rgba(233, 30, 99, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(233, 30, 99, 0.14), 0 3px 1px -2px rgba(233, 30, 99, 0.2), 0 1px 5px 0 rgba(233, 30, 99, 0.12);
 }
 
 .btn.btn-rose.btn-link {
@@ -911,14 +958,19 @@ h4,
   box-shadow: none;
 }
 
+.btn.btn-danger {
+  color: #fff;
+  background-color: #f44336;
+  border-color: #f44336;
+  box-shadow: 0 2px 2px 0 rgba(244, 67, 54, 0.14), 0 3px 1px -2px rgba(244, 67, 54, 0.2), 0 1px 5px 0 rgba(244, 67, 54, 0.12);
+}
+
 .btn,
 .btn.btn-default {
   color: #fff;
   background-color: #999999;
   border-color: #999999;
-  box-shadow: 0 2px 2px 0 rgba(153, 153, 153, 0.14),
-    0 3px 1px -2px rgba(153, 153, 153, 0.2),
-    0 1px 5px 0 rgba(153, 153, 153, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(153, 153, 153, 0.14), 0 3px 1px -2px rgba(153, 153, 153, 0.2), 0 1px 5px 0 rgba(153, 153, 153, 0.12);
 }
 
 .btn.btn-link,
@@ -1050,12 +1102,7 @@ form {
 
 .form-control,
 .is-focused .form-control {
-  background-image: linear-gradient(
-      to top,
-      #9c27b0 2px,
-      rgba(156, 39, 176, 0) 2px
-    ),
-    linear-gradient(to top, #d2d2d2 1px, rgba(210, 210, 210, 0) 1px);
+  background-image: linear-gradient(to top, #9c27b0 2px, rgba(156, 39, 176, 0) 2px), linear-gradient(to top, #d2d2d2 1px, rgba(210, 210, 210, 0) 1px);
 }
 
 .bmd-form-group .form-control,
@@ -1135,25 +1182,8 @@ a {
 }
 
 .animation-transition-general,
-.sidebar
-  .sidebar-wrapper
-  > .nav
-  [data-toggle="collapse"]
-  ~ div
-  > ul
-  > li
-  > a
-  span,
-.sidebar
-  .sidebar-wrapper
-  .user
-  .user-info
-  [data-toggle="collapse"]
-  ~ div
-  > ul
-  > li
-  > a
-  span,
+.sidebar .sidebar-wrapper > .nav [data-toggle="collapse"] ~ div > ul > li > a span,
+.sidebar .sidebar-wrapper .user .user-info [data-toggle="collapse"] ~ div > ul > li > a span,
 .sidebar .nav p,
 .sidebar .logo a.logo-mini,
 .sidebar .logo a.logo-normal,
@@ -1251,8 +1281,7 @@ a {
   color: #333333;
   background: #fff;
   width: 100%;
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2),
-    0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }
 
 .card .card-title {
@@ -1294,8 +1323,7 @@ a {
 .card .card-header-rose .card-icon,
 .card .card-header-rose:not(.card-header-icon):not(.card-header-text),
 .card .card-header-rose .card-text {
-  box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14),
-    0 7px 10px -5px rgba(233, 30, 99, 0.4);
+  box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(233, 30, 99, 0.4);
 }
 
 .card [class*="card-header-"],
@@ -1366,8 +1394,7 @@ a {
   color: #fff;
 }
 
-.card
-  [class*="card-header-"]:not(.card-header-icon):not(.card-header-text):not(.card-header-image) {
+.card [class*="card-header-"]:not(.card-header-icon):not(.card-header-text):not(.card-header-image) {
   border-radius: 3px;
   margin-top: -20px;
   padding: 15px;
@@ -1443,5 +1470,95 @@ a {
   margin-top: 10px;
   margin-bottom: 10px;
   font-weight: 700;
+}
+
+img {
+  vertical-align: middle;
+  border-style: none;
+}
+
+::-webkit-file-upload-button {
+  font: inherit;
+  -webkit-appearance: button;
+}
+
+.btn-file {
+  position: relative;
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+.thumbnail {
+  border: 0 none;
+  border-radius: 4px;
+  padding: 0;
+}
+
+.btn-file > input {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  font-size: 23px;
+  cursor: pointer;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  direction: ltr;
+}
+
+.fileinput {
+  display: inline-block;
+  margin-bottom: 9px;
+}
+
+.fileinput .thumbnail {
+  display: inline-block;
+  margin-bottom: 10px;
+  overflow: hidden;
+  text-align: center;
+  vertical-align: middle;
+  max-width: 250px;
+  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.42), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
+}
+
+.fileinput .thumbnail > img {
+  max-height: 100%;
+  width: 100%;
+}
+
+.fileinput .btn {
+  vertical-align: middle;
+}
+
+.fileinput-exists .fileinput-new,
+.fileinput-new .fileinput-exists {
+  display: none;
+}
+
+.fileinput .thumbnail.img-circle {
+  border-radius: 50%;
+  max-width: 100px;
+}
+
+.fileinput .thumbnail > img {
+  max-height: 100%;
+  width: 100%;
+}
+
+.fileinput .btn {
+  vertical-align: middle;
+}
+
+.fileinput-exists .fileinput-new,
+.fileinput-new .fileinput-exists {
+  display: none;
+}
+
+.thumbnail {
+  border: 0 none;
+  border-radius: 4px;
+  padding: 0;
 }
 </style>
