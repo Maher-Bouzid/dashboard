@@ -3,10 +3,14 @@ import DashboardLayout from "@/pages/Layout/DashboardLayout.vue";
 import AdminDashboard from "@/pages/AdminDashboard.vue";
 import BrandDashboard from "@/pages/BrandDashboard.vue";
 import UserProfile from "@/pages/UserProfile.vue";
+import ProductList from "@/pages/ProductList.vue";
+import AddProduct from "@/pages/AddProduct.vue";
 import TableList from "@/pages/TableList.vue";
 import Notifications from "@/pages/Notifications.vue";
 import Brands from "@/pages/Brands.vue";
 import Login from "@/pages/Login.vue";
+import RegisterProfile from "@/pages/RegisterProfile.vue";
+
 import auth from "../middleware/auth";
 import VueRouter from "vue-router";
 import Vue from "vue";
@@ -40,7 +44,7 @@ const routes = [
       {
         path: "products",
         name: "Product List",
-        component: UserProfile,
+        component: ProductList,
         meta: {
           middleware: [auth]
         }
@@ -48,7 +52,7 @@ const routes = [
       {
         path: "products/add",
         name: "Add a Product",
-        component: UserProfile,
+        component: AddProduct,
         meta: {
           middleware: [auth]
         }
@@ -99,6 +103,13 @@ const routes = [
     path: "/login",
     name: "login",
     component: Login
+  },
+  {
+    path: "/register",
+    component: RegisterProfile,
+    meta: {
+      middleware: [auth]
+    }
   }
 ];
 const router = new VueRouter({
