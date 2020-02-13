@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 Vue.use(Vuex);
+import axios from "axios";
 export default new Vuex.Store({
   state: {
     user: {
@@ -20,15 +21,15 @@ export default new Vuex.Store({
       state.user.isActivated = value;
     }
   },
-  action: {
+  actions: {
     VERIFY_TOKEN: async function(state) {
       axios
         .get("http://localhost:3000/api/brand/verifytoken")
         .then(res => {
-          this.commit(" UPDATE_LOGIN", true);
+          this.commit("UPDATE_LOGIN", true);
         })
         .catch(err => {
-          this.commit(" UPDATE_LOGIN", false);
+          this.commit("UPDATE_LOGIN", false);
         });
     }
   }
