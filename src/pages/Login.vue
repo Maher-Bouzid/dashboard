@@ -92,6 +92,7 @@
 </template>
 
 <script>
+import router from "../../src/main";
 import { mapMutations, mapGetters } from "vuex";
 import axios from "axios";
 import { validationMixin } from "vuelidate";
@@ -140,6 +141,7 @@ export default {
           if (response.data.status === "success") {
             console.log("success");
             this.UPDATE_LOGIN(true);
+            router.push({ path: "/" });
             // Until here
           } else if (response.data.status === "wrong password") {
             this.wrongPasswordNotif = true;
