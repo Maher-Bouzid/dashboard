@@ -4,6 +4,7 @@ import AdminDashboard from "@/pages/AdminDashboard.vue";
 import BrandDashboard from "@/pages/BrandDashboard.vue";
 import UserProfile from "@/pages/UserProfile.vue";
 import ProductList from "@/pages/ProductList.vue";
+import ProductDetails from "@/pages/ProductDetails.vue";
 import AddProduct from "@/pages/AddProduct.vue";
 import TableList from "@/pages/TableList.vue";
 import Notifications from "@/pages/Notifications.vue";
@@ -53,6 +54,14 @@ const routes = [
         path: "products/add",
         name: "Add a Product",
         component: AddProduct,
+        meta: {
+          middleware: [auth]
+        }
+      },
+      {
+        path: "products/:id",
+        name: "Product Details",
+        component: ProductDetails,
         meta: {
           middleware: [auth]
         }

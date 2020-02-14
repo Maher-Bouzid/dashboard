@@ -12,6 +12,9 @@
             <md-card-content>
               <div class="md-layout">
                 <div class="md-layout-item md-size-100">
+                  <h2>General Info</h2>
+                </div>
+                <div class="md-layout-item md-size-100">
                   <md-field>
                     <label>Product title</label>
                     <md-input v-model="title" type="text"></md-input>
@@ -48,15 +51,77 @@
                   </md-field>
                 </div>
                 <div class="md-layout-item md-size-100">
+                  <h2>Colors and Sizes variants</h2>
+                </div>
+                <div
+                  class="md-layout-item md-size-100"
+                  v-for="(item, index) in availability"
+                  :key="index"
+                >
+                  <div class="md-layout">
+                    <div class="md-layout-item md-small-size-100 md-size-25">
+                      <div class="md-autocomplete">
+                        <md-autocomplete
+                          class="search"
+                          v-model="item.color"
+                          :md-options="HTMLColors"
+                        >
+                          <label>Choose the color...</label>
+                        </md-autocomplete>
+                      </div>
+                    </div>
+                    <div class="md-layout-item md-small-size-100 md-size-25">
+                      <md-field>
+                        <label>Size</label>
+                        <md-input v-model="item.size" type="text"></md-input>
+                      </md-field>
+                    </div>
+                    <div class="md-layout-item md-small-size-100 md-size-25">
+                      <md-field>
+                        <label>Quantity</label>
+                        <md-input v-model="item.quantity" type="number"></md-input>
+                      </md-field>
+                    </div>
+                    <div class="md-layout-item md-small-size-100 md-size-25">
+                      <md-button
+                        @click="removeItem"
+                        class="md-danger md-just-icon md-small-size"
+                        style="height: 30px; min-width: 31px; width: 30px;"
+                      >
+                        <md-icon>close</md-icon>
+                      </md-button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="md-layout-item md-size-100">
+                  <md-button type="button" class="md-success md-round" @click="AddItem">Add variant</md-button>
+                </div>
+                <div class="md-layout-item md-size-100">
+                  <h3>Images Upload</h3>
+                </div>
+                <div class="md-layout-item md-size-100">
                   <div class="md-layout">
                     <image-input-component :isDefault="isDefault1" :defaultImage="defaultImage1"></image-input-component>
-                    <image-input-component v-if="imagecount > 1" :isDefault="isDefault2" :defaultImage="defaultImage2"></image-input-component>
-                    <image-input-component v-if="imagecount > 2" :isDefault="isDefault3" :defaultImage="defaultImage3"></image-input-component>
-                    <image-input-component v-if="imagecount > 3" :isDefault="isDefault4" :defaultImage="defaultImage4"></image-input-component>
+                    <image-input-component
+                      v-if="imagecount > 1"
+                      :isDefault="isDefault2"
+                      :defaultImage="defaultImage2"
+                    ></image-input-component>
+                    <image-input-component
+                      v-if="imagecount > 2"
+                      :isDefault="isDefault3"
+                      :defaultImage="defaultImage3"
+                    ></image-input-component>
+                    <image-input-component
+                      v-if="imagecount > 3"
+                      :isDefault="isDefault4"
+                      :defaultImage="defaultImage4"
+                    ></image-input-component>
                   </div>
                 </div>
                 <div class="md-layout-item md-size-50 text-left">
-                  <md-button class="md-raised md-success" @click="imgCountFn">Add another image</md-button>
+                  <md-button class="md-success md-round" @click="imgCountFn">Add another image</md-button>
                 </div>
                 <div class="md-layout-item md-size-50 text-right">
                   <md-button class="md-raised md-success">Update Profile</md-button>
@@ -85,7 +150,6 @@ export default {
       tags: [],
       category: null,
       gender: null,
-      availability: [],
       imagecount: 1,
       isDefault1: true,
       isDefault2: true,
@@ -94,7 +158,157 @@ export default {
       defaultImage1: require("@/assets/img/image_placeholder.jpg"),
       defaultImage2: require("@/assets/img/image_placeholder.jpg"),
       defaultImage3: require("@/assets/img/image_placeholder.jpg"),
-      defaultImage4: require("@/assets/img/image_placeholder.jpg")
+      defaultImage4: require("@/assets/img/image_placeholder.jpg"),
+      selectedColor: null,
+      availability: [
+        {
+          color: "",
+          size: "",
+          quantity: 0
+        }
+      ],
+      HTMLColors: [
+        "Pink",
+        "LightPink",
+        "HotPink",
+        "DeepPink",
+        "PaleVioletRed",
+        "MediumVioletRed",
+        "LightSalmon",
+        "Salmon",
+        "DarkSalmon",
+        "LightCoral",
+        "IndianRed",
+        "Crimson",
+        "Firebrick",
+        "DarkRed",
+        "Red",
+        "OrangeRed",
+        "Tomato",
+        "Coral",
+        "DarkOrange",
+        "Orange",
+        "Yellow",
+        "LightYellow",
+        "LemonChiffon",
+        "LightGoldenrodYellow ",
+        "PapayaWhip",
+        "Moccasin",
+        "PeachPuff",
+        "PaleGoldenrod",
+        "Khaki",
+        "DarkKhaki",
+        "Gold",
+        "Cornsilk",
+        "BlanchedAlmond",
+        "Bisque",
+        "NavajoWhite",
+        "Wheat",
+        "Burlywood",
+        "Tan",
+        "RosyBrown",
+        "SandyBrown",
+        "Goldenrod",
+        "DarkGoldenrod",
+        "Peru",
+        "Chocolate",
+        "SaddleBrown",
+        "Sienna",
+        "Brown",
+        "Maroon",
+        "DarkOliveGreen",
+        "Olive",
+        "OliveDrab",
+        "YellowGreen",
+        "LimeGreen",
+        "Lime",
+        "LawnGreen",
+        "Chartreuse",
+        "GreenYellow",
+        "SpringGreen",
+        "MediumSpringGreen ",
+        "LightGreen",
+        "PaleGreen",
+        "DarkSeaGreen",
+        "MediumAquamarine",
+        "MediumSeaGreen",
+        "SeaGreen",
+        "ForestGreen",
+        "Green",
+        "DarkGreen",
+        "Aqua",
+        "Cyan",
+        "LightCyan",
+        "PaleTurquoise",
+        "Aquamarine",
+        "Turquoise",
+        "MediumTurquoise",
+        "DarkTurquoise",
+        "LightSeaGreen",
+        "CadetBlue",
+        "DarkCyan",
+        "Teal",
+        "LightSteelBlue",
+        "PowderBlue",
+        "LightBlue",
+        "SkyBlue",
+        "LightSkyBlue",
+        "DeepSkyBlue",
+        "DodgerBlue",
+        "CornflowerBlue",
+        "SteelBlue",
+        "RoyalBlue",
+        "Blue",
+        "MediumBlue",
+        "DarkBlue",
+        "Navy",
+        "MidnightBlue",
+        "Lavender",
+        "Thistle",
+        "Plum",
+        "Violet",
+        "Orchid",
+        "Fuchsia",
+        "Magenta",
+        "MediumOrchid",
+        "MediumPurple",
+        "BlueViolet",
+        "DarkViolet",
+        "DarkOrchid",
+        "DarkMagenta",
+        "Purple",
+        "Indigo",
+        "DarkSlateBlue",
+        "SlateBlue",
+        "MediumSlateBlue ",
+        "White",
+        "Snow",
+        "Honeydew",
+        "MintCream",
+        "Azure",
+        "AliceBlue",
+        "GhostWhite",
+        "WhiteSmoke",
+        "Seashell",
+        "Beige",
+        "OldLace",
+        "FloralWhite",
+        "Ivory",
+        "AntiqueWhite",
+        "Linen",
+        "LavenderBlush",
+        "MistyRose",
+        "Gainsboro",
+        "LightGray",
+        "Silver",
+        "DarkGray",
+        "Gray",
+        "DimGray",
+        "LightSlateGray",
+        "SlateGray",
+        "DarkSlateGray",
+        "Black"
+      ].sort()
 
       // {
       //   size:null, // select
@@ -111,6 +325,18 @@ export default {
         //raise alert
       }
     },
+    AddItem() {
+      this.availability.push({
+        name: "",
+        quantity: 0,
+        amount: 0,
+        total: 0
+      });
+      console.log(this.availability);
+    },
+    removeItem() {
+      this.availability.splice(this.availability, 1);
+    },
     imageChange(e) {
       e.preventDefault();
       let reader = new FileReader();
@@ -120,7 +346,6 @@ export default {
       };
       this.isDefault = false;
       reader.readAsDataURL(file);
-      console.log(this.defaultImage);
     },
     imageRemove(e) {
       this.defaultImage = require("@/assets/img/image_placeholder.jpg");
@@ -143,7 +368,8 @@ export default {
   font-size: 1rem;
   line-height: 1.5;
   border-radius: 0.25rem;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 /deep/ .btn:not(:disabled):not(.disabled) {
   cursor: pointer;
@@ -175,14 +401,16 @@ export default {
   border: 0;
   border-radius: 0.2rem;
   outline: 0;
-  transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1),
+    background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: box-shadow, transform;
 }
 /deep/ .btn.btn-rose {
   color: #fff;
   background-color: #e91e63;
   border-color: #e91e63;
-  box-shadow: 0 2px 2px 0 rgba(233, 30, 99, 0.14), 0 3px 1px -2px rgba(233, 30, 99, 0.2), 0 1px 5px 0 rgba(233, 30, 99, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(233, 30, 99, 0.14),
+    0 3px 1px -2px rgba(233, 30, 99, 0.2), 0 1px 5px 0 rgba(233, 30, 99, 0.12);
 }
 /deep/ .btn.btn-rose.btn-link {
   background-color: transparent;
@@ -193,14 +421,17 @@ export default {
   color: #fff;
   background-color: #f44336;
   border-color: #f44336;
-  box-shadow: 0 2px 2px 0 rgba(244, 67, 54, 0.14), 0 3px 1px -2px rgba(244, 67, 54, 0.2), 0 1px 5px 0 rgba(244, 67, 54, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(244, 67, 54, 0.14),
+    0 3px 1px -2px rgba(244, 67, 54, 0.2), 0 1px 5px 0 rgba(244, 67, 54, 0.12);
 }
 /deep/ .btn,
 /deep/ .btn.btn-default {
   color: #fff;
   background-color: #999999;
   border-color: #999999;
-  box-shadow: 0 2px 2px 0 rgba(153, 153, 153, 0.14), 0 3px 1px -2px rgba(153, 153, 153, 0.2), 0 1px 5px 0 rgba(153, 153, 153, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(153, 153, 153, 0.14),
+    0 3px 1px -2px rgba(153, 153, 153, 0.2),
+    0 1px 5px 0 rgba(153, 153, 153, 0.12);
 }
 /deep/ .btn.btn-link,
 /deep/ .btn.btn-default.btn-link {
@@ -317,7 +548,8 @@ img {
   text-align: center;
   vertical-align: middle;
   max-width: 250px;
-  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.42), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.42),
+    0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
 }
 /deep/ .fileinput .thumbnail > img {
   max-height: 100%;
@@ -354,7 +586,8 @@ img {
   color: #fff;
   background-color: #e91e63;
   border-color: #e91e63;
-  box-shadow: 0 2px 2px 0 rgba(233, 30, 99, 0.14), 0 3px 1px -2px rgba(233, 30, 99, 0.2), 0 1px 5px 0 rgba(233, 30, 99, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(233, 30, 99, 0.14),
+    0 3px 1px -2px rgba(233, 30, 99, 0.2), 0 1px 5px 0 rgba(233, 30, 99, 0.12);
 }
 /deep/ .btn.btn-rose.btn-link {
   background-color: transparent;
@@ -365,13 +598,16 @@ img {
   color: #fff;
   background-color: #f44336;
   border-color: #f44336;
-  box-shadow: 0 2px 2px 0 rgba(244, 67, 54, 0.14), 0 3px 1px -2px rgba(244, 67, 54, 0.2), 0 1px 5px 0 rgba(244, 67, 54, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(244, 67, 54, 0.14),
+    0 3px 1px -2px rgba(244, 67, 54, 0.2), 0 1px 5px 0 rgba(244, 67, 54, 0.12);
 }
 /deep/ .btn,
 /deep/ .btn.btn-default {
   color: #fff;
   background-color: #999999;
   border-color: #999999;
-  box-shadow: 0 2px 2px 0 rgba(153, 153, 153, 0.14), 0 3px 1px -2px rgba(153, 153, 153, 0.2), 0 1px 5px 0 rgba(153, 153, 153, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(153, 153, 153, 0.14),
+    0 3px 1px -2px rgba(153, 153, 153, 0.2),
+    0 1px 5px 0 rgba(153, 153, 153, 0.12);
 }
 </style>

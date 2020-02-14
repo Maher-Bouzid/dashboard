@@ -50,8 +50,6 @@ Vue.use(require("vue-moment"));
 //interceptors
 axios.interceptors.request.use(
   request => {
-    console.log(request);
-    console.log("okkkkkkkkkkk");
     if (localStorage.getItem("x-token")) {
       request.headers["x-token"] = localStorage.getItem("x-token");
     }

@@ -23,15 +23,12 @@ export default new Vuex.Store({
   },
   actions: {
     VERIFY_TOKEN: async function(state) {
-      console.log("heeeeeye");
       axios
         .get("http://localhost:3000/api/brand/verifytoken")
         .then(res => {
-          console.log("true");
           this.commit("UPDATE_LOGIN", true);
         })
         .catch(err => {
-          console.log("false");
           this.commit("UPDATE_LOGIN", false);
         });
     }
