@@ -9,7 +9,7 @@
           </md-card-header>
 
           <md-card-content>
-            <div v-for="(color, index) in Object.keys(colors)" :key="index">
+            <div v-for="(color, indexs) in Object.keys(colors)" :key="indexs">
               <div>
                 <md-table md-card>
                   <md-table-toolbar>
@@ -26,19 +26,33 @@
                   </md-table-row>
 
                   <md-table-row v-for="(value, index) in Object.values(colors[color])" :key="index">
-                    <md-table-cell style="padding-left:30px">{{ value[0] }}</md-table-cell>
-                    <md-table-cell>{{ value[1] }}</md-table-cell>
-                    <md-table-cell
-                      ><span :class="getSpanClass(value[1])">{{ value[1] ? "In Stock" : "Out of Stock" }}</span></md-table-cell
-                    >
+                    <md-table-cell style="padding-left:30px">{{ value.size }}</md-table-cell>
+                    <md-table-cell>{{ value.quantity }}</md-table-cell>
                     <md-table-cell>
-                      <md-button class="md-success md-just-icon md-small-size" style="height: 30px; min-width: 31px; width: 30px;">
+                      <span
+                        :class="getSpanClass(value.quantity)"
+                      >{{ value.quantity ? "In Stock" : "Out of Stock" }}</span>
+                    </md-table-cell>
+                    <md-table-cell>
+                      <md-button
+                        class="md-success md-just-icon md-small-size"
+                        style="height: 30px; min-width: 31px; width: 30px;"
+                        @click="increaseQuantity(color, index)"
+                      >
                         <md-icon style="font-size: 15px">add</md-icon>
                       </md-button>
-                      <md-button class="md-warning md-just-icon md-small-size" style="height: 30px; min-width: 31px; width: 30px;">
+                      <md-button
+                        class="md-warning md-just-icon md-small-size"
+                        style="height: 30px; min-width: 31px; width: 30px;"
+                        @click="decreaseQuantity(color, index)"
+                      >
                         <md-icon style="font-size: 15px">remove</md-icon>
                       </md-button>
-                      <md-button class="md-danger md-just-icon md-small-size" style="height: 30px; min-width: 31px; width: 30px;">
+                      <md-button
+                        class="md-danger md-just-icon md-small-size"
+                        style="height: 30px; min-width: 31px; width: 30px;"
+                        @click="removeQuantity(color, index)"
+                      >
                         <md-icon class="md-size-2x">close</md-icon>
                       </md-button>
                     </md-table-cell>
@@ -47,6 +61,9 @@
               </div>
             </div>
           </md-card-content>
+          <div class="md-layout-item md-size-50 text-right">
+            <md-button class="md-round md-success" @click="updateProduct">Update Product</md-button>
+          </div>
         </md-card>
       </div>
       <div class="md-layout-item md-medium-size-100 md-size-33">
@@ -58,9 +75,7 @@
           <md-card-content>
             <h6 class="category text-gray">{{ product.gender }} - {{ product.category }}</h6>
             <h4 class="card-title">{{ product.title }}</h4>
-            <p class="card-description">
-              {{ product.description }}
-            </p>
+            <p class="card-description">{{ product.description }}</p>
             <div class="card-footer">
               <div class="md-layout">
                 <div class="md-layout-item md-size-33">
@@ -87,6 +102,7 @@ export default {
   data() {
     return {
       product: null,
+      productId: String,
       colors: {}
     };
   },
@@ -97,22 +113,38 @@ export default {
       } else {
         return "badge badge-pill badge-warning";
       }
+    },
+    increaseQuantity(color, index) {
+      this.colors[color][index].quantity += 1;
+    },
+    decreaseQuantity(color, index) {
+      this.colors[color][index].quantity -= 1;
+    },
+    removeQuantity(color, index) {
+      this.colors[color][index].quantity = 0;
+    },
+    updateProduct() {
+      Object.values(this.colors).forEach(async color => {
+        await color.forEach(async availability => {
+          await axios.put(
+            `http://127.0.0.1:3000/api/products/${this.productId}/availability`,
+            availability
+          );
+        });
+      });
     }
   },
   async beforeMount() {
-    let productId = window.location.pathname.slice(10);
-    console.log(productId);
-    let { data } = await axios.get(`http://localhost:3000/api/products/${productId}`);
+    this.productId = window.location.pathname.slice(10);
+    let { data } = await axios.get(
+      `http://localhost:3000/api/products/${this.productId}`
+    );
 
     data.availability.map(elem => {
-      console.log(elem);
-      if (Array.isArray(this.colors[elem.color])) {
-        this.colors[elem.color].push([elem.size, elem.quantity]);
-      } else {
-        this.colors[elem.color] = [[elem.size, elem.quantity]];
-      }
+      !!this.colors[elem.color]
+        ? this.colors[elem.color].push(elem)
+        : (this.colors[elem.color] = [elem]);
     });
-    console.log(this.colors);
     this.product = data;
   }
 };

@@ -56,6 +56,7 @@ axios.interceptors.request.use(
     if (localStorage.getItem("x-refresh-token")) {
       request.headers["x-refresh-token"] = localStorage.getItem("x-refresh-token");
     }
+    console.log(request);
     return request;
   },
   function(error) {

@@ -53,11 +53,19 @@
                 <div class="md-layout-item md-size-100">
                   <h2>Colors and Sizes variants</h2>
                 </div>
-                <div class="md-layout-item md-size-100" v-for="(item, index) in availability" :key="index">
+                <div
+                  class="md-layout-item md-size-100"
+                  v-for="(item, index) in availability"
+                  :key="index"
+                >
                   <div class="md-layout">
                     <div class="md-layout-item md-small-size-100 md-size-25">
                       <div class="md-autocomplete">
-                        <md-autocomplete class="search" v-model="item.color" :md-options="HTMLColors">
+                        <md-autocomplete
+                          class="search"
+                          v-model="item.color"
+                          :md-options="HTMLColors"
+                        >
                           <label>Choose the color...</label>
                         </md-autocomplete>
                       </div>
@@ -75,7 +83,11 @@
                       </md-field>
                     </div>
                     <div class="md-layout-item md-small-size-100 md-size-25">
-                      <md-button @click="removeItem" class="md-danger md-just-icon md-small-size" style="height: 30px; min-width: 31px; width: 30px;">
+                      <md-button
+                        @click="removeItem"
+                        class="md-danger md-just-icon md-small-size"
+                        style="height: 30px; min-width: 31px; width: 30px;"
+                      >
                         <md-icon>close</md-icon>
                       </md-button>
                     </div>
@@ -90,7 +102,11 @@
                 </div>
                 <div class="md-layout-item md-size-100">
                   <div class="md-layout">
-                    <div class="md-layout-item md-size-25" v-for="(item, index) in images" :key="index">
+                    <div
+                      class="md-layout-item md-size-25"
+                      v-for="(item, index) in images"
+                      :key="index"
+                    >
                       <div class="fileinput fileinput-new text-center" data-provides="fileinput">
                         <div class="fileinput-new thumbnail">
                           <img :src="item.defaultImage" alt="..." />
@@ -100,10 +116,23 @@
                           <span class="btn btn-primary btn-round btn-file">
                             <span v-if="item.isDefault" class="fileinput-new">Select image</span>
                             <span v-else class="fileinput-new">Change</span>
-                            <input :id="index" type="file" name="..." @change="imageChange" />
+                            <input
+                              :id="index"
+                              type="file"
+                              name="..."
+                              @change="imageChange"
+                              multiple
+                            />
                           </span>
-                          <span :id="index" v-if="!item.isDefault" @click="imageRemove" class="btn btn-danger btn-round btn-file">
-                            <span :id="index" class="fileinput-new"><i class="fa fa-times"></i> Remove</span>
+                          <span
+                            :id="index"
+                            v-if="!item.isDefault"
+                            @click="imageRemove"
+                            class="btn btn-danger btn-round btn-file"
+                          >
+                            <span :id="index" class="fileinput-new">
+                              <i class="fa fa-times"></i> Remove
+                            </span>
                           </span>
                         </div>
                       </div>
@@ -114,7 +143,7 @@
                   <md-button class="md-success md-round" @click="addImage">Add another image</md-button>
                 </div>
                 <div class="md-layout-item md-size-50 text-right">
-                  <md-button class="md-raised md-success">Update Profile</md-button>
+                  <md-button class="md-raised md-success" @click="addProduct">Update Profile</md-button>
                 </div>
               </div>
             </md-card-content>
@@ -126,6 +155,8 @@
 </template>
 
 <script>
+import ProductDetailsVue from "./ProductDetails.vue";
+import axios from "axios";
 export default {
   data() {
     return {
@@ -139,7 +170,8 @@ export default {
       images: [
         {
           isDefault: true,
-          defaultImage: require("@/assets/img/image_placeholder.jpg")
+          defaultImage: require("@/assets/img/image_placeholder.jpg"),
+          value: null
         }
       ],
       isDefault1: true,
@@ -312,10 +344,9 @@ export default {
     },
     AddItem() {
       this.availability.push({
-        name: "",
-        quantity: 0,
-        amount: 0,
-        total: 0
+        color: "",
+        size: "",
+        quantity: 0
       });
       console.log(this.availability);
     },
@@ -324,27 +355,50 @@ export default {
     },
     imageChange(e, arg) {
       e.preventDefault();
+      console.log(e.target.files);
       let reader = new FileReader();
       let file = e.target.files[0];
       reader.onloadend = () => {
         this.images[e.target.id].defaultImage = reader.result;
       };
       this.images[e.target.id].isDefault = false;
+      this.images[e.target.id].value = file;
       reader.readAsDataURL(file);
     },
     imageRemove(e) {
-      this.images[e.path[0].id].defaultImage = require("@/assets/img/image_placeholder.jpg");
+      this.images[
+        e.path[0].id
+      ].defaultImage = require("@/assets/img/image_placeholder.jpg");
       this.images[e.path[0].id].isDefault = true;
     },
     addImage() {
       if (this.images.length < 4) {
         this.images.push({
           isDefault: true,
-          defaultImage: require("@/assets/img/image_placeholder.jpg")
+          defaultImage: require("@/assets/img/image_placeholder.jpg"),
+          value: null
         });
       } else {
         //notif max limit
       }
+    },
+    addProduct() {
+      let productDetails = new FormData();
+      productDetails.append("title", this.title);
+      productDetails.append("availability", this.availability);
+      productDetails.append("description", this.description);
+      productDetails.append("price", parseInt(this.price));
+      productDetails.append("tags", this.tags);
+      productDetails.append("gender", this.gender);
+      productDetails.append("category", this.category);
+      const images = this.images.map(image => {
+        if (!!image.value) {
+          productDetails.append("images", image.value);
+        }
+      });
+      axios.post("http://127.0.0.1:3000/api/products/product", productDetails, {
+        headers: { "X-Requested-With": "XMLHttpRequest" }
+      });
     }
   }
 };
@@ -363,7 +417,8 @@ export default {
   font-size: 1rem;
   line-height: 1.5;
   border-radius: 0.25rem;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 /deep/ .btn:not(:disabled):not(.disabled) {
   cursor: pointer;
@@ -395,14 +450,16 @@ export default {
   border: 0;
   border-radius: 0.2rem;
   outline: 0;
-  transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1),
+    background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: box-shadow, transform;
 }
 /deep/ .btn.btn-rose {
   color: #fff;
   background-color: #e91e63;
   border-color: #e91e63;
-  box-shadow: 0 2px 2px 0 rgba(233, 30, 99, 0.14), 0 3px 1px -2px rgba(233, 30, 99, 0.2), 0 1px 5px 0 rgba(233, 30, 99, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(233, 30, 99, 0.14),
+    0 3px 1px -2px rgba(233, 30, 99, 0.2), 0 1px 5px 0 rgba(233, 30, 99, 0.12);
 }
 /deep/ .btn.btn-rose.btn-link {
   background-color: transparent;
@@ -413,14 +470,17 @@ export default {
   color: #fff;
   background-color: #f44336;
   border-color: #f44336;
-  box-shadow: 0 2px 2px 0 rgba(244, 67, 54, 0.14), 0 3px 1px -2px rgba(244, 67, 54, 0.2), 0 1px 5px 0 rgba(244, 67, 54, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(244, 67, 54, 0.14),
+    0 3px 1px -2px rgba(244, 67, 54, 0.2), 0 1px 5px 0 rgba(244, 67, 54, 0.12);
 }
 /deep/ .btn,
 /deep/ .btn.btn-default {
   color: #fff;
   background-color: #999999;
   border-color: #999999;
-  box-shadow: 0 2px 2px 0 rgba(153, 153, 153, 0.14), 0 3px 1px -2px rgba(153, 153, 153, 0.2), 0 1px 5px 0 rgba(153, 153, 153, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(153, 153, 153, 0.14),
+    0 3px 1px -2px rgba(153, 153, 153, 0.2),
+    0 1px 5px 0 rgba(153, 153, 153, 0.12);
 }
 /deep/ .btn.btn-link,
 /deep/ .btn.btn-default.btn-link {
@@ -537,7 +597,8 @@ img {
   text-align: center;
   vertical-align: middle;
   max-width: 250px;
-  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.42), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.42),
+    0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
 }
 /deep/ .fileinput .thumbnail > img {
   max-height: 100%;
@@ -574,7 +635,8 @@ img {
   color: #fff;
   background-color: #e91e63;
   border-color: #e91e63;
-  box-shadow: 0 2px 2px 0 rgba(233, 30, 99, 0.14), 0 3px 1px -2px rgba(233, 30, 99, 0.2), 0 1px 5px 0 rgba(233, 30, 99, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(233, 30, 99, 0.14),
+    0 3px 1px -2px rgba(233, 30, 99, 0.2), 0 1px 5px 0 rgba(233, 30, 99, 0.12);
 }
 /deep/ .btn.btn-rose.btn-link {
   background-color: transparent;
@@ -585,13 +647,16 @@ img {
   color: #fff;
   background-color: #f44336;
   border-color: #f44336;
-  box-shadow: 0 2px 2px 0 rgba(244, 67, 54, 0.14), 0 3px 1px -2px rgba(244, 67, 54, 0.2), 0 1px 5px 0 rgba(244, 67, 54, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(244, 67, 54, 0.14),
+    0 3px 1px -2px rgba(244, 67, 54, 0.2), 0 1px 5px 0 rgba(244, 67, 54, 0.12);
 }
 /deep/ .btn,
 /deep/ .btn.btn-default {
   color: #fff;
   background-color: #999999;
   border-color: #999999;
-  box-shadow: 0 2px 2px 0 rgba(153, 153, 153, 0.14), 0 3px 1px -2px rgba(153, 153, 153, 0.2), 0 1px 5px 0 rgba(153, 153, 153, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(153, 153, 153, 0.14),
+    0 3px 1px -2px rgba(153, 153, 153, 0.2),
+    0 1px 5px 0 rgba(153, 153, 153, 0.12);
 }
 </style>
