@@ -102,29 +102,48 @@
                 </div>
                 <div class="md-layout-item md-size-100">
                   <div class="md-layout">
-                    <image-input-component :isDefault="isDefault1" :defaultImage="defaultImage1"></image-input-component>
-                    <image-input-component
-                      v-if="imagecount > 1"
-                      :isDefault="isDefault2"
-                      :defaultImage="defaultImage2"
-                    ></image-input-component>
-                    <image-input-component
-                      v-if="imagecount > 2"
-                      :isDefault="isDefault3"
-                      :defaultImage="defaultImage3"
-                    ></image-input-component>
-                    <image-input-component
-                      v-if="imagecount > 3"
-                      :isDefault="isDefault4"
-                      :defaultImage="defaultImage4"
-                    ></image-input-component>
+                    <div
+                      class="md-layout-item md-size-25"
+                      v-for="(item, index) in images"
+                      :key="index"
+                    >
+                      <div class="fileinput fileinput-new text-center" data-provides="fileinput">
+                        <div class="fileinput-new thumbnail">
+                          <img :src="item.defaultImage" alt="..." />
+                        </div>
+                        <div class="fileinput-preview fileinput-exists thumbnail"></div>
+                        <div>
+                          <span class="btn btn-primary btn-round btn-file">
+                            <span v-if="item.isDefault" class="fileinput-new">Select image</span>
+                            <span v-else class="fileinput-new">Change</span>
+                            <input
+                              :id="index"
+                              type="file"
+                              name="..."
+                              @change="imageChange"
+                              multiple
+                            />
+                          </span>
+                          <span
+                            :id="index"
+                            v-if="!item.isDefault"
+                            @click="imageRemove"
+                            class="btn btn-danger btn-round btn-file"
+                          >
+                            <span :id="index" class="fileinput-new">
+                              <i class="fa fa-times"></i> Remove
+                            </span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="md-layout-item md-size-50 text-left">
-                  <md-button class="md-success md-round" @click="imgCountFn">Add another image</md-button>
+                  <md-button class="md-success md-round" @click="addImage">Add another image</md-button>
                 </div>
                 <div class="md-layout-item md-size-50 text-right">
-                  <md-button class="md-raised md-success">Update Profile</md-button>
+                  <md-button class="md-raised md-success" @click="addProduct">Update Profile</md-button>
                 </div>
               </div>
             </md-card-content>
@@ -136,21 +155,25 @@
 </template>
 
 <script>
-import ImageInputComponent from "../components/ImgInputComponent.vue";
+import ProductDetailsVue from "./ProductDetails.vue";
+import axios from "axios";
 export default {
-  components: {
-    ImageInputComponent
-  },
   data() {
     return {
       title: null,
       description: null,
       price: null,
-      images: [],
       tags: [],
       category: null,
       gender: null,
       imagecount: 1,
+      images: [
+        {
+          isDefault: true,
+          defaultImage: require("@/assets/img/image_placeholder.jpg"),
+          value: null
+        }
+      ],
       isDefault1: true,
       isDefault2: true,
       isDefault3: true,
@@ -309,12 +332,6 @@ export default {
         "DarkSlateGray",
         "Black"
       ].sort()
-
-      // {
-      //   size:null, // select
-      //   color: null, // dropdown
-      //   quantity: null
-      // }
     };
   },
   methods: {
@@ -327,29 +344,61 @@ export default {
     },
     AddItem() {
       this.availability.push({
-        name: "",
-        quantity: 0,
-        amount: 0,
-        total: 0
+        color: "",
+        size: "",
+        quantity: 0
       });
       console.log(this.availability);
     },
     removeItem() {
       this.availability.splice(this.availability, 1);
     },
-    imageChange(e) {
+    imageChange(e, arg) {
       e.preventDefault();
+      console.log(e.target.files);
       let reader = new FileReader();
       let file = e.target.files[0];
       reader.onloadend = () => {
-        this.defaultImage = reader.result;
+        this.images[e.target.id].defaultImage = reader.result;
       };
-      this.isDefault = false;
+      this.images[e.target.id].isDefault = false;
+      this.images[e.target.id].value = file;
       reader.readAsDataURL(file);
     },
     imageRemove(e) {
-      this.defaultImage = require("@/assets/img/image_placeholder.jpg");
-      this.isDefault = true;
+      this.images[
+        e.path[0].id
+      ].defaultImage = require("@/assets/img/image_placeholder.jpg");
+      this.images[e.path[0].id].isDefault = true;
+    },
+    addImage() {
+      if (this.images.length < 4) {
+        this.images.push({
+          isDefault: true,
+          defaultImage: require("@/assets/img/image_placeholder.jpg"),
+          value: null
+        });
+      } else {
+        //notif max limit
+      }
+    },
+    addProduct() {
+      let productDetails = new FormData();
+      productDetails.append("title", this.title);
+      productDetails.append("availibility", this.availibility);
+      productDetails.append("description", this.description);
+      productDetails.append("price", parseInt(this.price));
+      productDetails.append("tags", this.tags);
+      productDetails.append("gender", this.gender);
+      productDetails.append("category", this.category);
+      const images = this.images.map(image => {
+        if (!!image.value) {
+          productDetails.append("images", image.value);
+        }
+      });
+      axios.post("http://127.0.0.1:3000/api/products/product", productDetails, {
+        headers: { "X-Requested-With": "XMLHttpRequest" }
+      });
     }
   }
 };
