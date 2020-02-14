@@ -348,14 +348,12 @@ export default {
         size: "",
         quantity: 0
       });
-      console.log(this.availability);
     },
     removeItem() {
       this.availability.splice(this.availability, 1);
     },
     imageChange(e, arg) {
       e.preventDefault();
-      console.log(e.target.files);
       let reader = new FileReader();
       let file = e.target.files[0];
       reader.onloadend = () => {
@@ -396,9 +394,17 @@ export default {
           productDetails.append("images", image.value);
         }
       });
-      axios.post("http://127.0.0.1:3000/api/products/product", productDetails, {
-        headers: { "X-Requested-With": "XMLHttpRequest" }
-      });
+      axios
+        .post(
+          "https://prodigy-rbk.herokuapp.com//api/products/product",
+          productDetails,
+          {
+            headers: { "X-Requested-With": "XMLHttpRequest" }
+          }
+        )
+        .then(() => {
+          //notification
+        });
     }
   }
 };

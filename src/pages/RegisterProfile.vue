@@ -214,9 +214,13 @@ export default {
       registrationInfo.append("password", this.password);
       registrationInfo.append("image", this.image);
       axios
-        .post("http://localhost:3000/api/brand/signUp", registrationInfo, {
-          headers: { "X-Requested-With": "XMLHttpRequest" }
-        })
+        .post(
+          "https://prodigy-rbk.herokuapp.com//api/brand/signUp",
+          registrationInfo,
+          {
+            headers: { "X-Requested-With": "XMLHttpRequest" }
+          }
+        )
         .then(response => {
           if (response.data.status === "success") {
             this.UPDATE_LOGIN(true);
@@ -227,9 +231,7 @@ export default {
             this.wrongUsernameNotif = true;
           }
         })
-        .catch(function(error) {
-          console.log(error);
-        });
+        .catch(function(error) {});
     },
     getValidationClass(fieldName) {
       const field = this.$v[fieldName];

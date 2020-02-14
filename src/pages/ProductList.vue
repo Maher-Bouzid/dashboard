@@ -11,7 +11,9 @@
             <div>
               <md-table v-model="products" table-header-color="green">
                 <md-table-row slot="md-table-row" slot-scope="{ item }">
-                  <md-table-cell md-label="Image"><img style="max-width: 200px" :src="item.images[0]"/></md-table-cell>
+                  <md-table-cell md-label="Image">
+                    <img style="max-width: 200px" :src="item.images[0]" />
+                  </md-table-cell>
                   <md-table-cell md-label="Title">{{ item.title }}</md-table-cell>
                   <md-table-cell md-label="Specs">{{ item.gender }} - {{ item.category }}</md-table-cell>
                   <md-table-cell md-label="Price">{{ item.price }}</md-table-cell>
@@ -51,12 +53,12 @@ export default {
     };
   },
   async beforeMount() {
-    let { data } = await axios.get(`http://127.0.0.1:3000/api/brand/one`);
-    console.log(data);
+    let { data } = await axios.get(
+      `https://prodigy-rbk.herokuapp.com//api/brand/one`
+    );
     this.products = data.products;
-    for (const product of data) {
-      console.log(product);
-    }
+    // for (const product of data) {
+    // }
   }
 };
 </script>
