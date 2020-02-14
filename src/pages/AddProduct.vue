@@ -90,14 +90,28 @@
                 </div>
                 <div class="md-layout-item md-size-100">
                   <div class="md-layout">
-                    <image-input-component :isDefault="isDefault1" :defaultImage="defaultImage1"></image-input-component>
-                    <image-input-component v-if="imagecount > 1" :isDefault="isDefault2" :defaultImage="defaultImage2"></image-input-component>
-                    <image-input-component v-if="imagecount > 2" :isDefault="isDefault3" :defaultImage="defaultImage3"></image-input-component>
-                    <image-input-component v-if="imagecount > 3" :isDefault="isDefault4" :defaultImage="defaultImage4"></image-input-component>
+                    <div class="md-layout-item md-size-25" v-for="(item, index) in images" :key="index">
+                      <div class="fileinput fileinput-new text-center" data-provides="fileinput">
+                        <div class="fileinput-new thumbnail">
+                          <img :src="item.defaultImage" alt="..." />
+                        </div>
+                        <div class="fileinput-preview fileinput-exists thumbnail"></div>
+                        <div>
+                          <span class="btn btn-primary btn-round btn-file">
+                            <span v-if="item.isDefault" class="fileinput-new">Select image</span>
+                            <span v-else class="fileinput-new">Change</span>
+                            <input :id="index" type="file" name="..." @change="imageChange" />
+                          </span>
+                          <span :id="index" v-if="!item.isDefault" @click="imageRemove" class="btn btn-danger btn-round btn-file">
+                            <span :id="index" class="fileinput-new"><i class="fa fa-times"></i> Remove</span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="md-layout-item md-size-50 text-left">
-                  <md-button class="md-success md-round" @click="imgCountFn">Add another image</md-button>
+                  <md-button class="md-success md-round" @click="addImage">Add another image</md-button>
                 </div>
                 <div class="md-layout-item md-size-50 text-right">
                   <md-button class="md-raised md-success">Update Profile</md-button>
@@ -112,21 +126,22 @@
 </template>
 
 <script>
-import ImageInputComponent from "../components/ImgInputComponent.vue";
 export default {
-  components: {
-    ImageInputComponent
-  },
   data() {
     return {
       title: null,
       description: null,
       price: null,
-      images: [],
       tags: [],
       category: null,
       gender: null,
       imagecount: 1,
+      images: [
+        {
+          isDefault: true,
+          defaultImage: require("@/assets/img/image_placeholder.jpg")
+        }
+      ],
       isDefault1: true,
       isDefault2: true,
       isDefault3: true,
@@ -285,12 +300,6 @@ export default {
         "DarkSlateGray",
         "Black"
       ].sort()
-
-      // {
-      //   size:null, // select
-      //   color: null, // dropdown
-      //   quantity: null
-      // }
     };
   },
   methods: {
@@ -313,19 +322,29 @@ export default {
     removeItem() {
       this.availability.splice(this.availability, 1);
     },
-    imageChange(e) {
+    imageChange(e, arg) {
       e.preventDefault();
       let reader = new FileReader();
       let file = e.target.files[0];
       reader.onloadend = () => {
-        this.defaultImage = reader.result;
+        this.images[e.target.id].defaultImage = reader.result;
       };
-      this.isDefault = false;
+      this.images[e.target.id].isDefault = false;
       reader.readAsDataURL(file);
     },
     imageRemove(e) {
-      this.defaultImage = require("@/assets/img/image_placeholder.jpg");
-      this.isDefault = true;
+      this.images[e.path[0].id].defaultImage = require("@/assets/img/image_placeholder.jpg");
+      this.images[e.path[0].id].isDefault = true;
+    },
+    addImage() {
+      if (this.images.length < 4) {
+        this.images.push({
+          isDefault: true,
+          defaultImage: require("@/assets/img/image_placeholder.jpg")
+        });
+      } else {
+        //notif max limit
+      }
     }
   }
 };
