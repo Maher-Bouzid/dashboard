@@ -167,7 +167,7 @@ export default {
   },
   methods: {
     ...mapGetters(["auth"]),
-    ...mapMutations(["UPDATE_LOGIN", "UPDATE_ACTIVATE"]),
+    ...mapMutations(["UPDATE_LOGIN"]),
     submit: function(e) {
       this.sending = false;
       axios

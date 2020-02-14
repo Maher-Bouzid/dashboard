@@ -6,7 +6,7 @@
       </div>
       <div class="fileinput-preview fileinput-exists thumbnail"></div>
       <div>
-        <span class="btn btn-rose btn-round btn-file">
+        <span class="btn btn-primary btn-round btn-file">
           <span v-if="isDefault" class="fileinput-new">Select image</span>
           <span v-else class="fileinput-new">Change</span>
           <input type="file" name="..." @change="imageChange" />
@@ -21,7 +21,7 @@
 
 <script>
 export default {
-  name: "input image component",
+  name: "input-image-component",
   props: {
     isDefault: {
       type: Boolean
@@ -29,6 +29,11 @@ export default {
     defaultImage: {
       type: String
     }
+  },
+  data() {
+    return {
+      image: this.defaultImage
+    };
   },
   methods: {
     imageChange(e) {
@@ -40,7 +45,6 @@ export default {
       };
       this.isDefault = false;
       reader.readAsDataURL(file);
-      console.log(this.defaultImage);
     },
     imageRemove(e) {
       this.defaultImage = require("@/assets/img/image_placeholder.jpg");
