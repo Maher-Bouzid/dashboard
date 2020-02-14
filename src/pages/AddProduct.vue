@@ -12,6 +12,9 @@
             <md-card-content>
               <div class="md-layout">
                 <div class="md-layout-item md-size-100">
+                  <h2>General Info</h2>
+                </div>
+                <div class="md-layout-item md-size-100">
                   <md-field>
                     <label>Product title</label>
                     <md-input v-model="title" type="text"></md-input>
@@ -48,6 +51,44 @@
                   </md-field>
                 </div>
                 <div class="md-layout-item md-size-100">
+                  <h2>Colors and Sizes variants</h2>
+                </div>
+                <div class="md-layout-item md-size-100" v-for="(item, index) in availability" :key="index">
+                  <div class="md-layout">
+                    <div class="md-layout-item md-small-size-100 md-size-25">
+                      <div class="md-autocomplete">
+                        <md-autocomplete class="search" v-model="item.color" :md-options="HTMLColors">
+                          <label>Choose the color...</label>
+                        </md-autocomplete>
+                      </div>
+                    </div>
+                    <div class="md-layout-item md-small-size-100 md-size-25">
+                      <md-field>
+                        <label>Size</label>
+                        <md-input v-model="item.size" type="text"></md-input>
+                      </md-field>
+                    </div>
+                    <div class="md-layout-item md-small-size-100 md-size-25">
+                      <md-field>
+                        <label>Quantity</label>
+                        <md-input v-model="item.quantity" type="number"></md-input>
+                      </md-field>
+                    </div>
+                    <div class="md-layout-item md-small-size-100 md-size-25">
+                      <md-button @click="removeItem" class="md-danger md-just-icon md-small-size" style="height: 30px; min-width: 31px; width: 30px;">
+                        <md-icon>close</md-icon>
+                      </md-button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="md-layout-item md-size-100">
+                  <md-button type="button" class="md-success md-round" @click="AddItem">Add variant</md-button>
+                </div>
+                <div class="md-layout-item md-size-100">
+                  <h3>Images Upload</h3>
+                </div>
+                <div class="md-layout-item md-size-100">
                   <div class="md-layout">
                     <image-input-component :isDefault="isDefault1" :defaultImage="defaultImage1"></image-input-component>
                     <image-input-component v-if="imagecount > 1" :isDefault="isDefault2" :defaultImage="defaultImage2"></image-input-component>
@@ -56,7 +97,7 @@
                   </div>
                 </div>
                 <div class="md-layout-item md-size-50 text-left">
-                  <md-button class="md-raised md-success" @click="imgCountFn">Add another image</md-button>
+                  <md-button class="md-success md-round" @click="imgCountFn">Add another image</md-button>
                 </div>
                 <div class="md-layout-item md-size-50 text-right">
                   <md-button class="md-raised md-success">Update Profile</md-button>
@@ -85,7 +126,6 @@ export default {
       tags: [],
       category: null,
       gender: null,
-      availability: [],
       imagecount: 1,
       isDefault1: true,
       isDefault2: true,
@@ -94,7 +134,157 @@ export default {
       defaultImage1: require("@/assets/img/image_placeholder.jpg"),
       defaultImage2: require("@/assets/img/image_placeholder.jpg"),
       defaultImage3: require("@/assets/img/image_placeholder.jpg"),
-      defaultImage4: require("@/assets/img/image_placeholder.jpg")
+      defaultImage4: require("@/assets/img/image_placeholder.jpg"),
+      selectedColor: null,
+      availability: [
+        {
+          color: "",
+          size: "",
+          quantity: 0
+        }
+      ],
+      HTMLColors: [
+        "Pink",
+        "LightPink",
+        "HotPink",
+        "DeepPink",
+        "PaleVioletRed",
+        "MediumVioletRed",
+        "LightSalmon",
+        "Salmon",
+        "DarkSalmon",
+        "LightCoral",
+        "IndianRed",
+        "Crimson",
+        "Firebrick",
+        "DarkRed",
+        "Red",
+        "OrangeRed",
+        "Tomato",
+        "Coral",
+        "DarkOrange",
+        "Orange",
+        "Yellow",
+        "LightYellow",
+        "LemonChiffon",
+        "LightGoldenrodYellow ",
+        "PapayaWhip",
+        "Moccasin",
+        "PeachPuff",
+        "PaleGoldenrod",
+        "Khaki",
+        "DarkKhaki",
+        "Gold",
+        "Cornsilk",
+        "BlanchedAlmond",
+        "Bisque",
+        "NavajoWhite",
+        "Wheat",
+        "Burlywood",
+        "Tan",
+        "RosyBrown",
+        "SandyBrown",
+        "Goldenrod",
+        "DarkGoldenrod",
+        "Peru",
+        "Chocolate",
+        "SaddleBrown",
+        "Sienna",
+        "Brown",
+        "Maroon",
+        "DarkOliveGreen",
+        "Olive",
+        "OliveDrab",
+        "YellowGreen",
+        "LimeGreen",
+        "Lime",
+        "LawnGreen",
+        "Chartreuse",
+        "GreenYellow",
+        "SpringGreen",
+        "MediumSpringGreen ",
+        "LightGreen",
+        "PaleGreen",
+        "DarkSeaGreen",
+        "MediumAquamarine",
+        "MediumSeaGreen",
+        "SeaGreen",
+        "ForestGreen",
+        "Green",
+        "DarkGreen",
+        "Aqua",
+        "Cyan",
+        "LightCyan",
+        "PaleTurquoise",
+        "Aquamarine",
+        "Turquoise",
+        "MediumTurquoise",
+        "DarkTurquoise",
+        "LightSeaGreen",
+        "CadetBlue",
+        "DarkCyan",
+        "Teal",
+        "LightSteelBlue",
+        "PowderBlue",
+        "LightBlue",
+        "SkyBlue",
+        "LightSkyBlue",
+        "DeepSkyBlue",
+        "DodgerBlue",
+        "CornflowerBlue",
+        "SteelBlue",
+        "RoyalBlue",
+        "Blue",
+        "MediumBlue",
+        "DarkBlue",
+        "Navy",
+        "MidnightBlue",
+        "Lavender",
+        "Thistle",
+        "Plum",
+        "Violet",
+        "Orchid",
+        "Fuchsia",
+        "Magenta",
+        "MediumOrchid",
+        "MediumPurple",
+        "BlueViolet",
+        "DarkViolet",
+        "DarkOrchid",
+        "DarkMagenta",
+        "Purple",
+        "Indigo",
+        "DarkSlateBlue",
+        "SlateBlue",
+        "MediumSlateBlue ",
+        "White",
+        "Snow",
+        "Honeydew",
+        "MintCream",
+        "Azure",
+        "AliceBlue",
+        "GhostWhite",
+        "WhiteSmoke",
+        "Seashell",
+        "Beige",
+        "OldLace",
+        "FloralWhite",
+        "Ivory",
+        "AntiqueWhite",
+        "Linen",
+        "LavenderBlush",
+        "MistyRose",
+        "Gainsboro",
+        "LightGray",
+        "Silver",
+        "DarkGray",
+        "Gray",
+        "DimGray",
+        "LightSlateGray",
+        "SlateGray",
+        "DarkSlateGray",
+        "Black"
+      ].sort()
 
       // {
       //   size:null, // select
@@ -111,6 +301,18 @@ export default {
         //raise alert
       }
     },
+    AddItem() {
+      this.availability.push({
+        name: "",
+        quantity: 0,
+        amount: 0,
+        total: 0
+      });
+      console.log(this.availability);
+    },
+    removeItem() {
+      this.availability.splice(this.availability, 1);
+    },
     imageChange(e) {
       e.preventDefault();
       let reader = new FileReader();
@@ -120,7 +322,6 @@ export default {
       };
       this.isDefault = false;
       reader.readAsDataURL(file);
-      console.log(this.defaultImage);
     },
     imageRemove(e) {
       this.defaultImage = require("@/assets/img/image_placeholder.jpg");

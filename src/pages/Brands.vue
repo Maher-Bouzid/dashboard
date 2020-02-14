@@ -50,19 +50,10 @@ export default {
   },
   async beforeMount() {
     let { data } = await axios.get("http://127.0.0.1:3000/api/brand");
-
-    // data.forEach(async brand => {
-    //   let brandId = brand._id;
-    //   let products = await axios.get(`http://127.0.0.1:3000/api/products/brand/${brandId}`);
-    //   brand.products = products.data;
-    //   console.log(brand.products);
-    // });
-
     for (const brand of data) {
       let brandId = brand._id;
       let products = await axios.get(`http://127.0.0.1:3000/api/products/brand/${brandId}`);
       brand.products = products.data;
-      console.log(brand.products);
     }
     this.brands = data;
   }
