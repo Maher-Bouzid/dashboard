@@ -385,7 +385,7 @@ export default {
     addProduct() {
       let productDetails = new FormData();
       productDetails.append("title", this.title);
-      productDetails.append("availibility", this.availibility);
+      productDetails.append("availability", this.availability);
       productDetails.append("description", this.description);
       productDetails.append("price", parseInt(this.price));
       productDetails.append("tags", this.tags);
