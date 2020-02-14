@@ -50,12 +50,12 @@ export default {
   },
   async beforeMount() {
     let { data } = await axios.get(
-      "https://prodigy-rbk.herokuapp.com//api/brand"
+      "https://prodigy-rbk.herokuapp.com/api/brand"
     );
     for (const brand of data) {
       let brandId = brand._id;
       let products = await axios.get(
-        `https://prodigy-rbk.herokuapp.com//api/products/brand/${brandId}`
+        `https://prodigy-rbk.herokuapp.com/api/products/brand/${brandId}`
       );
       brand.products = products.data;
     }

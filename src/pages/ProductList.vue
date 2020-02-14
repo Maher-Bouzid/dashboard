@@ -54,7 +54,7 @@ export default {
   },
   async beforeMount() {
     let { data } = await axios.get(
-      `https://prodigy-rbk.herokuapp.com//api/brand/one`
+      `https://prodigy-rbk.herokuapp.com/api/brand/one`
     );
     this.products = data.products;
     // for (const product of data) {

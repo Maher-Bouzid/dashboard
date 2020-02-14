@@ -396,7 +396,7 @@ export default {
       });
       axios
         .post(
-          "https://prodigy-rbk.herokuapp.com//api/products/product",
+          "https://prodigy-rbk.herokuapp.com/api/products/product",
           productDetails,
           {
             headers: { "X-Requested-With": "XMLHttpRequest" }

@@ -215,7 +215,7 @@ export default {
       registrationInfo.append("image", this.image);
       axios
         .post(
-          "https://prodigy-rbk.herokuapp.com//api/brand/signUp",
+          "https://prodigy-rbk.herokuapp.com/api/brand/signUp",
           registrationInfo,
           {
             headers: { "X-Requested-With": "XMLHttpRequest" }
