@@ -1,9 +1,7 @@
 <template>
   <div class="content">
     <div class="md-layout">
-      <div
-        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33"
-      >
+      <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33">
         <chart-card
           :chart-data="dailySalesChart.data"
           :chart-options="dailySalesChart.options"
@@ -13,8 +11,8 @@
           <template slot="content">
             <h4 class="title">Daily Sales</h4>
             <p class="category">
-              <span class="text-success"
-                ><i class="fas fa-long-arrow-alt-up"></i> 55%
+              <span class="text-success">
+                <i class="fas fa-long-arrow-alt-up"></i> 55%
               </span>
               increase in today sales.
             </p>
@@ -22,15 +20,12 @@
 
           <template slot="footer">
             <div class="stats">
-              <md-icon>access_time</md-icon>
-              updated 4 minutes ago
+              <md-icon>access_time</md-icon>updated 4 minutes ago
             </div>
           </template>
         </chart-card>
       </div>
-      <div
-        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33"
-      >
+      <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33">
         <chart-card
           :chart-data="emailsSubscriptionChart.data"
           :chart-options="emailsSubscriptionChart.options"
@@ -40,22 +35,17 @@
         >
           <template slot="content">
             <h4 class="title">Email Subscription</h4>
-            <p class="category">
-              Last Campaign Performance
-            </p>
+            <p class="category">Last Campaign Performance</p>
           </template>
 
           <template slot="footer">
             <div class="stats">
-              <md-icon>access_time</md-icon>
-              updated 10 days ago
+              <md-icon>access_time</md-icon>updated 10 days ago
             </div>
           </template>
         </chart-card>
       </div>
-      <div
-        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33"
-      >
+      <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33">
         <chart-card
           :chart-data="dataCompletedTasksChart.data"
           :chart-options="dataCompletedTasksChart.options"
@@ -64,22 +54,17 @@
         >
           <template slot="content">
             <h4 class="title">Completed Tasks</h4>
-            <p class="category">
-              Last Campaign Performance
-            </p>
+            <p class="category">Last Campaign Performance</p>
           </template>
 
           <template slot="footer">
             <div class="stats">
-              <md-icon>access_time</md-icon>
-              campaign sent 26 minutes ago
+              <md-icon>access_time</md-icon>campaign sent 26 minutes ago
             </div>
           </template>
         </chart-card>
       </div>
-      <div
-        class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25"
-      >
+      <div class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25">
         <stats-card data-background-color="green">
           <template slot="header">
             <md-icon>store</md-icon>
@@ -87,31 +72,25 @@
 
           <template slot="content">
             <p class="category">Revenue</p>
-            <h3 class="title">$34,245</h3>
+            <h3 class="title">${{revenue}}</h3>
           </template>
 
           <template slot="footer">
             <div class="stats">
-              <md-icon>date_range</md-icon>
-              Last 24 Hours
+              <md-icon>date_range</md-icon>Last 24 Hours
             </div>
           </template>
         </stats-card>
       </div>
-      <div
-        class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25"
-      >
+      <div class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25">
         <stats-card data-background-color="orange">
           <template slot="header">
             <md-icon>content_copy</md-icon>
           </template>
 
           <template slot="content">
-            <p class="category">Used Space</p>
-            <h3 class="title">
-              49/50
-              <small>GB</small>
-            </h3>
+            <p class="category">Number Of Orders</p>
+            <h3 class="title">{{numberOfOrders}}</h3>
           </template>
 
           <template slot="footer">
@@ -122,82 +101,61 @@
           </template>
         </stats-card>
       </div>
-      <div
-        class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25"
-      >
+      <div class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25">
         <stats-card data-background-color="red">
           <template slot="header">
             <md-icon>info_outline</md-icon>
           </template>
 
           <template slot="content">
-            <p class="category">Fixed Issues</p>
-            <h3 class="title">75</h3>
+            <p class="category">New Users</p>
+            <h3 class="title">+{{numberOfNewUsers}}</h3>
           </template>
 
           <template slot="footer">
             <div class="stats">
-              <md-icon>local_offer</md-icon>
-              Tracked from Github
+              <md-icon>local_offer</md-icon>In The Last Month
             </div>
           </template>
         </stats-card>
       </div>
-      <div
-        class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25"
-      >
+      <div class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25">
         <stats-card data-background-color="blue">
           <template slot="header">
             <i class="fab fa-twitter"></i>
           </template>
 
           <template slot="content">
-            <p class="category">Folowers</p>
-            <h3 class="title">+245</h3>
+            <p class="category">Users</p>
+            <h3 class="title">{{numberOfUsers}}</h3>
           </template>
 
           <template slot="footer">
             <div class="stats">
-              <md-icon>update</md-icon>
-              Just Updated
+              <md-icon>update</md-icon>Over All
             </div>
           </template>
         </stats-card>
       </div>
-      <div
-        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-50"
-      >
+      <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-50">
         <md-card>
-          <md-card-header data-background-color="orange">
-            <h4 class="title">Employees Stats</h4>
-            <p class="category">New employees on 15th September, 2016</p>
+          <md-card-header data-background-color="red">
+            <h4 class="title">Best Sold Products</h4>
           </md-card-header>
           <md-card-content>
-            <ordered-table table-header-color="orange"></ordered-table>
+            <ordered-table table-header-color="red" :products="bestSales"></ordered-table>
           </md-card-content>
         </md-card>
       </div>
-      <div
-        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-50"
-      >
-        <nav-tabs-card>
-          <template slot="content">
-            <span class="md-nav-tabs-title">Tasks:</span>
-            <md-tabs class="md-success" md-alignment="left">
-              <md-tab id="tab-home" md-label="Bugs" md-icon="bug_report">
-                <nav-tabs-table></nav-tabs-table>
-              </md-tab>
-
-              <md-tab id="tab-pages" md-label="Website" md-icon="code">
-                <nav-tabs-table></nav-tabs-table>
-              </md-tab>
-
-              <md-tab id="tab-posts" md-label="server" md-icon="cloud">
-                <nav-tabs-table></nav-tabs-table>
-              </md-tab>
-            </md-tabs>
-          </template>
-        </nav-tabs-card>
+      <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-50">
+        <md-card>
+          <md-card-header data-background-color="green">
+            <h4 class="title">Most 10 Rated Products</h4>
+          </md-card-header>
+          <md-card-content>
+            <OrderedTableForRanking table-header-color="green" :products="mostRated"></OrderedTableForRanking>
+          </md-card-content>
+        </md-card>
       </div>
     </div>
   </div>
@@ -207,17 +165,16 @@
 import {
   StatsCard,
   ChartCard,
-  NavTabsCard,
-  NavTabsTable,
-  OrderedTable
+  OrderedTable,
+  OrderedTableForRanking
 } from "@/components";
+import axios from "axios";
 
 export default {
   components: {
     StatsCard,
     ChartCard,
-    NavTabsCard,
-    NavTabsTable,
+    OrderedTableForRanking,
     OrderedTable
   },
   data() {
@@ -305,8 +262,57 @@ export default {
             }
           ]
         ]
-      }
+      },
+      revenue: 0,
+      bestSales: null,
+      numberOfOrders: 0,
+      numberOfUsers: 0,
+      numberOfNewUsers: 0,
+      mostRated: null
     };
+  },
+  methods: {
+    getRevenue() {
+      return axios
+        .get("http://127.0.0.1:3000/api/orders/revenue")
+        .then(({ data }) => (this.revenue = data));
+    },
+    getBestSales() {
+      return axios
+        .get("http://127.0.0.1:3000/api/orders/bestSales")
+        .then(({ data }) => (this.bestSales = data));
+    },
+    getNumberOfOrders() {
+      return axios
+        .get("http://127.0.0.1:3000/api/orders/numberOfOrders")
+        .then(({ data }) => (this.numberOfOrders = data));
+    },
+    getNumberOfUsers() {
+      return axios
+        .get("http://127.0.0.1:3000/api/user/numberOfUser")
+        .then(({ data }) => (this.numberOfUsers = data));
+    },
+    getNumberOfNewUsers() {
+      return axios
+        .get("http://127.0.0.1:3000/api/user/numberOfNewUser/30")
+        .then(({ data }) => (this.numberOfNewUsers = data));
+    },
+    getMostRatedProducts() {
+      return axios
+        .get("http://127.0.0.1:3000/api/products/mostRated")
+        .then(({ data }) => (this.mostRated = data));
+    }
+  },
+  async beforeMount() {
+    await Promise.all([
+      this.getRevenue(),
+      this.getBestSales(),
+      this.getNumberOfOrders(),
+      this.getNumberOfUsers(),
+      this.getMostRatedProducts(),
+      this.getNumberOfNewUsers()
+    ]);
+    console.log(this.mostRated);
   }
 };
 </script>

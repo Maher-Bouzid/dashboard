@@ -215,8 +215,8 @@ export default {
       registrationInfo.append("image", this.image);
       axios
         .post(
-          "https://prodigy-rbk.herokuapp.com/api/brand/signUp",
-          // "http://127.0.0.1:3000/api/brand/signUp",
+          // "https://prodigy-rbk.herokuapp.com/api/brand/signUp",
+          "http://127.0.0.1:3000/api/brand/signUp",
           registrationInfo,
           {
             headers: { "X-Requested-With": "XMLHttpRequest" }
@@ -232,7 +232,7 @@ export default {
             this.wrongUsernameNotif = true;
           }
         })
-        .catch(function(error) {});
+        .catch(err => console.log(err.response));
     },
     getValidationClass(fieldName) {
       const field = this.$v[fieldName];
