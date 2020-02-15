@@ -52,13 +52,6 @@ export default {
     let { data } = await axios.get(
       "https://prodigy-rbk.herokuapp.com/api/brand"
     );
-    for (const brand of data) {
-      let brandId = brand._id;
-      let products = await axios.get(
-        `https://prodigy-rbk.herokuapp.com/api/products/brand/${brandId}`
-      );
-      brand.products = products.data;
-    }
     this.brands = data;
   }
 };
