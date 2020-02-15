@@ -396,7 +396,7 @@ export default {
       });
       axios
         .post(
-          "http://127.0.0.1:3000/api/products/product",
+          "https://prodigy-rbk.herokuapp.com/api/products/product",
           // "https://prodigy-rbk.herokuapp.com/api/products/product",
           productDetails,
           {
