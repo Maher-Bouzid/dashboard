@@ -131,15 +131,13 @@ export default {
     submit: function(e) {
       this.sending = false;
       axios
-        .post("http://localhost:3000/api/brand/signIn", {
+        .post("https://prodigy-rbk.herokuapp.com/api/brand/signIn", {
           email: this.email,
           password: this.password
         })
         .then(response => {
           // start correcting here
-          console.log(response);
           if (response.data.status === "success") {
-            console.log("success");
             this.UPDATE_LOGIN(true);
             router.push({ path: "/" });
             // Until here
@@ -149,9 +147,7 @@ export default {
             this.wrongUsernameNotif = true;
           }
         })
-        .catch(function(error) {
-          console.log(error);
-        });
+        .catch(function(error) {});
     },
     getValidationClass(fieldName) {
       const field = this.$v[fieldName];
