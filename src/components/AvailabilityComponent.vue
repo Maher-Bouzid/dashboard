@@ -55,7 +55,6 @@ export default {
         amount: 0,
         total: 0
       });
-      console.log(this.availability);
     },
     removeItem() {
       this.availability.splice(this.availability, 1);
