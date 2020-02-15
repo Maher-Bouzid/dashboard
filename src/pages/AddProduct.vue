@@ -383,7 +383,7 @@ export default {
     addProduct() {
       let productDetails = new FormData();
       productDetails.append("title", this.title);
-      productDetails.append("availability", this.availability);
+      productDetails.append("availability", JSON.stringify(this.availability));
       productDetails.append("description", this.description);
       productDetails.append("price", parseInt(this.price));
       productDetails.append("tags", this.tags);
@@ -396,13 +396,15 @@ export default {
       });
       axios
         .post(
-          "https://prodigy-rbk.herokuapp.com/api/products/product",
+          "http://127.0.0.1:3000/api/products/product",
+          // "https://prodigy-rbk.herokuapp.com/api/products/product",
           productDetails,
           {
             headers: { "X-Requested-With": "XMLHttpRequest" }
           }
         )
-        .then(() => {
+        .then(product => {
+          console.log(product);
           //notification
         });
     }
