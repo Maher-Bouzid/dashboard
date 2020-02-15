@@ -143,7 +143,7 @@
             <h4 class="title">Best Sold Products</h4>
           </md-card-header>
           <md-card-content>
-            <ordered-table table-header-color="red" :products="bestSales"></ordered-table>
+            <OrderedTableForSales table-header-color="red" :products="bestSales"></OrderedTableForSales>
           </md-card-content>
         </md-card>
       </div>
@@ -165,7 +165,7 @@
 import {
   StatsCard,
   ChartCard,
-  OrderedTable,
+  OrderedTableForSales,
   OrderedTableForRanking
 } from "@/components";
 import axios from "axios";
@@ -175,7 +175,7 @@ export default {
     StatsCard,
     ChartCard,
     OrderedTableForRanking,
-    OrderedTable
+    OrderedTableForSales
   },
   data() {
     return {
