@@ -5,7 +5,7 @@
         <md-table-cell md-label="ID">{{ item._id }}</md-table-cell>
         <md-table-cell md-label="Prodct Name">{{ item.title }}</md-table-cell>
         <md-table-cell md-label="Brand">{{ item.brand.name }}</md-table-cell>
-        <md-table-cell md-label="Rating">{{ item.rating.toFixed(2) }}</md-table-cell>
+        <md-table-cell md-label="Sold Quantity">{{ item.rating.toFixed(2) }}</md-table-cell>
         <md-table-cell md-label="Revenue Generated">${{ item.price }}</md-table-cell>
       </md-table-row>
     </md-table>
