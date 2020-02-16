@@ -33,9 +33,7 @@ export default {
     }
   },
   watch: {
-    mostRated: function() {
-      console.log(this.mostRated);
-    }
+    mostRated: function() {}
   }
 };
 </script>
