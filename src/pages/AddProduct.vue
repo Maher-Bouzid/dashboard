@@ -398,6 +398,7 @@ export default {
         .post(
           "http://127.0.0.1:3000/api/products/product",
           // "http://localhost:3000/api/products/product",
+          // "https://prodigy-rbk.herokuapp.com/api/products/product",
           productDetails,
           {
             headers: { "X-Requested-With": "XMLHttpRequest" }

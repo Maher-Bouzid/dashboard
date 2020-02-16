@@ -227,7 +227,7 @@ export default {
             this.wrongUsernameNotif = true;
           }
         })
-        .catch(function(error) {});
+        .catch(err => console.log(err.response));
     },
     getValidationClass(fieldName) {
       const field = this.$v[fieldName];
