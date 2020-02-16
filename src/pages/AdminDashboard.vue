@@ -7,14 +7,23 @@
           :chart-options="dailySalesChart.options"
           :chart-type="'Line'"
           data-background-color="blue"
+          :key="reRender"
         >
           <template slot="content">
             <h4 class="title">Daily Sales</h4>
-            <p class="category">
+            <p class="category" v-if="increase >0">
               <span class="text-success">
-                <i class="fas fa-long-arrow-alt-up"></i> 55%
+                <i class="fas fa-long-arrow-alt-up"></i>
+                {{increase}}%
               </span>
               increase in today sales.
+            </p>
+            <p class="category" v-else>
+              <span class="text-danger">
+                <i class="fas fa-long-arrow-alt-down"></i>
+                {{increase}}%
+              </span>
+              decrease in today sales.
             </p>
           </template>
 
@@ -95,8 +104,7 @@
 
           <template slot="footer">
             <div class="stats">
-              <md-icon class="text-danger">warning</md-icon>
-              <a href="#pablo">Get More Space...</a>
+              <md-icon>update</md-icon>Over All
             </div>
           </template>
         </stats-card>
@@ -114,7 +122,7 @@
 
           <template slot="footer">
             <div class="stats">
-              <md-icon>local_offer</md-icon>In The Last Month
+              <md-icon>date_range</md-icon>In The Last Month
             </div>
           </template>
         </stats-card>
@@ -181,8 +189,8 @@ export default {
     return {
       dailySalesChart: {
         data: {
-          labels: ["M", "T", "W", "T", "F", "S", "S"],
-          series: [[12, 17, 7, 17, 23, 18, 38]]
+          labels: ["J-6", "J-5", "J-4", "J-3", "J-2", "J-1", "J0"],
+          series: [[0, 0, 0, 0, 0, 0, 0]]
         },
         options: {
           lineSmooth: this.$Chartist.Interpolation.cardinal({
@@ -263,12 +271,16 @@ export default {
           ]
         ]
       },
+      increase: 0,
+      reRender: 0,
       revenue: 0,
       bestSales: null,
       numberOfOrders: 0,
       numberOfUsers: 0,
       numberOfNewUsers: 0,
-      mostRated: null
+      mostRated: null,
+      dailyRevenue: null,
+      bestSalesByBrand: null
     };
   },
   methods: {
@@ -301,6 +313,43 @@ export default {
       return axios
         .get("http://127.0.0.1:3000/api/products/mostRated")
         .then(({ data }) => (this.mostRated = data));
+    },
+    getDailyRevenue() {
+      return axios
+        .get("http://127.0.0.1:3000/api/orders/revenueDaily")
+        .then(({ data }) => (this.dailyRevenue = data));
+    },
+    getBestSalesByBrand() {
+      return axios
+        .get("http://127.0.0.1:3000/api/orders/bestSalesByBrand")
+        .then(({ data }) => (this.bestSalesByBrand = data));
+    },
+    createRevenueCart(array) {
+      const series = [[]];
+
+      let date = new Date().getDate();
+      let i = 0;
+      while (i < array.length) {
+        let day = parseInt(array[i]._id.slice(8));
+        if (day === date) {
+          series[0].unshift(array[i].amount);
+          if (this.dailySalesChart.options.high < array[i].amount) {
+            this.dailySalesChart.options.high = array[i].amount;
+          }
+          i++;
+        } else {
+          data.series[0].unshift(0);
+          i--;
+        }
+        date--;
+      }
+      this.increase = (
+        ((series[0][series[0].length - 1] - series[0][series[0].length - 2]) /
+          series[0][series[0].length - 2]) *
+        100
+      ).toFixed(2);
+      this.dailySalesChart.data.series = series;
+      this.reRender += 1;
     }
   },
   async beforeMount() {
@@ -310,9 +359,20 @@ export default {
       this.getNumberOfOrders(),
       this.getNumberOfUsers(),
       this.getMostRatedProducts(),
-      this.getNumberOfNewUsers()
+      this.getNumberOfNewUsers(),
+      this.getDailyRevenue(),
+      this.getBestSalesByBrand()
     ]);
-    console.log(this.mostRated);
+    console.log({
+      dailyRevenue: this.dailyRevenue,
+      bestSalesByBrand: this.bestSalesByBrand
+    });
+    this.createRevenueCart(this.dailyRevenue);
+  },
+  watch: {
+    "dailySalesChart.data": function() {
+      console.log(this.dailySalesChart.data);
+    }
   }
 };
 </script>
