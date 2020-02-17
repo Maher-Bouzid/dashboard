@@ -416,19 +416,17 @@ export default {
             productDetails.append("images", image.value);
           }
         });
-        console.log(productDetails);
-        // axios
-        //   .post(
-        //     "https://prodigy-rbk.herokuapp.com/api/products/product",
-        //     productDetails,
-        //     {
-        //       headers: { "X-Requested-With": "XMLHttpRequest" }
-        //     }
-        //   )
-        //   .then(product => {
-        //     console.log(product);
-        //     //notification
-        //   });
+        axios
+          .post(
+            "https://prodigy-rbk.herokuapp.com/api/products/product",
+            productDetails,
+            {
+              headers: { "X-Requested-With": "XMLHttpRequest" }
+            }
+          )
+          .then(product => {
+            console.log(product);
+          });
       }
     }
   }
