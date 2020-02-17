@@ -24,7 +24,7 @@ export default new Vuex.Store({
   actions: {
     VERIFY_TOKEN: async function(state) {
       axios
-        .get("https://prodigy-rbk.herokuapp.com/api/brand/verifytoken")
+        .get("http://localhost:3000/api/brand/verifytoken")
         .then(res => {
           this.commit("UPDATE_LOGIN", true);
         })

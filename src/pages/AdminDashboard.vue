@@ -321,12 +321,10 @@ export default {
     },
     createRevenueCart(array) {
       const series = [[]];
-
       let date = new Date().getDate();
       let i = 0;
 
       while (series[0].length < 7) {
-        console.log(series.length);
         let day = parseInt(array[i]._id.slice(8));
         if (day === date) {
           series[0].unshift(array[i].amount);
@@ -349,7 +347,6 @@ export default {
       this.reRender += 1;
     },
     createGenderSalesGraph(array) {
-      console.log(array);
       if (array[0]._id === "Women") {
         this.GenderSalesGraph.data.series[0][0] = array[0].products.length;
         this.GenderRevenueGraph.data.series[0][0] = array[0].amount;
@@ -361,10 +358,8 @@ export default {
         this.GenderSalesGraph.data.series[0][1] = array[0].products.length;
         this.GenderRevenueGraph.data.series[0][1] = array[0].amount;
       }
-      this.GenderRevenueGraph.options.high = 30000;
-      // this.GenderRevenueGraph.options.high = array[0].amount + 500;
-      this.GenderSalesGraph.options.high = 3000;
-      // this.GenderSalesGraph.options.high = array[0].products.length + 10;
+      this.GenderRevenueGraph.options.high = array[0].amount + 500;
+      this.GenderSalesGraph.options.high = array[0].products.length + 10;
       this.reRender += 1;
 
       // const productsSold = array[0].products.length + array[1].products.length;
@@ -383,6 +378,7 @@ export default {
       this.getBestSalesByBrand()
     ]);
     this.createRevenueCart(this.dailyRevenue);
+
     this.createGenderSalesGraph(this.salesByGender);
   },
   watch: {

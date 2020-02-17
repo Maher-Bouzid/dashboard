@@ -127,7 +127,7 @@ export default {
       Object.values(this.colors).forEach(async color => {
         await color.forEach(async availability => {
           await axios.put(
-            `https://prodigy-rbk.herokuapp.com/api/products/${this.productId}/availability`,
+            `http://localhost:3000/api/products/${this.productId}/availability`,
             availability
           );
         });
@@ -137,7 +137,7 @@ export default {
   async beforeMount() {
     this.productId = window.location.pathname.slice(10);
     let { data } = await axios.get(
-      `https://prodigy-rbk.herokuapp.com/api/products/${this.productId}`
+      `http://localhost:3000/api/products/${this.productId}`
     );
 
     data.availability.map(elem => {
