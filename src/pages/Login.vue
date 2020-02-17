@@ -137,9 +137,7 @@ export default {
         })
         .then(response => {
           // start correcting here
-          console.log(response);
           if (response.data.status === "success") {
-            console.log("success");
             this.UPDATE_LOGIN(true);
             router.push({ path: "/" });
             // Until here
@@ -149,9 +147,7 @@ export default {
             this.wrongUsernameNotif = true;
           }
         })
-        .catch(function(error) {
-          console.log(error);
-        });
+        .catch(function(error) {});
     },
     getValidationClass(fieldName) {
       const field = this.$v[fieldName];
