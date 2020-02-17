@@ -12,9 +12,9 @@
               <md-table v-model="brands" table-header-color="green">
                 <md-table-row slot="md-table-row" slot-scope="{ item }">
                   <md-table-cell md-label="Brand">{{ item.name }}</md-table-cell>
-                  <md-table-cell md-label="Since"
-                    ><span>{{ item.creationDate | moment("MMMM Do, YYYY") }}</span></md-table-cell
-                  >
+                  <md-table-cell md-label="Since">
+                    <span>{{ item.creationDate | moment("MMMM Do, YYYY") }}</span>
+                  </md-table-cell>
                   <md-table-cell md-label="Products">{{ item.products.length }}</md-table-cell>
                   <md-table-cell md-label="Salary">{{ item.salary }}</md-table-cell>
                   <md-table-cell class="text-center" md-label="Actions">
@@ -49,21 +49,7 @@ export default {
     };
   },
   async beforeMount() {
-    let { data } = await axios.get("http://127.0.0.1:3000/api/brand");
-
-    // data.forEach(async brand => {
-    //   let brandId = brand._id;
-    //   let products = await axios.get(`http://127.0.0.1:3000/api/products/brand/${brandId}`);
-    //   brand.products = products.data;
-    //   console.log(brand.products);
-    // });
-
-    for (const brand of data) {
-      let brandId = brand._id;
-      let products = await axios.get(`http://127.0.0.1:3000/api/products/brand/${brandId}`);
-      brand.products = products.data;
-      console.log(brand.products);
-    }
+    let { data } = await axios.get(" http://localhost:3000/api/brand");
     this.brands = data;
   }
 };

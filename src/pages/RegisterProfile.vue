@@ -6,16 +6,15 @@
         filter-color="black"
         style="background-image: url(https://images.unsplash.com/photo-1495105787522-5334e3ffa0ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80); background-size: cover; background-position: top center;"
       >
-        <!--   you can change the color of the filter page using: data-color="blue | purple | green | orange | red | rose " -->
         <div class="container" style="max-width:1600px;">
           <div class="row">
             <div class="col-lg-4 col-md-6 col-sm-8 ml-auto mr-auto">
-              <div class="card card-login card-hidden">
+              <!-- <div class="card card-login card-hidden">
                 <div class="card-header card-header-rose text-center" style="padding: 20px">
                   <h4 class="card-title">Login</h4>
                 </div>
-                <div class="card-body" style="padding: 0px 30px 0px 30px;">
-                  <md-field class="md-form-group" :class="getValidationClass('email')">
+              <div class="card-body" style="padding: 0px 30px 0px 30px;">-->
+              <!-- <md-field class="md-form-group" :class="getValidationClass('email')">
                     <md-icon>email</md-icon>
                     <label for="email">Email...</label>
                     <md-input name="email" id="email" v-model="email" type="email"></md-input>
@@ -27,20 +26,85 @@
                     <label for="password">Password...</label>
                     <md-input name="password" id="password" v-model="password" type="password"></md-input>
                     <span class="md-error" v-if="!$v.password.required">Password is required</span>
-                    <span
-                      class="md-error"
-                      v-else-if="!$v.password.minlength"
-                    >Your password should have a minimum of 8 characters</span>
-                  </md-field>
-                </div>
-                <div
-                  class="card-footer justify-content-center"
-                  style="display: flex; flex-direction: column-reverse;"
-                >
-                  <md-progress-bar style="width: 100%" md-mode="indeterminate" v-if="sending" />
-                  <md-button @click="validateUser" class="md-simple md-success md-lg">Log In</md-button>
-                </div>
-              </div>
+                    <span class="md-error" v-else-if="!$v.password.minlength">Your password should have a minimum of 8 characters</span>
+              </md-field>-->
+              <form>
+                <md-card>
+                  <md-card-header data-background-color="green">
+                    <h4 class="title">Welcome</h4>
+                    <p class="category">Please complete your profile</p>
+                  </md-card-header>
+
+                  <md-card-content>
+                    <div class="md-layout">
+                      <md-field class="md-form-group" :class="getValidationClass('brandName')">
+                        <md-icon>star</md-icon>
+                        <label for="brandName">Brand Name...</label>
+                        <md-input name="brandName" id="brandName" v-model="brandName" type="text"></md-input>
+                        <span class="md-error" v-if="!$v.brandName.required">Name is required</span>
+                      </md-field>
+                      <md-field class="md-form-group" :class="getValidationClass('email')">
+                        <md-icon>email</md-icon>
+                        <label for="email">Email...</label>
+                        <md-input name="email" id="email" v-model="email" type="email"></md-input>
+                        <span class="md-error" v-if="!$v.email.required">Email is required</span>
+                        <span class="md-error" v-else-if="!$v.email.email">Invalid email</span>
+                      </md-field>
+                      <md-field class="md-form-group" :class="getValidationClass('password')">
+                        <md-icon>lock_outline</md-icon>
+                        <label for="password">Password...</label>
+                        <md-input name="password" id="password" v-model="password" type="password"></md-input>
+                        <span class="md-error" v-if="!$v.password.required">Password is required</span>
+                        <span
+                          class="md-error"
+                          v-else-if="!$v.password.minlength"
+                        >Your password should have a minimum of 8 characters</span>
+                      </md-field>
+                      <md-field class="md-form-group" :class="getValidationClass('tmpImg')">
+                        <md-icon>image</md-icon>
+                        <label for="tmpImg">Temporary Brand Image...</label>
+                        <md-input name="tmpImg" id="tmpImg" v-model="tmpImg" type="text"></md-input>
+                      </md-field>
+                      <div class="col-md-12 text-center">
+                        <div class="fileinput fileinput-new text-center" data-provides="fileinput">
+                          <div class="fileinput-new thumbnail">
+                            <img :src="defaultImage" alt="..." />
+                          </div>
+                          <div class="fileinput-preview fileinput-exists thumbnail"></div>
+                          <div>
+                            <span class="btn btn-rose btn-round btn-file">
+                              <span v-if="isDefault" class="fileinput-new">Select image</span>
+                              <span v-else class="fileinput-new">Change</span>
+                              <input type="file" name="..." @change="imageChange" id="image" />
+                            </span>
+                            <span
+                              v-if="!isDefault"
+                              @click="imageRemove"
+                              class="btn btn-danger btn-round btn-file"
+                            >
+                              <span class="fileinput-new">
+                                <i class="fa fa-times"></i> Remove
+                              </span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div
+                        class="md-layout-item md-size-100 text-right"
+                        style="display: flex; flex-direction: column-reverse;"
+                      >
+                        <md-progress-bar
+                          style="width: 100%"
+                          md-mode="indeterminate"
+                          v-if="sending"
+                        />
+                        <md-button @click="validateUser" class="md-raised md-success">Update Profile</md-button>
+                      </div>
+                    </div>
+                  </md-card-content>
+                </md-card>
+              </form>
             </div>
           </div>
         </div>
@@ -102,6 +166,9 @@ import {
   minLength,
   maxLength
 } from "vuelidate/lib/validators";
+
+import { EditProfileForm } from "@/pages";
+
 export default {
   bodyClass: "login-page",
   mixins: [validationMixin],
@@ -111,8 +178,13 @@ export default {
       wrongUsernameNotif: false,
       wrongPasswordNotif: false,
       sending: false,
+      brandName: null,
       email: null,
-      password: null
+      password: null,
+      image: null,
+      isDefault: true,
+      tmpImg: null,
+      defaultImage: require("@/assets/img/image_placeholder.jpg")
     };
   },
   validations: {
@@ -120,34 +192,42 @@ export default {
       required,
       email
     },
+    brandName: {
+      required
+    },
     password: {
       required,
       minLength: minLength(8)
+    },
+    defaultImage: {
+      required
     }
   },
   methods: {
     ...mapGetters(["auth"]),
     ...mapMutations(["UPDATE_LOGIN", "UPDATE_ACTIVATE"]),
-    submit: function(e) {
+    submit: async function(e) {
       this.sending = false;
+      let registrationInfo = new FormData();
+      registrationInfo.append("email", this.email);
+      registrationInfo.append("name", this.brandName);
+      registrationInfo.append("password", this.password);
+      registrationInfo.append("image", this.image);
       axios
-        .post("http://localhost:3000/api/brand/signIn", {
-          email: this.email,
-          password: this.password
+        .post("http://localhost:3000/api/brand/signUp", registrationInfo, {
+          headers: { "X-Requested-With": "XMLHttpRequest" }
         })
         .then(response => {
-          // start correcting here
           if (response.data.status === "success") {
             this.UPDATE_LOGIN(true);
             router.push({ path: "/" });
-            // Until here
           } else if (response.data.status === "wrong password") {
             this.wrongPasswordNotif = true;
           } else {
             this.wrongUsernameNotif = true;
           }
         })
-        .catch(function(error) {});
+        .catch(err => console.log(err.response));
     },
     getValidationClass(fieldName) {
       const field = this.$v[fieldName];
@@ -160,16 +240,29 @@ export default {
     },
     validateUser() {
       this.$v.$touch();
-
       if (!this.$v.$invalid) {
         this.sending = true;
-        window.setTimeout(() => {
-          this.submit();
-        }, 1500);
+
+        this.submit();
       }
     },
     removeNotify(notifyClass) {
       this[notifyClass] = false;
+    },
+    imageChange(e) {
+      e.preventDefault();
+      this.image = e.target.files[0];
+      let reader = new FileReader();
+      let file = e.target.files[0];
+      reader.onloadend = () => {
+        this.defaultImage = reader.result;
+      };
+      this.isDefault = false;
+      reader.readAsDataURL(file);
+    },
+    imageRemove(e) {
+      this.defaultImage = require("@/assets/img/image_placeholder.jpg");
+      this.isDefault = true;
     }
   }
 };
@@ -907,6 +1000,14 @@ h4,
   box-shadow: none;
 }
 
+.btn.btn-danger {
+  color: #fff;
+  background-color: #f44336;
+  border-color: #f44336;
+  box-shadow: 0 2px 2px 0 rgba(244, 67, 54, 0.14),
+    0 3px 1px -2px rgba(244, 67, 54, 0.2), 0 1px 5px 0 rgba(244, 67, 54, 0.12);
+}
+
 .btn,
 .btn.btn-default {
   color: #fff;
@@ -1439,5 +1540,96 @@ a {
   margin-top: 10px;
   margin-bottom: 10px;
   font-weight: 700;
+}
+
+img {
+  vertical-align: middle;
+  border-style: none;
+}
+
+::-webkit-file-upload-button {
+  font: inherit;
+  -webkit-appearance: button;
+}
+
+.btn-file {
+  position: relative;
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+.thumbnail {
+  border: 0 none;
+  border-radius: 4px;
+  padding: 0;
+}
+
+.btn-file > input {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  font-size: 23px;
+  cursor: pointer;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  direction: ltr;
+}
+
+.fileinput {
+  display: inline-block;
+  margin-bottom: 9px;
+}
+
+.fileinput .thumbnail {
+  display: inline-block;
+  margin-bottom: 10px;
+  overflow: hidden;
+  text-align: center;
+  vertical-align: middle;
+  max-width: 250px;
+  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.42),
+    0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
+}
+
+.fileinput .thumbnail > img {
+  max-height: 100%;
+  width: 100%;
+}
+
+.fileinput .btn {
+  vertical-align: middle;
+}
+
+.fileinput-exists .fileinput-new,
+.fileinput-new .fileinput-exists {
+  display: none;
+}
+
+.fileinput .thumbnail.img-circle {
+  border-radius: 50%;
+  max-width: 100px;
+}
+
+.fileinput .thumbnail > img {
+  max-height: 100%;
+  width: 100%;
+}
+
+.fileinput .btn {
+  vertical-align: middle;
+}
+
+.fileinput-exists .fileinput-new,
+.fileinput-new .fileinput-exists {
+  display: none;
+}
+
+.thumbnail {
+  border: 0 none;
+  border-radius: 4px;
+  padding: 0;
 }
 </style>
