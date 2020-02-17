@@ -441,13 +441,18 @@ export default {
     }
   },
   async beforeMount() {
-    await Promise.all([
-      this.getRevenue(),
-      this.getBestSales(),
-      this.getDailyRevenue(),
-      this.getSalesByGender(),
-      this.getMostRatedProducts()
-    ]);
+    try {
+      await Promise.all([
+        this.getRevenue(),
+        this.getBestSales(),
+        this.getDailyRevenue(),
+        this.getSalesByGender(),
+        this.getMostRatedProducts()
+      ]);
+    } catch (err) {
+      console.log(err);
+    }
+    console.log("hu");
     console.log("--------------------", this.mostRated);
     this.createRevenueCart(this.dailyRevenue);
     this.createGenderSalesGraph(this.salesByGender);
