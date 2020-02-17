@@ -131,7 +131,7 @@ export default {
     submit: function(e) {
       this.sending = false;
       axios
-        .post("https://prodigy-rbk.herokuapp.com/api/brand/signIn", {
+        .post("http://localhost:3000/api/brand/signIn", {
           email: this.email,
           password: this.password
         })

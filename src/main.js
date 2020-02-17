@@ -49,7 +49,7 @@ Vue.use(require("vue-moment"));
 
 //interceptors
 axios.interceptors.request.use(
-  request => {
+  function(request) {
     if (localStorage.getItem("x-token")) {
       request.headers["x-token"] = localStorage.getItem("x-token");
     }

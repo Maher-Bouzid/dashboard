@@ -222,24 +222,21 @@ export default {
             quantity: variant[1]
           });
         });
+        this.product.availability = tmp;
+        console.log(this.product);
       });
-      this.product.availability = tmp;
-      console.log(this.product);
+    },
+    updateProduct() {
+      Object.values(this.colors).forEach(async color => {
+        await color.forEach(async availability => {
+          await axios.put(`http://localhost:3000/api/products/${this.productId}/availability`, availability);
+        });
+      });
     }
-    // updateProduct() {
-    //   Object.values(this.colors).forEach(async color => {
-    //     await color.forEach(async availability => {
-    //       await axios.put(
-    //         `https://prodigy-rbk.herokuapp.com/api/products/${this.productId}/availability`,
-    //         availability
-    //       );
-    //     });
-    //   });
-    // }
   },
   async beforeMount() {
     this.productId = window.location.pathname.slice(10);
-    let { data } = await axios.get(`https://prodigy-rbk.herokuapp.com/api/products/${this.productId}`);
+    let { data } = await axios.get(`http://localhost:3000/api/products/${this.productId}`);
 
     data.availability.map(elem => {
       !!this.colors[elem.color] ? this.colors[elem.color].push(elem) : (this.colors[elem.color] = [elem]);

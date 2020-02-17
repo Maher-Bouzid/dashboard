@@ -214,14 +214,9 @@ export default {
       registrationInfo.append("password", this.password);
       registrationInfo.append("image", this.image);
       axios
-        .post(
-          // "https://prodigy-rbk.herokuapp.com/api/brand/signUp",
-          "http://127.0.0.1:3000/api/brand/signUp",
-          registrationInfo,
-          {
-            headers: { "X-Requested-With": "XMLHttpRequest" }
-          }
-        )
+        .post("http://localhost:3000/api/brand/signUp", registrationInfo, {
+          headers: { "X-Requested-With": "XMLHttpRequest" }
+        })
         .then(response => {
           if (response.data.status === "success") {
             this.UPDATE_LOGIN(true);

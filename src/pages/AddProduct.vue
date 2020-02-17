@@ -498,22 +498,19 @@ export default {
             productDetails.append("images", image.value);
           }
         });
-        for (var pair of productDetails.entries()) {
-          console.log(pair[0] + ", " + pair[1]);
-        }
-        // axios
-        //   .post(
-        //     "https://prodigy-rbk.herokuapp.com/api/products/product",
-        //     // "https://prodigy-rbk.herokuapp.com/api/products/product",
-        //     productDetails,
-        //     {
-        //       headers: { "X-Requested-With": "XMLHttpRequest" }
-        //     }
-        //   )
-        //   .then(product => {
-        //     console.log(product);
-        //     //notification
-        //   });
+        axios
+          .post(
+            "https://prodigy-rbk.herokuapp.com/api/products/product",
+            // "https://prodigy-rbk.herokuapp.com/api/products/product",
+            productDetails,
+            {
+              headers: { "X-Requested-With": "XMLHttpRequest" }
+            }
+          )
+          .then(product => {
+            console.log(product);
+            //notification
+          });
       }
     }
   }

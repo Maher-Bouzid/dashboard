@@ -321,11 +321,13 @@ export default {
     },
     createRevenueCart(array) {
       const series = [[]];
+      //  console.log("--admin---------", array);
 
       let date = new Date().getDate();
       let i = 0;
       while (i < array.length) {
         let day = parseInt(array[i]._id.slice(8));
+        console.log("day series----------------", day);
         if (day === date) {
           series[0].unshift(array[i].amount);
           if (this.dailySalesChart.options.high < array[i].amount) {
@@ -378,10 +380,11 @@ export default {
       this.getBestSalesByBrand()
     ]);
     this.createRevenueCart(this.dailyRevenue);
+
     this.createGenderSalesGraph(this.salesByGender);
-    console.log({
-      salesByGender: this.salesByGender
-    });
+    // console.log({
+    //   salesByGender: this.salesByGender
+    // });
   },
   watch: {
     "dailySalesChart.data": function() {}
