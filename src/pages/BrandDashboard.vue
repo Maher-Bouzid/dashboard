@@ -396,13 +396,14 @@ export default {
         .then(({ data }) => (this.salesByGender = data));
     },
     createRevenueCart(array) {
+      console.log(array);
       const series = [[]];
       let date = new Date().getDate();
       let i = 0;
-
-      while (i < array.length) {
-        let day = parseInt(array[i]._id.slice(8));
-        // console.log("day----------------", day);
+      while (series[0].length < 7) {
+        console.log(array[i], i);
+        let day = 0;
+        array[i] ? (day = parseInt(array[i]._id.slice(8))) : (day = 0);
         if (day === date) {
           series[0].unshift(array[i].amount);
           if (this.dailySalesChart.options.high < array[i].amount) {
@@ -410,8 +411,7 @@ export default {
           }
           i++;
         } else {
-          data.series[0].unshift(0);
-          i--;
+          series[0].unshift(0);
         }
         date--;
       }

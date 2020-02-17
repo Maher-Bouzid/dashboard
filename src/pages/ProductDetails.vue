@@ -21,7 +21,11 @@
                     <h1 v-else class="md-title">
                       <b>{{ color }}</b>
                     </h1>
-                    <md-button type="button" class="md-success md-round" @click="AddItem(color)">Add variant</md-button>
+                    <md-button
+                      type="button"
+                      class="md-success md-round"
+                      @click="AddItem(color)"
+                    >Add variant</md-button>
                   </md-table-toolbar>
 
                   <md-table-row style="margin-left:20px">
@@ -32,7 +36,10 @@
                   </md-table-row>
 
                   <md-table-row v-for="(value, index) in Object.values(colors[color])" :key="index">
-                    <md-table-cell v-if="!(value[0] === 'size')" style="padding-left:30px">{{ value[0] }}</md-table-cell>
+                    <md-table-cell
+                      v-if="!(value[0] === 'size')"
+                      style="padding-left:30px"
+                    >{{ value[0] }}</md-table-cell>
                     <md-table-cell v-else style="padding-left:30px">
                       <md-field>
                         <label>Choose the Size</label>
@@ -46,9 +53,11 @@
                         <md-input v-model="newQte" type="number"></md-input>
                       </md-field>
                     </md-table-cell>
-                    <md-table-cell
-                      ><span :class="getSpanClass(value[1])">{{ value[1] ? "In Stock" : "Out of Stock" }}</span></md-table-cell
-                    >
+                    <md-table-cell>
+                      <span
+                        :class="getSpanClass(value[1])"
+                      >{{ value[1] ? "In Stock" : "Out of Stock" }}</span>
+                    </md-table-cell>
                     <md-table-cell v-if="value[0] === 'size'">
                       <md-button @click="confirmItem(color, index)">submit</md-button>
                     </md-table-cell>
@@ -85,7 +94,12 @@
           </div>
         </md-card>
         <md-button type="button" class="md-success md-round" @click="addColor">Add new color</md-button>
-        <md-button v-if="hasChanged" type="button" class="md-success md-round" @click="saveChanges">Save Changes</md-button>
+        <md-button
+          v-if="hasChanged"
+          type="button"
+          class="md-success md-round"
+          @click="saveChanges"
+        >Save Changes</md-button>
       </div>
       <div class="md-layout-item md-medium-size-100 md-size-33">
         <md-card class="md-card-profile">
@@ -96,25 +110,35 @@
           <md-card-content>
             <h6 class="category text-gray">{{ product.gender }} - {{ product.category }}</h6>
             <div style="display: flex; place-items: center; place-content: center;">
-              <h4 v-if="!editMode" class="card-title" style="line-height: 40px; margin-right: 10px">
-                {{ product.title }}
-              </h4>
+              <h4
+                v-if="!editMode"
+                class="card-title"
+                style="line-height: 40px; margin-right: 10px"
+              >{{ product.title }}</h4>
               <div v-else class="md-layout-item md-small-size-100 md-size-50">
                 <md-field>
                   <label>Product title</label>
                   <md-input v-model="product.title" type="text"></md-input>
                 </md-field>
               </div>
-              <md-button @click="activateEdit" v-if="!editMode" class="md-info md-just-icon" style="height: 20px; min-width: 20px; width: 20px;">
+              <md-button
+                @click="activateEdit"
+                v-if="!editMode"
+                class="md-info md-just-icon"
+                style="height: 20px; min-width: 20px; width: 20px;"
+              >
                 <md-icon style="font-size: 11px !important">edit</md-icon>
               </md-button>
-              <md-button @click="doneEdit" v-else class="md-success md-just-icon" style="height: 20px; min-width: 20px; width: 20px;">
+              <md-button
+                @click="doneEdit"
+                v-else
+                class="md-success md-just-icon"
+                style="height: 20px; min-width: 20px; width: 20px;"
+              >
                 <md-icon style="font-size: 11px !important">done</md-icon>
               </md-button>
             </div>
-            <p v-if="!editMode" class="card-description">
-              {{ product.description }}
-            </p>
+            <p v-if="!editMode" class="card-description">{{ product.description }}</p>
             <div v-else class="md-layout-item md-small-size-100 md-size-100">
               <md-field maxlength="5">
                 <label>Product description</label>
@@ -134,7 +158,7 @@
                 </div>
                 <div v-else class="md-layout-item md-size-33">
                   <md-field>
-                    <label>Price </label>
+                    <label>Price</label>
                     <md-input v-model="product.price" type="number"></md-input>
                   </md-field>
                 </div>
@@ -229,17 +253,24 @@ export default {
     updateProduct() {
       Object.values(this.colors).forEach(async color => {
         await color.forEach(async availability => {
-          await axios.put(`http://localhost:3000/api/products/${this.productId}/availability`, availability);
+          await axios.put(
+            `http://localhost:3000/api/products/${this.productId}/availability`,
+            availability
+          );
         });
       });
     }
   },
   async beforeMount() {
     this.productId = window.location.pathname.slice(10);
-    let { data } = await axios.get(`http://localhost:3000/api/products/${this.productId}`);
+    let { data } = await axios.get(
+      `http://localhost:3000/api/products/${this.productId}`
+    );
 
     data.availability.map(elem => {
-      !!this.colors[elem.color] ? this.colors[elem.color].push(elem) : (this.colors[elem.color] = [elem]);
+      !!this.colors[elem.color]
+        ? this.colors[elem.color].push(elem)
+        : (this.colors[elem.color] = [elem]);
     });
     this.product = data;
   }
