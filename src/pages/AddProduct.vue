@@ -21,34 +21,126 @@
                   </md-field>
                 </div>
                 <div class="md-layout-item md-size-100">
+                  <span
+                    class="md-error errorspan"
+                    v-if="title === null && titleValidator"
+                  >*Title is required</span>
+                </div>
+                <div class="md-layout-item md-size-100">
                   <md-field maxlength="5">
                     <label>Product description</label>
                     <md-textarea v-model="description"></md-textarea>
                   </md-field>
                 </div>
-                <div class="md-layout-item md-small-size-100 md-size-25">
-                  <md-field>
-                    <label>Gender</label>
-                    <md-input v-model="gender" type="text"></md-input>
-                  </md-field>
+                <div class="md-layout-item md-size-100">
+                  <span
+                    class="md-error errorspan"
+                    v-if="description === null && descriptionValidator"
+                  >*Description is required</span>
                 </div>
                 <div class="md-layout-item md-small-size-100 md-size-25">
-                  <md-field>
-                    <label>Category</label>
-                    <md-input v-model="category" type="text"></md-input>
-                  </md-field>
+                  <div>
+                    <md-menu md-size="big" class="big" md-align-trigger>
+                      <md-button md-menu-trigger id="big">
+                        <span
+                          :style="[activeGender ? { color: 'black' } : { color: '#AAAAAA' }]"
+                        >{{ gender }}</span>
+                        <md-icon>keyboard_arrow_down</md-icon>
+                      </md-button>
+                      <md-menu-content>
+                        <md-menu-item
+                          v-for="selectedGender in genders"
+                          @click="
+                            activeGender = true;
+                            gender = selectedGender;
+                          "
+                          :key="selectedGender"
+                        >{{ selectedGender }}</md-menu-item>
+                      </md-menu-content>
+                    </md-menu>
+                  </div>
                 </div>
                 <div class="md-layout-item md-small-size-100 md-size-25">
+                  <div>
+                    <md-menu md-size="big" class="big" md-align-trigger>
+                      <md-button md-menu-trigger id="big">
+                        <span
+                          :style="[activeCategory ? { color: 'black' } : { color: '#AAAAAA' }]"
+                        >{{ category }}</span>
+                        <md-icon>keyboard_arrow_down</md-icon>
+                      </md-button>
+                      <md-menu-content>
+                        <md-menu-item
+                          v-for="selectedCategory in categories"
+                          @click="
+                            activeCategory = true;
+                            category = selectedCategory;
+                          "
+                          :key="selectedCategory"
+                        >{{ selectedCategory }}</md-menu-item>
+                      </md-menu-content>
+                    </md-menu>
+                  </div>
+                </div>
+                <div class="md-layout-item md-small-size-100 md-size-25">
+                  <div>
+                    <md-menu md-size="big" class="big" md-align-trigger :mdCloseOnSelect="boo">
+                      <md-button md-menu-trigger id="big">
+                        <span
+                          :style="[activeTags ? { color: 'black' } : { color: '#AAAAAA' }]"
+                        >{{ tagListDisplay }}</span>
+                        <md-icon>keyboard_arrow_down</md-icon>
+                      </md-button>
+                      <md-menu-content>
+                        <md-menu-item
+                          v-for="selectedTag in tagList"
+                          @click="handleTags(selectedTag)"
+                          :key="selectedTag"
+                          id="tags"
+                        >
+                          <md-icon v-if="tags.includes(selectedTag)">check</md-icon>
+                          <md-icon v-else>crop_din</md-icon>
+                          {{ selectedTag }}
+                        </md-menu-item>
+                      </md-menu-content>
+                    </md-menu>
+                  </div>
+                </div>
+                <div class="md-layout-item md-small-size-100 md-size-25" id="price">
                   <md-field>
                     <label>Price</label>
                     <md-input v-model="price" type="number"></md-input>
                   </md-field>
                 </div>
+                <div class="md-layout-item">
+                  <span
+                    class="md-error errorspan"
+                    v-if="gender === 'Select Gender' && genderValidator"
+                  >* Required</span>
+                </div>
                 <div class="md-layout-item md-small-size-100 md-size-25">
-                  <md-field>
-                    <label>Tags</label>
-                    <md-input v-model="tags" type="text"></md-input>
-                  </md-field>
+                  <div class="md-layout-item">
+                    <span
+                      class="md-error errorspan"
+                      v-if="category === 'Select Category' && categoryValidator"
+                    >* Required</span>
+                  </div>
+                </div>
+                <div class="md-layout-item md-small-size-100 md-size-25">
+                  <div class="md-layout-item">
+                    <span
+                      class="md-error errorspan"
+                      v-if="tags.length === 0 && tagsValidator"
+                    >* Required</span>
+                  </div>
+                </div>
+                <div class="md-layout-item md-small-size-100 md-size-25">
+                  <div class="md-layout-item">
+                    <span
+                      class="md-error errorspan"
+                      v-if="price === null && priceValidator"
+                    >* Required</span>
+                  </div>
                 </div>
                 <div class="md-layout-item md-size-100">
                   <h2>Colors and Sizes variants</h2>
@@ -65,6 +157,7 @@
                           class="search"
                           v-model="item.color"
                           :md-options="HTMLColors"
+                          :md-open-on-focus="false"
                         >
                           <label>Choose the color...</label>
                         </md-autocomplete>
@@ -143,7 +236,7 @@
                   <md-button class="md-success md-round" @click="addImage">Add another image</md-button>
                 </div>
                 <div class="md-layout-item md-size-50 text-right">
-                  <md-button class="md-raised md-success" @click="addProduct">Update Profile</md-button>
+                  <md-button class="md-raised md-success" @click="addProduct">Add Product</md-button>
                 </div>
               </div>
             </md-card-content>
@@ -160,12 +253,20 @@ import axios from "axios";
 export default {
   data() {
     return {
+      genderValidator: false,
+      categoryValidator: false,
+      tagsValidator: false,
+      priceValidator: false,
+      titleValidator: false,
+      descriptionValidator: false,
+      boo: false,
       title: null,
       description: null,
       price: null,
+      tagListDisplay: "Select Tags",
       tags: [],
-      category: null,
-      gender: null,
+      category: "Select Category",
+      gender: "Select Gender",
       imagecount: 1,
       images: [
         {
@@ -183,6 +284,38 @@ export default {
       defaultImage3: require("@/assets/img/image_placeholder.jpg"),
       defaultImage4: require("@/assets/img/image_placeholder.jpg"),
       selectedColor: null,
+      activeGender: false,
+      genders: ["Men", "Women"],
+      activeCategory: false,
+      categories: [
+        "Dresses",
+        "Footwear",
+        "Jeans & Trousers",
+        "Jewelery & Watches",
+        "Knitwear & Sweats",
+        "Outerwear",
+        "Skirts",
+        "Shorts",
+        "Suits",
+        "Swimwear",
+        "Tops"
+      ],
+      activeTags: false,
+      tagList: [
+        "Festival",
+        "Holidays",
+        "Wedding",
+        "Chic",
+        "Fashion",
+        "Sport-Chic",
+        "Workwear",
+        "Trending",
+        "Going Out",
+        "Sports",
+        "Classy",
+        "Street Style",
+        "Luxury"
+      ],
       availability: [
         {
           color: "",
@@ -335,6 +468,28 @@ export default {
     };
   },
   methods: {
+    handleTags(selectedTag) {
+      if (this.activeTags === false) {
+        this.activeTags = true;
+      }
+      var tmpIndex = this.tags.indexOf(selectedTag);
+      if (tmpIndex === -1) {
+        this.tags.push(selectedTag);
+      } else {
+        this.tags.splice(tmpIndex, 1);
+      }
+      if (this.tags.length === 0) {
+        this.tagListDisplay = "Select Tags";
+        this.activeTags = false;
+      } else {
+        this.tagListDisplay = this.tags
+          .toString()
+          .split(",")
+          .join(", ");
+      }
+      console.log(this.tagListDisplay.length);
+      console.log(this.tags);
+    },
     imgCountFn() {
       if (this.imagecount < 5) {
         this.imagecount++;
@@ -381,38 +536,109 @@ export default {
       }
     },
     addProduct() {
-      let productDetails = new FormData();
-      productDetails.append("title", this.title);
-      productDetails.append("availability", JSON.stringify(this.availability));
-      productDetails.append("description", this.description);
-      productDetails.append("price", parseInt(this.price));
-      productDetails.append("tags", this.tags);
-      productDetails.append("gender", this.gender);
-      productDetails.append("category", this.category);
-      const images = this.images.map(image => {
-        if (!!image.value) {
-          productDetails.append("images", image.value);
-        }
-      });
-      axios
-        .post(
-          "http://127.0.0.1:3000/api/products/product",
-          // "http://localhost:3000/api/products/product",
-          // " http://localhost:3000/api/products/product",
-          productDetails,
-          {
-            headers: { "X-Requested-With": "XMLHttpRequest" }
+      if (
+        this.gender === "Select Gender" ||
+        this.category === "Select Category" ||
+        this.tags.length === 0 ||
+        this.price === null
+      ) {
+        this.genderValidator = true;
+        this.categoryValidator = true;
+        this.tagsValidator = true;
+        this.priceValidator = true;
+        this.titleValidator = true;
+        this.descriptionValidator = true;
+      } else {
+        let productDetails = new FormData();
+        productDetails.append("title", this.title);
+        productDetails.append(
+          "availability",
+          JSON.stringify(this.availability)
+        );
+        productDetails.append("description", this.description);
+        productDetails.append("price", parseInt(this.price));
+        productDetails.append("tags", JSON.stringify(this.tags));
+        productDetails.append("gender", this.gender);
+        productDetails.append("category", this.category);
+        const images = this.images.map(image => {
+          if (!!image.value) {
+            productDetails.append("images", image.value);
           }
-        )
-        .then(product => {
-          //notification
         });
+        axios
+          .post(
+            "https://prodigy-rbk.herokuapp.com/api/products/product",
+            productDetails,
+            {
+              headers: { "X-Requested-With": "XMLHttpRequest" }
+            }
+          )
+          .then(product => {
+            console.log(product);
+            //notification
+          });
+      }
     }
   }
 };
 </script>
 
 <style scoped>
+/deep/ .md-error {
+  transform: translate3d(0, -8px, 0) !important;
+}
+/deep/ #price .md-field {
+  margin: -5px;
+}
+
+/deep/ #tags div {
+  justify-content: flex-start !important;
+}
+.big {
+  width: 100% !important;
+}
+#big {
+  width: 100% !important;
+  background-color: white !important;
+  border: none !important;
+  color: black;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border-bottom: 1px purple solid !important;
+  text-transform: none;
+}
+
+/deep/ #big .md-button-content {
+  width: 100%;
+  color: black;
+  display: flex;
+  justify-content: space-between;
+  margin-left: 0px;
+}
+/deep/ #big .md-ripple {
+  padding: 12px 0px;
+}
+
+#big .md-button-content .md-icon {
+  color: black !important;
+  margin: 0px;
+}
+#big .md-ripple {
+  padding: 12px 5px;
+}
+
+#big span {
+  font-size: 1.2em;
+}
+
+.pick-size {
+  margin-bottom: 20px;
+}
+
+.errorspan {
+  color: red;
+  font-size: 0.9em;
+}
 /deep/ .btn {
   display: inline-block;
   font-weight: 400;
