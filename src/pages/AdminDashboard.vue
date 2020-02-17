@@ -200,7 +200,7 @@ export default {
             tension: 0
           }),
           low: 0,
-          high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+          high: 50,
           chartPadding: {
             top: 0,
             right: 0,
@@ -276,68 +276,68 @@ export default {
   methods: {
     getRevenue() {
       return axios
-        .get("http://127.0.0.1:3000/api/orders/revenue")
+        .get("https://prodigy-rbk.herokuapp.com/api/orders/revenue")
         .then(({ data }) => (this.revenue = data));
     },
     getBestSales() {
       return axios
-        .get("http://127.0.0.1:3000/api/orders/bestSales")
+        .get("https://prodigy-rbk.herokuapp.com/api/orders/bestSales")
         .then(({ data }) => (this.bestSales = data));
     },
     getNumberOfOrders() {
       return axios
-        .get("http://127.0.0.1:3000/api/orders/numberOfOrders")
+        .get("https://prodigy-rbk.herokuapp.com/api/orders/numberOfOrders")
         .then(({ data }) => (this.numberOfOrders = data));
     },
     getNumberOfUsers() {
       return axios
-        .get("http://127.0.0.1:3000/api/user/numberOfUser")
+        .get("https://prodigy-rbk.herokuapp.com/api/user/numberOfUser")
         .then(({ data }) => (this.numberOfUsers = data));
     },
     getNumberOfNewUsers() {
       return axios
-        .get("http://127.0.0.1:3000/api/user/numberOfNewUser/30")
+        .get("https://prodigy-rbk.herokuapp.com/api/user/numberOfNewUser/30")
         .then(({ data }) => (this.numberOfNewUsers = data));
     },
     getMostRatedProducts() {
       return axios
-        .get("http://127.0.0.1:3000/api/products/mostRated")
+        .get("https://prodigy-rbk.herokuapp.com/api/products/mostRated")
         .then(({ data }) => (this.mostRated = data));
     },
     getDailyRevenue() {
       return axios
-        .get("http://127.0.0.1:3000/api/orders/revenueDaily")
+        .get("https://prodigy-rbk.herokuapp.com/api/orders/revenueDaily")
         .then(({ data }) => (this.dailyRevenue = data));
     },
     getBestSalesByBrand() {
       return axios
-        .get("http://127.0.0.1:3000/api/orders/bestSalesByBrand")
+        .get("https://prodigy-rbk.herokuapp.com/api/orders/bestSalesByBrand")
         .then(({ data }) => (this.bestSalesByBrand = data));
     },
     getSalesByGender() {
       return axios
-        .get("http://127.0.0.1:3000/api/orders/salesbyGender")
+        .get("https://prodigy-rbk.herokuapp.com/api/orders/salesbyGender")
         .then(({ data }) => (this.salesByGender = data));
     },
     createRevenueCart(array) {
       const series = [[]];
-
       let date = new Date().getDate();
       let i = 0;
-      while (i < array.length) {
+
+      while (series[0].length < 7) {
         let day = parseInt(array[i]._id.slice(8));
         if (day === date) {
           series[0].unshift(array[i].amount);
           if (this.dailySalesChart.options.high < array[i].amount) {
-            this.dailySalesChart.options.high = array[i].amount + 1000;
+            this.dailySalesChart.options.high = array[i].amount + 1500;
           }
           i++;
         } else {
-          data.series[0].unshift(0);
-          i--;
+          series[0].unshift(0);
         }
         date--;
       }
+      console.log("hi");
       this.increase = (
         ((series[0][series[0].length - 1] - series[0][series[0].length - 2]) /
           series[0][series[0].length - 2]) *
@@ -378,13 +378,13 @@ export default {
       this.getBestSalesByBrand()
     ]);
     this.createRevenueCart(this.dailyRevenue);
+
     this.createGenderSalesGraph(this.salesByGender);
-    console.log({
-      salesByGender: this.salesByGender
-    });
   },
   watch: {
-    "dailySalesChart.data": function() {}
+    "dailySalesChart.data": function() {
+      console.log(this.dailySalesChart.data);
+    }
   }
 };
 </script>

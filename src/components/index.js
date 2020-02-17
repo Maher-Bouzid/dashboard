@@ -8,5 +8,6 @@ import NavTabsTable from "./Tables/NavTabsTable.vue";
 import OrderedTableForSales from "./Tables/OrderedTableForSales.vue";
 import OrderedTableForRanking from "./Tables/OrderedTableForRanking.vue";
 import SimpleTable from "./Tables/SimpleTable.vue";
+import BestProductsTable from "./Tables/BestProductsTable.vue";
 
-export { ChartCard, NavTabsCard, StatsCard, NavTabsTable, OrderedTableForSales, SimpleTable, OrderedTableForRanking };
+export { ChartCard, NavTabsCard, StatsCard, NavTabsTable, OrderedTableForSales, SimpleTable, OrderedTableForRanking, BestProductsTable };
