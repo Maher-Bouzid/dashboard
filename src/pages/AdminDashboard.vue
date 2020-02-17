@@ -324,20 +324,22 @@ export default {
 
       let date = new Date().getDate();
       let i = 0;
-      while (i < array.length) {
+
+      while (series[0].length < 7) {
+        console.log(series.length);
         let day = parseInt(array[i]._id.slice(8));
         if (day === date) {
           series[0].unshift(array[i].amount);
           if (this.dailySalesChart.options.high < array[i].amount) {
-            this.dailySalesChart.options.high = array[i].amount + 1000;
+            this.dailySalesChart.options.high = array[i].amount + 1500;
           }
           i++;
         } else {
-          data.series[0].unshift(0);
-          i--;
+          series[0].unshift(0);
         }
         date--;
       }
+      console.log("hi");
       this.increase = (
         ((series[0][series[0].length - 1] - series[0][series[0].length - 2]) /
           series[0][series[0].length - 2]) *
@@ -347,6 +349,7 @@ export default {
       this.reRender += 1;
     },
     createGenderSalesGraph(array) {
+      console.log(array);
       if (array[0]._id === "Women") {
         this.GenderSalesGraph.data.series[0][0] = array[0].products.length;
         this.GenderRevenueGraph.data.series[0][0] = array[0].amount;
@@ -358,8 +361,10 @@ export default {
         this.GenderSalesGraph.data.series[0][1] = array[0].products.length;
         this.GenderRevenueGraph.data.series[0][1] = array[0].amount;
       }
-      this.GenderRevenueGraph.options.high = array[0].amount + 500;
-      this.GenderSalesGraph.options.high = array[0].products.length + 10;
+      this.GenderRevenueGraph.options.high = 30000;
+      // this.GenderRevenueGraph.options.high = array[0].amount + 500;
+      this.GenderSalesGraph.options.high = 3000;
+      // this.GenderSalesGraph.options.high = array[0].products.length + 10;
       this.reRender += 1;
 
       // const productsSold = array[0].products.length + array[1].products.length;
@@ -381,7 +386,9 @@ export default {
     this.createGenderSalesGraph(this.salesByGender);
   },
   watch: {
-    "dailySalesChart.data": function() {}
+    "dailySalesChart.data": function() {
+      console.log(this.dailySalesChart.data);
+    }
   }
 };
 </script>
