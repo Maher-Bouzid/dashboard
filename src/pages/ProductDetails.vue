@@ -80,6 +80,9 @@
               </div>
             </div>
           </md-card-content>
+          <div class="md-layout-item md-size-50 text-right">
+            <md-button class="md-round md-success" @click="updateProduct">Update Product</md-button>
+          </div>
         </md-card>
         <md-button type="button" class="md-success md-round" @click="addColor">Add new color</md-button>
         <md-button v-if="hasChanged" type="button" class="md-success md-round" @click="saveChanges">Save Changes</md-button>
@@ -223,21 +226,24 @@ export default {
       this.product.availability = tmp;
       console.log(this.product);
     }
+    // updateProduct() {
+    //   Object.values(this.colors).forEach(async color => {
+    //     await color.forEach(async availability => {
+    //       await axios.put(
+    //         `https://prodigy-rbk.herokuapp.com/api/products/${this.productId}/availability`,
+    //         availability
+    //       );
+    //     });
+    //   });
+    // }
   },
   async beforeMount() {
-    let productId = window.location.pathname.slice(10);
-    console.log(productId);
-    let { data } = await axios.get(`http://localhost:3000/api/products/${productId}`);
+    this.productId = window.location.pathname.slice(10);
+    let { data } = await axios.get(`https://prodigy-rbk.herokuapp.com/api/products/${this.productId}`);
 
     data.availability.map(elem => {
-      console.log(elem);
-      if (Array.isArray(this.colors[elem.color])) {
-        this.colors[elem.color].push([elem.size, elem.quantity]);
-      } else {
-        this.colors[elem.color] = [[elem.size, elem.quantity]];
-      }
+      !!this.colors[elem.color] ? this.colors[elem.color].push(elem) : (this.colors[elem.color] = [elem]);
     });
-    console.log(this.colors);
     this.product = data;
   }
 };

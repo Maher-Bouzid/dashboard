@@ -12,7 +12,9 @@
           <input type="file" name="..." @change="imageChange" />
         </span>
         <span v-if="!isDefault" @click="imageRemove" class="btn btn-danger btn-round btn-file">
-          <span class="fileinput-new"><i class="fa fa-times"></i> Remove</span>
+          <span class="fileinput-new">
+            <i class="fa fa-times"></i> Remove
+          </span>
         </span>
       </div>
     </div>
