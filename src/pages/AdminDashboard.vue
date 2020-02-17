@@ -11,26 +11,24 @@
         >
           <template slot="content">
             <h4 class="title">Daily Sales</h4>
-            <p class="category" v-if="increase >0">
+            <p class="category" v-if="increase > 0">
               <span class="text-success">
                 <i class="fas fa-long-arrow-alt-up"></i>
-                {{increase}}%
+                {{ increase }}%
               </span>
               increase in today sales.
             </p>
             <p class="category" v-else>
               <span class="text-danger">
                 <i class="fas fa-long-arrow-alt-down"></i>
-                {{increase}}%
+                {{ increase }}%
               </span>
               decrease in today sales.
             </p>
           </template>
 
           <template slot="footer">
-            <div class="stats">
-              <md-icon>access_time</md-icon>Up To Date
-            </div>
+            <div class="stats"><md-icon>access_time</md-icon>Up To Date</div>
           </template>
         </chart-card>
       </div>
@@ -49,9 +47,7 @@
           </template>
 
           <template slot="footer">
-            <div class="stats">
-              <md-icon>access_time</md-icon>Up To Date
-            </div>
+            <div class="stats"><md-icon>access_time</md-icon>Up To Date</div>
           </template>
         </chart-card>
       </div>
@@ -70,9 +66,7 @@
           </template>
 
           <template slot="footer">
-            <div class="stats">
-              <md-icon>access_time</md-icon>Up To Date
-            </div>
+            <div class="stats"><md-icon>access_time</md-icon>Up To Date</div>
           </template>
         </chart-card>
       </div>
@@ -84,13 +78,11 @@
 
           <template slot="content">
             <p class="category">Revenue</p>
-            <h3 class="title">${{revenue}}</h3>
+            <h3 class="title">${{ revenue }}</h3>
           </template>
 
           <template slot="footer">
-            <div class="stats">
-              <md-icon>date_range</md-icon>Last 24 Hours
-            </div>
+            <div class="stats"><md-icon>date_range</md-icon>Last 24 Hours</div>
           </template>
         </stats-card>
       </div>
@@ -102,13 +94,11 @@
 
           <template slot="content">
             <p class="category">Number Of Orders</p>
-            <h3 class="title">{{numberOfOrders}}</h3>
+            <h3 class="title">{{ numberOfOrders }}</h3>
           </template>
 
           <template slot="footer">
-            <div class="stats">
-              <md-icon>update</md-icon>Over All
-            </div>
+            <div class="stats"><md-icon>update</md-icon>Over All</div>
           </template>
         </stats-card>
       </div>
@@ -120,13 +110,11 @@
 
           <template slot="content">
             <p class="category">New Users</p>
-            <h3 class="title">+{{numberOfNewUsers}}</h3>
+            <h3 class="title">+{{ numberOfNewUsers }}</h3>
           </template>
 
           <template slot="footer">
-            <div class="stats">
-              <md-icon>date_range</md-icon>In The Last Month
-            </div>
+            <div class="stats"><md-icon>date_range</md-icon>In The Last Month</div>
           </template>
         </stats-card>
       </div>
@@ -138,13 +126,11 @@
 
           <template slot="content">
             <p class="category">Users</p>
-            <h3 class="title">{{numberOfUsers}}</h3>
+            <h3 class="title">{{ numberOfUsers }}</h3>
           </template>
 
           <template slot="footer">
-            <div class="stats">
-              <md-icon>update</md-icon>Over All
-            </div>
+            <div class="stats"><md-icon>update</md-icon>Over All</div>
           </template>
         </stats-card>
       </div>
@@ -173,12 +159,7 @@
 </template>
 
 <script>
-import {
-  StatsCard,
-  ChartCard,
-  OrderedTableForSales,
-  OrderedTableForRanking
-} from "@/components";
+import { StatsCard, ChartCard, OrderedTableForSales, OrderedTableForRanking } from "@/components";
 import axios from "axios";
 
 export default {
@@ -275,49 +256,31 @@ export default {
   },
   methods: {
     getRevenue() {
-      return axios
-        .get("https://prodigy-rbk.herokuapp.com/api/orders/revenue")
-        .then(({ data }) => (this.revenue = data));
+      return axios.get("https://prodigy-rbk.herokuapp.com/api/orders/revenue").then(({ data }) => (this.revenue = data));
     },
     getBestSales() {
-      return axios
-        .get("https://prodigy-rbk.herokuapp.com/api/orders/bestSales")
-        .then(({ data }) => (this.bestSales = data));
+      return axios.get("https://prodigy-rbk.herokuapp.com/api/orders/bestSales").then(({ data }) => (this.bestSales = data));
     },
     getNumberOfOrders() {
-      return axios
-        .get("https://prodigy-rbk.herokuapp.com/api/orders/numberOfOrders")
-        .then(({ data }) => (this.numberOfOrders = data));
+      return axios.get("https://prodigy-rbk.herokuapp.com/api/orders/numberOfOrders").then(({ data }) => (this.numberOfOrders = data));
     },
     getNumberOfUsers() {
-      return axios
-        .get("https://prodigy-rbk.herokuapp.com/api/user/numberOfUser")
-        .then(({ data }) => (this.numberOfUsers = data));
+      return axios.get("https://prodigy-rbk.herokuapp.com/api/user/numberOfUser").then(({ data }) => (this.numberOfUsers = data));
     },
     getNumberOfNewUsers() {
-      return axios
-        .get("https://prodigy-rbk.herokuapp.com/api/user/numberOfNewUser/30")
-        .then(({ data }) => (this.numberOfNewUsers = data));
+      return axios.get("https://prodigy-rbk.herokuapp.com/api/user/numberOfNewUser/30").then(({ data }) => (this.numberOfNewUsers = data));
     },
     getMostRatedProducts() {
-      return axios
-        .get("https://prodigy-rbk.herokuapp.com/api/products/mostRated")
-        .then(({ data }) => (this.mostRated = data));
+      return axios.get("https://prodigy-rbk.herokuapp.com/api/products/mostRated").then(({ data }) => (this.mostRated = data));
     },
     getDailyRevenue() {
-      return axios
-        .get("https://prodigy-rbk.herokuapp.com/api/orders/revenueDaily")
-        .then(({ data }) => (this.dailyRevenue = data));
+      return axios.get("https://prodigy-rbk.herokuapp.com/api/orders/revenueDaily").then(({ data }) => (this.dailyRevenue = data));
     },
     getBestSalesByBrand() {
-      return axios
-        .get("https://prodigy-rbk.herokuapp.com/api/orders/bestSalesByBrand")
-        .then(({ data }) => (this.bestSalesByBrand = data));
+      return axios.get("https://prodigy-rbk.herokuapp.com/api/orders/bestSalesByBrand").then(({ data }) => (this.bestSalesByBrand = data));
     },
     getSalesByGender() {
-      return axios
-        .get("https://prodigy-rbk.herokuapp.com/api/orders/salesbyGender")
-        .then(({ data }) => (this.salesByGender = data));
+      return axios.get("https://prodigy-rbk.herokuapp.com/api/orders/salesbyGender").then(({ data }) => (this.salesByGender = data));
     },
     createRevenueCart(array) {
       const series = [[]];
@@ -338,11 +301,7 @@ export default {
         date--;
       }
       console.log("hi");
-      this.increase = (
-        ((series[0][series[0].length - 1] - series[0][series[0].length - 2]) /
-          series[0][series[0].length - 2]) *
-        100
-      ).toFixed(2);
+      this.increase = (((series[0][series[0].length - 1] - series[0][series[0].length - 2]) / series[0][series[0].length - 2]) * 100).toFixed(2);
       this.dailySalesChart.data.series = series;
       this.reRender += 1;
     },
@@ -366,6 +325,16 @@ export default {
     }
   },
   async beforeMount() {
+    var datePointer = new Date().getDay();
+    var weekDays = [];
+    for (var i = 0; i < 7; i++) {
+      if (datePointer < 0) {
+        datePointer += 7;
+      }
+      weekDays.unshift(this.$store.state.weekdays[datePointer]);
+      datePointer--;
+    }
+    this.dailySalesChart.data.labels = weekDays;
     await Promise.all([
       this.getRevenue(),
       this.getBestSales(),

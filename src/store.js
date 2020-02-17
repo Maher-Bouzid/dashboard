@@ -178,7 +178,8 @@ export default new Vuex.Store({
       "Tops"
     ],
     genders: ["Men", "Women"],
-    sizes: ["XS", "S", "M", "L", "XL", "XXL"]
+    sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+    weekdays: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
   },
   getters: {
     auth(state) {
