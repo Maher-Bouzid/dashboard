@@ -235,12 +235,18 @@ export default {
     }
   },
   async beforeMount() {
-    this.productId = window.location.pathname.slice(10);
-    let { data } = await axios.get(`http://localhost:3000/api/products/${this.productId}`);
-
+    let productId = window.location.pathname.slice(10);
+    console.log(productId);
+    let { data } = await axios.get(`http://localhost:3000/api/products/${productId}`);
     data.availability.map(elem => {
-      !!this.colors[elem.color] ? this.colors[elem.color].push(elem) : (this.colors[elem.color] = [elem]);
+      console.log(elem);
+      if (Array.isArray(this.colors[elem.color])) {
+        this.colors[elem.color].push([elem.size, elem.quantity]);
+      } else {
+        this.colors[elem.color] = [[elem.size, elem.quantity]];
+      }
     });
+    console.log(this.colors);
     this.product = data;
   }
 };
