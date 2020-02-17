@@ -340,8 +340,6 @@ export default {
           .split(",")
           .join(", ");
       }
-      console.log(this.tagListDisplay.length);
-      console.log(this.tags);
     },
     imgCountFn() {
       if (this.imagecount < 5) {
@@ -418,18 +416,19 @@ export default {
             productDetails.append("images", image.value);
           }
         });
-        axios
-          .post(
-            "https://prodigy-rbk.herokuapp.com/api/products/product",
-            productDetails,
-            {
-              headers: { "X-Requested-With": "XMLHttpRequest" }
-            }
-          )
-          .then(product => {
-            console.log(product);
-            //notification
-          });
+        console.log(productDetails);
+        // axios
+        //   .post(
+        //     "https://prodigy-rbk.herokuapp.com/api/products/product",
+        //     productDetails,
+        //     {
+        //       headers: { "X-Requested-With": "XMLHttpRequest" }
+        //     }
+        //   )
+        //   .then(product => {
+        //     console.log(product);
+        //     //notification
+        //   });
       }
     }
   }

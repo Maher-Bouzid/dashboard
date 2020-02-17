@@ -268,14 +268,17 @@ export default {
     addOne(color, index) {
       this.colors[color][index][1] = ++this.colors[color][index][1];
       this.test++;
+      this.hasChanged = true;
     },
     removeOne(color, index) {
       this.colors[color][index][1] = --this.colors[color][index][1];
       this.test++;
+      this.hasChanged = true;
     },
     removeAll(color, index) {
       this.colors[color].splice(index, 1);
       this.test++;
+      this.hasChanged = true;
     },
     saveChanges() {
       var tmp = [];
@@ -290,7 +293,6 @@ export default {
         this.product.availability = tmp;
       });
       let productId = window.location.pathname.slice(10);
-
       axios
         .put(`http://localhost:3000/api/products/${productId}`, this.product)
         .then(({ data }) => console.log(data))
