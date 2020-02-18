@@ -41,7 +41,7 @@
                       </md-button>
                       <md-menu-content>
                         <md-menu-item
-                          v-for="selectedGender in genders"
+                          v-for="selectedGender in $store.state.genders"
                           @click="
                             activeGender = true;
                             gender = selectedGender;
@@ -62,7 +62,7 @@
                       </md-button>
                       <md-menu-content>
                         <md-menu-item
-                          v-for="selectedCategory in categories"
+                          v-for="selectedCategory in $store.state.categories"
                           @click="
                             activeCategory = true;
                             category = selectedCategory;
@@ -82,7 +82,7 @@
                         <md-icon>keyboard_arrow_down</md-icon>
                       </md-button>
                       <md-menu-content>
-                        <md-menu-item v-for="selectedTag in tagList" @click="handleTags(selectedTag)" :key="selectedTag" id="tags">
+                        <md-menu-item v-for="selectedTag in $store.state.tagList" @click="handleTags(selectedTag)" :key="selectedTag" id="tags">
                           <md-icon v-if="tags.includes(selectedTag)">check</md-icon>
                           <md-icon v-else>crop_din</md-icon>
                           {{ selectedTag }}
@@ -120,20 +120,36 @@
                 </div>
                 <div class="md-layout-item md-size-100" v-for="(item, index) in availability" :key="index">
                   <div class="md-layout">
-                    <div class="md-layout-item md-small-size-100 md-size-25">
+                    <div class="md-layout-item md-small-size-100 md-size-25" id="color">
                       <div class="md-autocomplete">
-                        <md-autocomplete class="search" v-model="item.color" :md-options="HTMLColors" :md-open-on-focus="false">
+                        <md-autocomplete class="search" v-model="item.color" :md-options="$store.state.HTMLColors" :md-open-on-focus="false">
                           <label>Choose the color...</label>
                         </md-autocomplete>
                       </div>
                     </div>
                     <div class="md-layout-item md-small-size-100 md-size-25">
-                      <md-field>
-                        <label>Size</label>
-                        <md-input v-model="item.size" type="text"></md-input>
-                      </md-field>
+                      <div>
+                        <md-menu md-size="big" class="big" md-align-trigger>
+                          <md-button md-menu-trigger id="big">
+                            <span :style="[item.activeSize ? { color: 'black' } : { color: '#AAAAAA' }]">{{ item.size }}</span>
+                            <md-icon>keyboard_arrow_down</md-icon>
+                          </md-button>
+                          <md-menu-content>
+                            <md-menu-item
+                              v-for="selectedSize in $store.state.sizes"
+                              @click="
+                                item.activeSize = true;
+                                item.size = selectedSize;
+                              "
+                              :key="selectedSize"
+                              >{{ selectedSize }}</md-menu-item
+                            >
+                          </md-menu-content>
+                        </md-menu>
+                      </div>
                     </div>
-                    <div class="md-layout-item md-small-size-100 md-size-25">
+
+                    <div class="md-layout-item md-small-size-100 md-size-25" id="qte">
                       <md-field>
                         <label>Quantity</label>
                         <md-input v-model="item.quantity" type="number"></md-input>
@@ -181,10 +197,33 @@
                 <div class="md-layout-item md-size-50 text-right">
                   <md-button class="md-raised md-success" @click="addProduct">Add Product</md-button>
                 </div>
+                <div class="md-layout-item md-size-100">
+                  <md-progress-bar style="width: 100%" md-mode="indeterminate" v-if="sending" />
+                </div>
               </div>
             </md-card-content>
           </md-card>
         </form>
+      </div>
+    </div>
+    <div id="notifications">
+      <div v-if="successNotif" class="alert alertTop alert-success">
+        <span> <b>SUCCESS</b> : Your product has been successfully added! </span>
+        <button type="button" aria-hidden="true" class="close" @click="removeNotify('successNotif')">
+          <md-icon style="color: white">clear</md-icon>
+        </button>
+      </div>
+      <div v-if="errorNotif" class="alert alertTop alert-danger">
+        <span> <b>ERROR ALERT</b> : Operation failed, Please try again later ... </span>
+        <button type="button" aria-hidden="true" class="close" @click="removeNotify('errorNotif')">
+          <md-icon style="color: white">clear</md-icon>
+        </button>
+      </div>
+      <div v-if="imgNotif" class="alert alertTop alert-danger">
+        <span> <b>ERROR ALERT</b> : Max limit reached ... </span>
+        <button type="button" aria-hidden="true" class="close" @click="removeNotify('imgNotif')">
+          <md-icon style="color: white">clear</md-icon>
+        </button>
       </div>
     </div>
   </div>
@@ -196,6 +235,10 @@ import axios from "axios";
 export default {
   data() {
     return {
+      sending: false,
+      imgNotif: false,
+      errorNotif: false,
+      successNotif: false,
       genderValidator: false,
       categoryValidator: false,
       tagsValidator: false,
@@ -228,189 +271,29 @@ export default {
       defaultImage4: require("@/assets/img/image_placeholder.jpg"),
       selectedColor: null,
       activeGender: false,
-      genders: ["Men", "Women"],
       activeCategory: false,
-      categories: [
-        "Dresses",
-        "Footwear",
-        "Jeans & Trousers",
-        "Jewelery & Watches",
-        "Knitwear & Sweats",
-        "Outerwear",
-        "Skirts",
-        "Shorts",
-        "Suits",
-        "Swimwear",
-        "Tops"
-      ],
       activeTags: false,
-      tagList: [
-        "Festival",
-        "Holidays",
-        "Wedding",
-        "Chic",
-        "Fashion",
-        "Sport-Chic",
-        "Workwear",
-        "Trending",
-        "Going Out",
-        "Sports",
-        "Classy",
-        "Street Style",
-        "Luxury"
-      ],
       availability: [
         {
           color: "",
-          size: "",
-          quantity: 0
+          size: "Size",
+          quantity: 0,
+          activeSize: false
         }
-      ],
-      HTMLColors: [
-        "Pink",
-        "LightPink",
-        "HotPink",
-        "DeepPink",
-        "PaleVioletRed",
-        "MediumVioletRed",
-        "LightSalmon",
-        "Salmon",
-        "DarkSalmon",
-        "LightCoral",
-        "IndianRed",
-        "Crimson",
-        "Firebrick",
-        "DarkRed",
-        "Red",
-        "OrangeRed",
-        "Tomato",
-        "Coral",
-        "DarkOrange",
-        "Orange",
-        "Yellow",
-        "LightYellow",
-        "LemonChiffon",
-        "LightGoldenrodYellow ",
-        "PapayaWhip",
-        "Moccasin",
-        "PeachPuff",
-        "PaleGoldenrod",
-        "Khaki",
-        "DarkKhaki",
-        "Gold",
-        "Cornsilk",
-        "BlanchedAlmond",
-        "Bisque",
-        "NavajoWhite",
-        "Wheat",
-        "Burlywood",
-        "Tan",
-        "RosyBrown",
-        "SandyBrown",
-        "Goldenrod",
-        "DarkGoldenrod",
-        "Peru",
-        "Chocolate",
-        "SaddleBrown",
-        "Sienna",
-        "Brown",
-        "Maroon",
-        "DarkOliveGreen",
-        "Olive",
-        "OliveDrab",
-        "YellowGreen",
-        "LimeGreen",
-        "Lime",
-        "LawnGreen",
-        "Chartreuse",
-        "GreenYellow",
-        "SpringGreen",
-        "MediumSpringGreen ",
-        "LightGreen",
-        "PaleGreen",
-        "DarkSeaGreen",
-        "MediumAquamarine",
-        "MediumSeaGreen",
-        "SeaGreen",
-        "ForestGreen",
-        "Green",
-        "DarkGreen",
-        "Aqua",
-        "Cyan",
-        "LightCyan",
-        "PaleTurquoise",
-        "Aquamarine",
-        "Turquoise",
-        "MediumTurquoise",
-        "DarkTurquoise",
-        "LightSeaGreen",
-        "CadetBlue",
-        "DarkCyan",
-        "Teal",
-        "LightSteelBlue",
-        "PowderBlue",
-        "LightBlue",
-        "SkyBlue",
-        "LightSkyBlue",
-        "DeepSkyBlue",
-        "DodgerBlue",
-        "CornflowerBlue",
-        "SteelBlue",
-        "RoyalBlue",
-        "Blue",
-        "MediumBlue",
-        "DarkBlue",
-        "Navy",
-        "MidnightBlue",
-        "Lavender",
-        "Thistle",
-        "Plum",
-        "Violet",
-        "Orchid",
-        "Fuchsia",
-        "Magenta",
-        "MediumOrchid",
-        "MediumPurple",
-        "BlueViolet",
-        "DarkViolet",
-        "DarkOrchid",
-        "DarkMagenta",
-        "Purple",
-        "Indigo",
-        "DarkSlateBlue",
-        "SlateBlue",
-        "MediumSlateBlue ",
-        "White",
-        "Snow",
-        "Honeydew",
-        "MintCream",
-        "Azure",
-        "AliceBlue",
-        "GhostWhite",
-        "WhiteSmoke",
-        "Seashell",
-        "Beige",
-        "OldLace",
-        "FloralWhite",
-        "Ivory",
-        "AntiqueWhite",
-        "Linen",
-        "LavenderBlush",
-        "MistyRose",
-        "Gainsboro",
-        "LightGray",
-        "Silver",
-        "DarkGray",
-        "Gray",
-        "DimGray",
-        "LightSlateGray",
-        "SlateGray",
-        "DarkSlateGray",
-        "Black"
-      ].sort()
+      ]
     };
   },
   methods: {
+    removeNotify(notifyClass) {
+      this[notifyClass] = false;
+    },
+    getSpanClass(quantity) {
+      if (quantity > 0) {
+        return "badge badge-pill badge-success";
+      } else {
+        return "badge badge-pill badge-warning";
+      }
+    },
     handleTags(selectedTag) {
       if (this.activeTags === false) {
         this.activeTags = true;
@@ -429,15 +312,6 @@ export default {
           .toString()
           .split(",")
           .join(", ");
-      }
-      console.log(this.tagListDisplay.length);
-      console.log(this.tags);
-    },
-    imgCountFn() {
-      if (this.imagecount < 5) {
-        this.imagecount++;
-      } else {
-        //raise alert
       }
     },
     AddItem() {
@@ -473,7 +347,7 @@ export default {
           value: null
         });
       } else {
-        //notif max limit
+        this.imgNotif = true;
       }
     },
     addProduct() {
@@ -485,6 +359,7 @@ export default {
         this.titleValidator = true;
         this.descriptionValidator = true;
       } else {
+        this.sending = true;
         let productDetails = new FormData();
         productDetails.append("title", this.title);
         productDetails.append("availability", JSON.stringify(this.availability));
@@ -503,8 +378,12 @@ export default {
             headers: { "X-Requested-With": "XMLHttpRequest" }
           })
           .then(product => {
-            console.log(product);
-            //notification
+            this.successNotif = true;
+            this.sending = false;
+          })
+          .catch(err => {
+            this.errorNotif = true;
+            this.sending = false;
           });
       }
     }
@@ -513,11 +392,23 @@ export default {
 </script>
 
 <style scoped>
+/deep/ .md-list-item-content > .md-icon:last-child {
+  margin-left: 0px;
+}
+
 /deep/ .md-error {
   transform: translate3d(0, -8px, 0) !important;
 }
 /deep/ #price .md-field {
-  margin: -5px;
+  margin: -8px;
+}
+
+/deep/ #qte .md-field {
+  margin: -8px;
+}
+
+/deep/ #color .md-field {
+  margin: -8px;
 }
 
 /deep/ #tags div {

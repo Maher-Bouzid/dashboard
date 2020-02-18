@@ -1,4 +1,3 @@
-
 import Vue from "vue";
 import VueRouter from "vue-router";
 import App from "./App";
@@ -35,11 +34,13 @@ Vue.use(require("vue-moment"));
 //interceptors
 axios.interceptors.request.use(
   function(request) {
-    if (localStorage.getItem("x-token")) {
-      request.headers["x-token"] = localStorage.getItem("x-token");
-    }
-    if (localStorage.getItem("x-refresh-token")) {
-      request.headers["x-refresh-token"] = localStorage.getItem("x-refresh-token");
+    if (request.url !== "http://localhost:3000/api/brand/signIn") {
+      if (localStorage.getItem("x-token")) {
+        request.headers["x-token"] = localStorage.getItem("x-token");
+      }
+      if (localStorage.getItem("x-refresh-token")) {
+        request.headers["x-refresh-token"] = localStorage.getItem("x-refresh-token");
+      }
     }
     return request;
   },
