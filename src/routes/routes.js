@@ -13,6 +13,7 @@ import RegisterProfile from "@/pages/RegisterProfile.vue";
 import auth from "../middleware/auth";
 import authAdmin from "../middleware/authAdmin";
 import authBrand from "../middleware/authBrand";
+import verifyTokenBrandRegister from "../middleware/verifyTokenBrandRegister";
 
 import VueRouter from "vue-router";
 import Vue from "vue";
@@ -91,10 +92,10 @@ const routes = [
     component: Login
   },
   {
-    path: "/register",
+    path: "/register/:token",
     component: RegisterProfile,
     meta: {
-      middleware: [auth]
+      middleware: [verifyTokenBrandRegister]
     }
   }
 ];
