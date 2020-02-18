@@ -21,10 +21,7 @@
                   </md-field>
                 </div>
                 <div class="md-layout-item md-size-100">
-                  <span
-                    class="md-error errorspan"
-                    v-if="title === null && titleValidator"
-                  >*Title is required</span>
+                  <span class="md-error errorspan" v-if="title === null && titleValidator">*Title is required</span>
                 </div>
                 <div class="md-layout-item md-size-100">
                   <md-field maxlength="5">
@@ -33,18 +30,13 @@
                   </md-field>
                 </div>
                 <div class="md-layout-item md-size-100">
-                  <span
-                    class="md-error errorspan"
-                    v-if="description === null && descriptionValidator"
-                  >*Description is required</span>
+                  <span class="md-error errorspan" v-if="description === null && descriptionValidator">*Description is required</span>
                 </div>
                 <div class="md-layout-item md-small-size-100 md-size-25">
                   <div>
                     <md-menu md-size="big" class="big" md-align-trigger>
                       <md-button md-menu-trigger id="big">
-                        <span
-                          :style="[activeGender ? { color: 'black' } : { color: '#AAAAAA' }]"
-                        >{{ gender }}</span>
+                        <span :style="[activeGender ? { color: 'black' } : { color: '#AAAAAA' }]">{{ gender }}</span>
                         <md-icon>keyboard_arrow_down</md-icon>
                       </md-button>
                       <md-menu-content>
@@ -55,7 +47,8 @@
                             gender = selectedGender;
                           "
                           :key="selectedGender"
-                        >{{ selectedGender }}</md-menu-item>
+                          >{{ selectedGender }}</md-menu-item
+                        >
                       </md-menu-content>
                     </md-menu>
                   </div>
@@ -64,9 +57,7 @@
                   <div>
                     <md-menu md-size="big" class="big" md-align-trigger>
                       <md-button md-menu-trigger id="big">
-                        <span
-                          :style="[activeCategory ? { color: 'black' } : { color: '#AAAAAA' }]"
-                        >{{ category }}</span>
+                        <span :style="[activeCategory ? { color: 'black' } : { color: '#AAAAAA' }]">{{ category }}</span>
                         <md-icon>keyboard_arrow_down</md-icon>
                       </md-button>
                       <md-menu-content>
@@ -77,7 +68,8 @@
                             category = selectedCategory;
                           "
                           :key="selectedCategory"
-                        >{{ selectedCategory }}</md-menu-item>
+                          >{{ selectedCategory }}</md-menu-item
+                        >
                       </md-menu-content>
                     </md-menu>
                   </div>
@@ -86,18 +78,11 @@
                   <div>
                     <md-menu md-size="big" class="big" md-align-trigger :mdCloseOnSelect="boo">
                       <md-button md-menu-trigger id="big">
-                        <span
-                          :style="[activeTags ? { color: 'black' } : { color: '#AAAAAA' }]"
-                        >{{ tagListDisplay }}</span>
+                        <span :style="[activeTags ? { color: 'black' } : { color: '#AAAAAA' }]">{{ tagListDisplay }}</span>
                         <md-icon>keyboard_arrow_down</md-icon>
                       </md-button>
                       <md-menu-content>
-                        <md-menu-item
-                          v-for="selectedTag in $store.state.tagList"
-                          @click="handleTags(selectedTag)"
-                          :key="selectedTag"
-                          id="tags"
-                        >
+                        <md-menu-item v-for="selectedTag in $store.state.tagList" @click="handleTags(selectedTag)" :key="selectedTag" id="tags">
                           <md-icon v-if="tags.includes(selectedTag)">check</md-icon>
                           <md-icon v-else>crop_din</md-icon>
                           {{ selectedTag }}
@@ -113,52 +98,31 @@
                   </md-field>
                 </div>
                 <div class="md-layout-item">
-                  <span
-                    class="md-error errorspan"
-                    v-if="gender === 'Select Gender' && genderValidator"
-                  >* Required</span>
+                  <span class="md-error errorspan" v-if="gender === 'Select Gender' && genderValidator">* Required</span>
                 </div>
                 <div class="md-layout-item md-small-size-100 md-size-25">
                   <div class="md-layout-item">
-                    <span
-                      class="md-error errorspan"
-                      v-if="category === 'Select Category' && categoryValidator"
-                    >* Required</span>
+                    <span class="md-error errorspan" v-if="category === 'Select Category' && categoryValidator">* Required</span>
                   </div>
                 </div>
                 <div class="md-layout-item md-small-size-100 md-size-25">
                   <div class="md-layout-item">
-                    <span
-                      class="md-error errorspan"
-                      v-if="tags.length === 0 && tagsValidator"
-                    >* Required</span>
+                    <span class="md-error errorspan" v-if="tags.length === 0 && tagsValidator">* Required</span>
                   </div>
                 </div>
                 <div class="md-layout-item md-small-size-100 md-size-25">
                   <div class="md-layout-item">
-                    <span
-                      class="md-error errorspan"
-                      v-if="price === null && priceValidator"
-                    >* Required</span>
+                    <span class="md-error errorspan" v-if="price === null && priceValidator">* Required</span>
                   </div>
                 </div>
                 <div class="md-layout-item md-size-100">
                   <h2>Colors and Sizes variants</h2>
                 </div>
-                <div
-                  class="md-layout-item md-size-100"
-                  v-for="(item, index) in availability"
-                  :key="index"
-                >
+                <div class="md-layout-item md-size-100" v-for="(item, index) in availability" :key="index">
                   <div class="md-layout">
                     <div class="md-layout-item md-small-size-100 md-size-25" id="color">
                       <div class="md-autocomplete">
-                        <md-autocomplete
-                          class="search"
-                          v-model="item.color"
-                          :md-options="$store.state.HTMLColors"
-                          :md-open-on-focus="false"
-                        >
+                        <md-autocomplete class="search" v-model="item.color" :md-options="$store.state.HTMLColors" :md-open-on-focus="false">
                           <label>Choose the color...</label>
                         </md-autocomplete>
                       </div>
@@ -167,31 +131,24 @@
                       <div>
                         <md-menu md-size="big" class="big" md-align-trigger>
                           <md-button md-menu-trigger id="big">
-                            <span
-                              :style="[item.activeSize ? { color: 'black' } : { color: '#AAAAAA' }]"
-                            >{{ item.size }}</span>
+                            <span :style="[item.activeSize ? { color: 'black' } : { color: '#AAAAAA' }]">{{ item.size }}</span>
                             <md-icon>keyboard_arrow_down</md-icon>
                           </md-button>
                           <md-menu-content>
                             <md-menu-item
                               v-for="selectedSize in $store.state.sizes"
                               @click="
-                            item.activeSize = true;
-                            item.size = selectedSize;
-                          "
+                                item.activeSize = true;
+                                item.size = selectedSize;
+                              "
                               :key="selectedSize"
-                            >{{ selectedSize }}</md-menu-item>
+                              >{{ selectedSize }}</md-menu-item
+                            >
                           </md-menu-content>
                         </md-menu>
                       </div>
                     </div>
 
-                    <!-- <div class="md-layout-item md-small-size-100 md-size-25">
-                      <md-field>
-                        <label>Size</label>
-                        <md-input v-model="item.size" type="text"></md-input>
-                      </md-field>
-                    </div>-->
                     <div class="md-layout-item md-small-size-100 md-size-25" id="qte">
                       <md-field>
                         <label>Quantity</label>
@@ -199,11 +156,7 @@
                       </md-field>
                     </div>
                     <div class="md-layout-item md-small-size-100 md-size-25">
-                      <md-button
-                        @click="removeItem"
-                        class="md-danger md-just-icon md-small-size"
-                        style="height: 30px; min-width: 31px; width: 30px;"
-                      >
+                      <md-button @click="removeItem" class="md-danger md-just-icon md-small-size" style="height: 30px; min-width: 31px; width: 30px;">
                         <md-icon>close</md-icon>
                       </md-button>
                     </div>
@@ -218,11 +171,7 @@
                 </div>
                 <div class="md-layout-item md-size-100">
                   <div class="md-layout">
-                    <div
-                      class="md-layout-item md-size-25"
-                      v-for="(item, index) in images"
-                      :key="index"
-                    >
+                    <div class="md-layout-item md-size-25" v-for="(item, index) in images" :key="index">
                       <div class="fileinput fileinput-new text-center" data-provides="fileinput">
                         <div class="fileinput-new thumbnail">
                           <img :src="item.defaultImage" alt="..." />
@@ -232,23 +181,10 @@
                           <span class="btn btn-primary btn-round btn-file">
                             <span v-if="item.isDefault" class="fileinput-new">Select image</span>
                             <span v-else class="fileinput-new">Change</span>
-                            <input
-                              :id="index"
-                              type="file"
-                              name="..."
-                              @change="imageChange"
-                              multiple
-                            />
+                            <input :id="index" type="file" name="..." @change="imageChange" multiple />
                           </span>
-                          <span
-                            :id="index"
-                            v-if="!item.isDefault"
-                            @click="imageRemove"
-                            class="btn btn-danger btn-round btn-file"
-                          >
-                            <span :id="index" class="fileinput-new">
-                              <i class="fa fa-times"></i> Remove
-                            </span>
+                          <span :id="index" v-if="!item.isDefault" @click="imageRemove" class="btn btn-danger btn-round btn-file">
+                            <span :id="index" class="fileinput-new"> <i class="fa fa-times"></i> Remove </span>
                           </span>
                         </div>
                       </div>
@@ -261,10 +197,33 @@
                 <div class="md-layout-item md-size-50 text-right">
                   <md-button class="md-raised md-success" @click="addProduct">Add Product</md-button>
                 </div>
+                <div class="md-layout-item md-size-100">
+                  <md-progress-bar style="width: 100%" md-mode="indeterminate" v-if="sending" />
+                </div>
               </div>
             </md-card-content>
           </md-card>
         </form>
+      </div>
+    </div>
+    <div id="notifications">
+      <div v-if="successNotif" class="alert alertTop alert-success">
+        <span> <b>SUCCESS</b> : Your product has been successfully added! </span>
+        <button type="button" aria-hidden="true" class="close" @click="removeNotify('successNotif')">
+          <md-icon style="color: white">clear</md-icon>
+        </button>
+      </div>
+      <div v-if="errorNotif" class="alert alertTop alert-danger">
+        <span> <b>ERROR ALERT</b> : Operation failed, Please try again later ... </span>
+        <button type="button" aria-hidden="true" class="close" @click="removeNotify('errorNotif')">
+          <md-icon style="color: white">clear</md-icon>
+        </button>
+      </div>
+      <div v-if="imgNotif" class="alert alertTop alert-danger">
+        <span> <b>ERROR ALERT</b> : Max limit reached ... </span>
+        <button type="button" aria-hidden="true" class="close" @click="removeNotify('imgNotif')">
+          <md-icon style="color: white">clear</md-icon>
+        </button>
       </div>
     </div>
   </div>
@@ -276,6 +235,10 @@ import axios from "axios";
 export default {
   data() {
     return {
+      sending: false,
+      imgNotif: false,
+      errorNotif: false,
+      successNotif: false,
       genderValidator: false,
       categoryValidator: false,
       tagsValidator: false,
@@ -321,6 +284,16 @@ export default {
     };
   },
   methods: {
+    removeNotify(notifyClass) {
+      this[notifyClass] = false;
+    },
+    getSpanClass(quantity) {
+      if (quantity > 0) {
+        return "badge badge-pill badge-success";
+      } else {
+        return "badge badge-pill badge-warning";
+      }
+    },
     handleTags(selectedTag) {
       if (this.activeTags === false) {
         this.activeTags = true;
@@ -339,13 +312,6 @@ export default {
           .toString()
           .split(",")
           .join(", ");
-      }
-    },
-    imgCountFn() {
-      if (this.imagecount < 5) {
-        this.imagecount++;
-      } else {
-        //raise alert
       }
     },
     AddItem() {
@@ -370,9 +336,7 @@ export default {
       reader.readAsDataURL(file);
     },
     imageRemove(e) {
-      this.images[
-        e.path[0].id
-      ].defaultImage = require("@/assets/img/image_placeholder.jpg");
+      this.images[e.path[0].id].defaultImage = require("@/assets/img/image_placeholder.jpg");
       this.images[e.path[0].id].isDefault = true;
     },
     addImage() {
@@ -383,16 +347,11 @@ export default {
           value: null
         });
       } else {
-        //notif max limit
+        this.imgNotif = true;
       }
     },
     addProduct() {
-      if (
-        this.gender === "Select Gender" ||
-        this.category === "Select Category" ||
-        this.tags.length === 0 ||
-        this.price === null
-      ) {
+      if (this.gender === "Select Gender" || this.category === "Select Category" || this.tags.length === 0 || this.price === null) {
         this.genderValidator = true;
         this.categoryValidator = true;
         this.tagsValidator = true;
@@ -400,12 +359,10 @@ export default {
         this.titleValidator = true;
         this.descriptionValidator = true;
       } else {
+        this.sending = true;
         let productDetails = new FormData();
         productDetails.append("title", this.title);
-        productDetails.append(
-          "availability",
-          JSON.stringify(this.availability)
-        );
+        productDetails.append("availability", JSON.stringify(this.availability));
         productDetails.append("description", this.description);
         productDetails.append("price", parseInt(this.price));
         productDetails.append("tags", JSON.stringify(this.tags));
@@ -417,15 +374,16 @@ export default {
           }
         });
         axios
-          .post(
-            "https://prodigy-rbk.herokuapp.com/api/products/product",
-            productDetails,
-            {
-              headers: { "X-Requested-With": "XMLHttpRequest" }
-            }
-          )
+          .post("https://prodigy-rbk.herokuapp.com/api/products/product", productDetails, {
+            headers: { "X-Requested-With": "XMLHttpRequest" }
+          })
           .then(product => {
-            console.log(product);
+            this.successNotif = true;
+            this.sending = false;
+          })
+          .catch(err => {
+            this.errorNotif = true;
+            this.sending = false;
           });
       }
     }
@@ -513,8 +471,7 @@ export default {
   font-size: 1rem;
   line-height: 1.5;
   border-radius: 0.25rem;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 /deep/ .btn:not(:disabled):not(.disabled) {
   cursor: pointer;
@@ -546,16 +503,14 @@ export default {
   border: 0;
   border-radius: 0.2rem;
   outline: 0;
-  transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1),
-    background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: box-shadow, transform;
 }
 /deep/ .btn.btn-rose {
   color: #fff;
   background-color: #e91e63;
   border-color: #e91e63;
-  box-shadow: 0 2px 2px 0 rgba(233, 30, 99, 0.14),
-    0 3px 1px -2px rgba(233, 30, 99, 0.2), 0 1px 5px 0 rgba(233, 30, 99, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(233, 30, 99, 0.14), 0 3px 1px -2px rgba(233, 30, 99, 0.2), 0 1px 5px 0 rgba(233, 30, 99, 0.12);
 }
 /deep/ .btn.btn-rose.btn-link {
   background-color: transparent;
@@ -566,17 +521,14 @@ export default {
   color: #fff;
   background-color: #f44336;
   border-color: #f44336;
-  box-shadow: 0 2px 2px 0 rgba(244, 67, 54, 0.14),
-    0 3px 1px -2px rgba(244, 67, 54, 0.2), 0 1px 5px 0 rgba(244, 67, 54, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(244, 67, 54, 0.14), 0 3px 1px -2px rgba(244, 67, 54, 0.2), 0 1px 5px 0 rgba(244, 67, 54, 0.12);
 }
 /deep/ .btn,
 /deep/ .btn.btn-default {
   color: #fff;
   background-color: #999999;
   border-color: #999999;
-  box-shadow: 0 2px 2px 0 rgba(153, 153, 153, 0.14),
-    0 3px 1px -2px rgba(153, 153, 153, 0.2),
-    0 1px 5px 0 rgba(153, 153, 153, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(153, 153, 153, 0.14), 0 3px 1px -2px rgba(153, 153, 153, 0.2), 0 1px 5px 0 rgba(153, 153, 153, 0.12);
 }
 /deep/ .btn.btn-link,
 /deep/ .btn.btn-default.btn-link {
@@ -693,8 +645,7 @@ img {
   text-align: center;
   vertical-align: middle;
   max-width: 250px;
-  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.42),
-    0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.42), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
 }
 /deep/ .fileinput .thumbnail > img {
   max-height: 100%;
@@ -731,8 +682,7 @@ img {
   color: #fff;
   background-color: #e91e63;
   border-color: #e91e63;
-  box-shadow: 0 2px 2px 0 rgba(233, 30, 99, 0.14),
-    0 3px 1px -2px rgba(233, 30, 99, 0.2), 0 1px 5px 0 rgba(233, 30, 99, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(233, 30, 99, 0.14), 0 3px 1px -2px rgba(233, 30, 99, 0.2), 0 1px 5px 0 rgba(233, 30, 99, 0.12);
 }
 /deep/ .btn.btn-rose.btn-link {
   background-color: transparent;
@@ -743,16 +693,13 @@ img {
   color: #fff;
   background-color: #f44336;
   border-color: #f44336;
-  box-shadow: 0 2px 2px 0 rgba(244, 67, 54, 0.14),
-    0 3px 1px -2px rgba(244, 67, 54, 0.2), 0 1px 5px 0 rgba(244, 67, 54, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(244, 67, 54, 0.14), 0 3px 1px -2px rgba(244, 67, 54, 0.2), 0 1px 5px 0 rgba(244, 67, 54, 0.12);
 }
 /deep/ .btn,
 /deep/ .btn.btn-default {
   color: #fff;
   background-color: #999999;
   border-color: #999999;
-  box-shadow: 0 2px 2px 0 rgba(153, 153, 153, 0.14),
-    0 3px 1px -2px rgba(153, 153, 153, 0.2),
-    0 1px 5px 0 rgba(153, 153, 153, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(153, 153, 153, 0.14), 0 3px 1px -2px rgba(153, 153, 153, 0.2), 0 1px 5px 0 rgba(153, 153, 153, 0.12);
 }
 </style>
