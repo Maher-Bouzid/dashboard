@@ -6,8 +6,6 @@ import UserProfile from "@/pages/UserProfile.vue";
 import ProductList from "@/pages/ProductList.vue";
 import ProductDetails from "@/pages/ProductDetails.vue";
 import AddProduct from "@/pages/AddProduct.vue";
-import TableList from "@/pages/TableList.vue";
-import Notifications from "@/pages/Notifications.vue";
 import Brands from "@/pages/Brands.vue";
 import Login from "@/pages/Login.vue";
 import RegisterProfile from "@/pages/RegisterProfile.vue";
@@ -15,6 +13,7 @@ import RegisterProfile from "@/pages/RegisterProfile.vue";
 import auth from "../middleware/auth";
 import authAdmin from "../middleware/authAdmin";
 import authBrand from "../middleware/authBrand";
+import verifyTokenBrandRegister from "../middleware/verifyTokenBrandRegister";
 
 import VueRouter from "vue-router";
 import Vue from "vue";
@@ -84,30 +83,6 @@ const routes = [
         meta: {
           middleware: [authAdmin]
         }
-      },
-      {
-        path: "profile",
-        name: "Brand Profile",
-        component: UserProfile,
-        meta: {
-          middleware: [auth]
-        }
-      },
-      {
-        path: "table",
-        name: "Table List",
-        component: TableList,
-        meta: {
-          middleware: [auth]
-        }
-      },
-      {
-        path: "notifications",
-        name: "Notifications",
-        component: Notifications,
-        meta: {
-          middleware: [auth]
-        }
       }
     ]
   },
@@ -117,10 +92,10 @@ const routes = [
     component: Login
   },
   {
-    path: "/register",
+    path: "/register/:token",
     component: RegisterProfile,
     meta: {
-      middleware: [auth]
+      middleware: [verifyTokenBrandRegister]
     }
   }
 ];
