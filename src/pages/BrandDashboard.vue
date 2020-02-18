@@ -220,7 +220,7 @@ export default {
             tension: 0
           }),
           low: 0,
-          high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+          high: 50,
           chartPadding: {
             top: 0,
             right: 0,
@@ -388,9 +388,6 @@ export default {
     } catch (err) {
       console.log(err);
     }
-    console.log(this.numberOfUsers);
-    // this.createRevenueCart(this.dailyRevenue);
-    // this.createGenderSalesGraph(this.salesByGender);
 
     this.dailyRevenue ? this.createRevenueCart(this.dailyRevenue) : 0;
     this.salesByGender.length > 0

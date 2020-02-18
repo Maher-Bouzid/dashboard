@@ -1,37 +1,24 @@
 <template>
-  <div
-    class="sidebar"
-    :data-color="activeColor"
-    :data-image="backgroundImage"
-    :style="sidebarStyle"
-  >
+  <div class="sidebar" :data-color="activeColor" :data-image="backgroundImage" :style="sidebarStyle">
     <div class="logo">
       <a href="#" class="simple-text logo-mini">
         <div class="logo-img">
-          <img :src="imgLogo" alt="" />
+          <img
+            src="https://scontent.ftun4-1.fna.fbcdn.net/v/t1.15752-9/86293461_626321758193617_7447198391882219520_n.png?_nc_cat=110&_nc_ohc=q58D4ww8rTcAX-hww9d&_nc_ht=scontent.ftun4-1.fna&oh=d89cd8e196fde1af73f85c230f87de2c&oe=5F0049F5"
+            alt="Progidy Store"
+          />
         </div>
       </a>
 
-      <a
-        href="https://www.creative-tim.com/product/vue-material-dashboard"
-        target="_blank"
-        class="simple-text logo-normal"
-      >
-        {{ title }}
+      <a href="https://prodigy-store.onrender.com/" target="_blank" class="simple-text logo-normal">
+        PRODIGY
       </a>
     </div>
     <div class="sidebar-wrapper">
       <slot name="content"></slot>
       <md-list class="nav">
-        <!--By default vue-router adds an active class to each route link. This way the links are colored when clicked-->
         <slot>
-          <sidebar-link
-            v-for="(link, index) in sidebarLinks"
-            :key="link.name + index"
-            :to="link.path"
-            :link="link"
-          >
-          </sidebar-link>
+          <sidebar-link v-for="(link, index) in sidebarLinks" :key="link.name + index" :to="link.path" :link="link"> </sidebar-link>
         </slot>
       </md-list>
     </div>
@@ -45,17 +32,9 @@ export default {
     SidebarLink
   },
   props: {
-    title: {
-      type: String,
-      default: "Vue MD"
-    },
     backgroundImage: {
       type: String,
       default: require("@/assets/img/sidebar-2.jpg")
-    },
-    imgLogo: {
-      type: String,
-      default: require("@/assets/img/vue-logo.png")
     },
     activeColor: {
       type: String,
