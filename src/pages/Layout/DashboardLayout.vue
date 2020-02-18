@@ -54,18 +54,6 @@
         <md-icon>notifications</md-icon>
         <p>Orders</p>
       </sidebar-link>
-      <sidebar-link to="/profile">
-        <md-icon>settings</md-icon>
-        <p>Profile</p>
-      </sidebar-link>
-      <sidebar-link to="/table">
-        <md-icon>content_paste</md-icon>
-        <p>Table list</p>
-      </sidebar-link>
-      <sidebar-link to="/notifications">
-        <md-icon>notifications</md-icon>
-        <p>Notifications</p>
-      </sidebar-link>
     </side-bar>
 
     <div class="main-panel">
