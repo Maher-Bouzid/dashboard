@@ -95,7 +95,7 @@ export default {
   },
   methods: {
     ...mapGetters(["auth"]),
-    ...mapMutations(["UPDATE_LOGIN", "UPDATE_ACTIVATE"]),
+    ...mapMutations(["UPDATE_LOGIN", "UPDATE_TYPE"]),
     submit: function(e) {
       this.sending = false;
       axios
@@ -107,6 +107,7 @@ export default {
           // start correcting here
           if (response.data.status === "success") {
             this.UPDATE_LOGIN(true);
+            this.UPDATE_TYPE(response.data.details.email.type);
             router.push({ path: "/" });
             // Until here
           } else if (response.data.status === "wrong password") {
