@@ -127,7 +127,7 @@ export default {
   },
   methods: {
     ...mapGetters(["auth"]),
-    ...mapMutations(["UPDATE_LOGIN", "UPDATE_ACTIVATE"]),
+    ...mapMutations(["UPDATE_LOGIN", "UPDATE_TYPE"]),
     submit: function(e) {
       this.sending = false;
       axios
@@ -139,7 +139,12 @@ export default {
           // start correcting here
           if (response.data.status === "success") {
             this.UPDATE_LOGIN(true);
-            router.push({ path: "/" });
+            //console.log("***************>", response.data);
+            this.UPDATE_TYPE(response.data.details.email.type);
+            if (response.data.details.email.type === "brand")
+              router.push({ path: "/brand-dashboard" });
+            if (response.data.details.email.type === "admin")
+              router.push({ path: "/" });
             // Until here
           } else if (response.data.status === "wrong password") {
             this.wrongPasswordNotif = true;
