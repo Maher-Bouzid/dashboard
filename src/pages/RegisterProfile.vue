@@ -60,11 +60,11 @@
                           v-else-if="!$v.password.minlength"
                         >Your password should have a minimum of 8 characters</span>
                       </md-field>
-                      <md-field class="md-form-group" :class="getValidationClass('tmpImg')">
+                      <!-- <md-field class="md-form-group" :class="getValidationClass('tmpImg')">
                         <md-icon>image</md-icon>
                         <label for="tmpImg">Temporary Brand Image...</label>
                         <md-input name="tmpImg" id="tmpImg" v-model="tmpImg" type="text"></md-input>
-                      </md-field>
+                      </md-field>-->
                       <div class="col-md-12 text-center">
                         <div class="fileinput fileinput-new text-center" data-provides="fileinput">
                           <div class="fileinput-new thumbnail">
