@@ -59,17 +59,17 @@ export default {
   },
   methods: {
     submit: function(e) {
-      console.log(this.email);
       axios
-        .post("http://localhost:3000/api/brand/sendEmailForRegisterBrand", {
-          email: this.email
-        })
+        .post(
+          "https://prodigy-rbk.herokuapp.com/api/brand/sendEmailForRegisterBrand",
+          {
+            email: this.email
+          }
+        )
         .then(response => {
           // start correcting here
-          console.log(response);
           if (response.data.status === "success") {
             //  this.UPDATE_LOGIN(true);
-            //console.log("***************>", response.data);
             //  this.UPDATE_TYPE(response.data.details.email.type);
             if (response.data.details.email.type === "brand")
               router.push({ path: "/brand-dashboard" });
