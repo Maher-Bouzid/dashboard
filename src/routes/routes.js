@@ -13,6 +13,9 @@ import Login from "@/pages/Login.vue";
 import RegisterProfile from "@/pages/RegisterProfile.vue";
 
 import auth from "../middleware/auth";
+import authAdmin from "../middleware/authAdmin";
+import authBrand from "../middleware/authBrand";
+
 import VueRouter from "vue-router";
 import Vue from "vue";
 import store from "../store";
@@ -31,7 +34,7 @@ const routes = [
         name: "Admin Dashboard",
         component: AdminDashboard,
         meta: {
-          middleware: [auth]
+          middleware: [authAdmin]
         }
       },
       {
@@ -39,7 +42,7 @@ const routes = [
         name: "Brand Dashboard",
         component: BrandDashboard,
         meta: {
-          middleware: [auth]
+          middleware: [authBrand]
         }
       },
       {
@@ -47,7 +50,7 @@ const routes = [
         name: "Product List",
         component: ProductList,
         meta: {
-          middleware: [auth]
+          middleware: [authBrand]
         }
       },
       {
@@ -55,7 +58,7 @@ const routes = [
         name: "Add a Product",
         component: AddProduct,
         meta: {
-          middleware: [auth]
+          middleware: [authBrand]
         }
       },
       {
@@ -63,7 +66,7 @@ const routes = [
         name: "Product Details",
         component: ProductDetails,
         meta: {
-          middleware: [auth]
+          middleware: [authBrand]
         }
       },
       {
@@ -71,7 +74,7 @@ const routes = [
         name: "Brands List",
         component: Brands,
         meta: {
-          middleware: [auth]
+          middleware: [authAdmin]
         }
       },
       {
@@ -79,7 +82,7 @@ const routes = [
         name: "Add a Brand",
         component: UserProfile,
         meta: {
-          middleware: [auth]
+          middleware: [authAdmin]
         }
       },
       {

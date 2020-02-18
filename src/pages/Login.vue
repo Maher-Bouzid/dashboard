@@ -139,8 +139,12 @@ export default {
           // start correcting here
           if (response.data.status === "success") {
             this.UPDATE_LOGIN(true);
+            //console.log("***************>", response.data);
             this.UPDATE_TYPE(response.data.details.email.type);
-            router.push({ path: "/" });
+            if (response.data.details.email.type === "brand")
+              router.push({ path: "/brand-dashboard" });
+            if (response.data.details.email.type === "admin")
+              router.push({ path: "/" });
             // Until here
           } else if (response.data.status === "wrong password") {
             this.wrongPasswordNotif = true;
