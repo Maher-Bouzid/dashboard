@@ -21,14 +21,11 @@
                   <md-table-cell md-label="Rating">{{ item.rating }}</md-table-cell>
                   <md-table-cell class="text-center" md-label="Actions">
                     <router-link :to="`/products/${item._id}`">
-                      <md-button class="md-info md-just-icon">
-                        <md-icon>person</md-icon>
+                      <md-button class="md-success md-just-icon">
+                        <md-icon>edit</md-icon>
                       </md-button>
                     </router-link>
 
-                    <md-button class="md-success md-just-icon">
-                      <md-icon>edit</md-icon>
-                    </md-button>
                     <md-button class="md-danger md-just-icon">
                       <md-icon>close</md-icon>
                     </md-button>
