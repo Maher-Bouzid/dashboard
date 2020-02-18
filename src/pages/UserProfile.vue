@@ -1,23 +1,48 @@
 <template>
-  <div class="content">
-    <div class="md-layout">
-      <div class="md-layout-item md-medium-size-100 md-size-66">
-        <edit-profile-form data-background-color="green"> </edit-profile-form>
-      </div>
-      <div class="md-layout-item md-medium-size-100 md-size-33">
-        <user-card> </user-card>
+  <div
+    class="subscribe-line subscribe-line-image"
+    data-parallax="true"
+    :style="{
+      'background-image': `url(${require('../assets/img/ecommerce-header.jpg')})`
+    }"
+  >
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 ml-auto mr-auto">
+          <div class="text-center">
+            <h3 class="title">Subscribe to our Newsletter</h3>
+
+            <p class="description">Join our newsletter and get news in your inbox every week! We hate spam too, so no worries about this.</p>
+          </div>
+          <div class="card card-raised card-form-horizontal">
+            <div class="card-body">
+              <form method action>
+                <div class="row">
+                  <div class="col-sm-8">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">
+                          <i class="material-icons">mail</i>
+                        </span>
+                      </div>
+                      <input type="text" class="form-control" placeholder="Your Email..." />
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <md-button class="md-rose md-block">Subscribe</md-button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { EditProfileForm, UserCard } from "@/pages";
-
 export default {
-  components: {
-    EditProfileForm,
-    UserCard
-  }
+  components: {}
 };
 </script>
