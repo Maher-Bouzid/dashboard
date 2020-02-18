@@ -52,7 +52,7 @@ export default {
   methods: {
     deleteProduct(id) {
       axios
-        .delete(`http://127.0.0.1:3000/api/products/${id}`)
+        .delete(`https://prodigy-rbk.herokuapp.com/api/products/${id}`)
         .then(({ data }) =>
           this.products.forEach((element, index) => {
             if (element._id === data._id) {
@@ -60,11 +60,13 @@ export default {
             }
           })
         )
-        .catch(err => console.log(err));
+        .catch();
     }
   },
   async beforeMount() {
-    let { data } = await axios.get(`http://localhost:3000/api/brand/one`);
+    let { data } = await axios.get(
+      `https://prodigy-rbk.herokuapp.com/api/brand/one`
+    );
     this.products = data.products;
   }
 };

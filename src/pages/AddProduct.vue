@@ -425,7 +425,6 @@ export default {
             }
           )
           .then(product => {
-            console.log(product);
           });
       }
     }

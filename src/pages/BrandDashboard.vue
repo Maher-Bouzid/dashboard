@@ -286,22 +286,24 @@ export default {
   methods: {
     getNumberOfProductSold() {
       return axios
-        .get("http://localhost:3000/api/orders/nbSoldProductByBrand")
+        .get(
+          "https://prodigy-rbk.herokuapp.com/api/orders/nbSoldProductByBrand"
+        )
         .then(({ data }) => (this.nbProductSold = data));
     },
     getNumberOfUsers() {
       return axios
-        .get("http://localhost:3000/api/user/numberOfUser")
+        .get("https://prodigy-rbk.herokuapp.com/api/user/numberOfUser")
         .then(({ data }) => (this.numberOfUsers = data));
     },
     getNumberOfNewUsers() {
       return axios
-        .get("http://localhost:3000/api/user/numberOfNewUser/30")
+        .get("https://prodigy-rbk.herokuapp.com/api/user/numberOfNewUser/30")
         .then(({ data }) => (this.numberOfNewUsers = data));
     },
     getRevenue() {
       return axios
-        .get(`http://localhost:3000/api/orders/revenuebyBrand`)
+        .get(`https://prodigy-rbk.herokuapp.com/api/orders/revenuebyBrand`)
         .then(({ data }) => {
           data[0] ? (this.revenue = data[0].amount) : 0;
           // this.revenue = data;
@@ -309,25 +311,26 @@ export default {
     },
     getBestSales() {
       return axios
-        .get(`http://localhost:3000/api/orders/bestSalesproductsByBrand`)
+        .get(
+          `https://prodigy-rbk.herokuapp.com/api/orders/bestSalesproductsByBrand`
+        )
         .then(({ data }) => {
-          //  console.log(data);
           this.products = data;
         });
     },
     getDailyRevenue() {
       return axios
-        .get("http://127.0.0.1:3000/api/orders/revenueBrandDaily")
+        .get("https://prodigy-rbk.herokuapp.com/api/orders/revenueBrandDaily")
         .then(({ data }) => (this.dailyRevenue = data));
     },
     getMostRatedProducts() {
       return axios
-        .get("http://127.0.0.1:3000/api/products/mostRatedByBrand")
+        .get("https://prodigy-rbk.herokuapp.com/api/products/mostRatedByBrand")
         .then(({ data }) => (this.mostRated = data));
     },
     getSalesByGender() {
       return axios
-        .get("http://127.0.0.1:3000/api/orders/salesBrandbyGender")
+        .get("https://prodigy-rbk.herokuapp.com/api/orders/salesBrandbyGender")
         .then(({ data }) => (this.salesByGender = data));
     },
     createRevenueCart(array) {
@@ -385,9 +388,7 @@ export default {
         this.getNumberOfNewUsers(),
         this.getNumberOfProductSold()
       ]);
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
 
     this.dailyRevenue ? this.createRevenueCart(this.dailyRevenue) : 0;
     this.salesByGender.length > 0

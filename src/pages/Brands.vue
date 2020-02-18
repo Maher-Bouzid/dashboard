@@ -49,7 +49,9 @@ export default {
     };
   },
   async beforeMount() {
-    let { data } = await axios.get(" http://localhost:3000/api/brand");
+    let { data } = await axios.get(
+      " https://prodigy-rbk.herokuapp.com/api/brand"
+    );
     this.brands = data;
   }
 };

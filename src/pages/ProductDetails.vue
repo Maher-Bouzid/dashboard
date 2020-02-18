@@ -294,25 +294,27 @@ export default {
       });
       let productId = window.location.pathname.slice(10);
       axios
-        .put(`http://localhost:3000/api/products/${productId}`, this.product)
-        .then(({ data }) => console.log(data))
-        .catch(err => console.log(err));
+        .put(
+          `https://prodigy-rbk.herokuapp.com/api/products/${productId}`,
+          this.product
+        )
+        .then()
+        .catch();
     }
   },
   async beforeMount() {
     let productId = window.location.pathname.slice(10);
     let { data } = await axios.get(
-      `http://localhost:3000/api/products/${productId}`
+      `https://prodigy-rbk.herokuapp.com/api/products/${productId}`
     );
     data.availability.map(elem => {
-      console.log(elem);
       if (Array.isArray(this.colors[elem.color])) {
         this.colors[elem.color].push([elem.size, elem.quantity]);
       } else {
         this.colors[elem.color] = [[elem.size, elem.quantity]];
       }
     });
-    console.log(this.colors);
+
     this.product = data;
   }
 };

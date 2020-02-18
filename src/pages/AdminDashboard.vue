@@ -337,7 +337,6 @@ export default {
         }
         date--;
       }
-      console.log("hi");
       this.increase = (
         ((series[0][series[0].length - 1] - series[0][series[0].length - 2]) /
           series[0][series[0].length - 2]) *
@@ -382,9 +381,7 @@ export default {
     this.createGenderSalesGraph(this.salesByGender);
   },
   watch: {
-    "dailySalesChart.data": function() {
-      console.log(this.dailySalesChart.data);
-    }
+    "dailySalesChart.data": function() {}
   }
 };
 </script>

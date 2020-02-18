@@ -131,7 +131,7 @@ export default {
     submit: function(e) {
       this.sending = false;
       axios
-        .post("http://localhost:3000/api/brand/signIn", {
+        .post("https://prodigy-rbk.herokuapp.com/api/brand/signIn", {
           email: this.email,
           password: this.password
         })
@@ -139,7 +139,6 @@ export default {
           // start correcting here
           if (response.data.status === "success") {
             this.UPDATE_LOGIN(true);
-            //console.log("***************>", response.data);
             this.UPDATE_TYPE(response.data.details.email.type);
             if (response.data.details.email.type === "brand")
               router.push({ path: "/brand-dashboard" });
