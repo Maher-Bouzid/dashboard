@@ -5,7 +5,8 @@ import axios from "axios";
 export default new Vuex.Store({
   state: {
     user: {
-      loggedIn: localStorage.getItem("x-token") ? true : false
+      loggedIn: localStorage.getItem("x-token") ? true : false,
+      type: "brand"
     },
     HTMLColors: [
       "Pink",
@@ -183,14 +184,18 @@ export default new Vuex.Store({
   getters: {
     auth(state) {
       return state.user;
+    },
+    userType(state) {
+      state.type;
     }
   },
   mutations: {
     UPDATE_LOGIN: (state, boo) => {
       state.user.loggedIn = boo;
     },
-    UPDATE_ACTIVATE: (state, value = true) => {
-      state.user.isActivated = value;
+    UPDATE_TYPE: (state, value) => {
+      state.user.type = value;
+      console.log(state.user.type);
     }
   },
   actions: {
