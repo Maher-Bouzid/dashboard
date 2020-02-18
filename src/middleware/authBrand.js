@@ -1,6 +1,6 @@
-export default async function auth({ next, store }) {
+export default async function authBrand({ next, store }) {
   await store.dispatch("VERIFY_TOKEN");
-  if (!store.getters.auth.loggedIn) {
+  if (!store.getters.auth.loggedIn || store.getters.auth.type !== "brand") {
     return next({
       name: "login"
     });

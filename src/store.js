@@ -200,10 +200,11 @@ export default new Vuex.Store({
   },
   actions: {
     VERIFY_TOKEN: async function(state) {
-      axios
+      await axios
         .get("http://localhost:3000/api/brand/verifytoken")
         .then(res => {
           this.commit("UPDATE_LOGIN", true);
+          this.commit("UPDATE_TYPE", res.data.type);
         })
         .catch(err => {
           this.commit("UPDATE_LOGIN", false);

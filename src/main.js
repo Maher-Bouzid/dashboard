@@ -34,7 +34,8 @@ Vue.use(require("vue-moment"));
 //interceptors
 axios.interceptors.request.use(
   function(request) {
-    if (request.url !== "http://localhost:3000/api/brand/signIn") {
+    const endpoint = request.url.split("/");
+    if (endpoint[endpoint.length - 1] !== "signIn") {
       if (localStorage.getItem("x-token")) {
         request.headers["x-token"] = localStorage.getItem("x-token");
       }

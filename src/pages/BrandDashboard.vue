@@ -76,25 +76,7 @@
           </template>
         </chart-card>
       </div>
-      <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33">
-        <chart-card
-          :chart-data="dataCompletedTasksChart.data"
-          :chart-options="dataCompletedTasksChart.options"
-          :chart-type="'Line'"
-          data-background-color="green"
-        >
-          <template slot="content">
-            <h4 class="title">Completed Tasks</h4>
-            <p class="category">Last Campaign Performance</p>
-          </template>
 
-          <template slot="footer">
-            <div class="stats">
-              <md-icon>access_time</md-icon>campaign sent 26 minutes ago
-            </div>
-          </template>
-        </chart-card>
-      </div>
       <div class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25">
         <stats-card data-background-color="green">
           <template slot="header">
@@ -122,8 +104,8 @@
           <template slot="content">
             <p class="category">Number Of Orders</p>
             <h3 class="title">
-              49/50
-              <small>GB</small>
+              {{ nbProductSold }}
+              <small></small>
             </h3>
           </template>
 
@@ -142,13 +124,13 @@
           </template>
 
           <template slot="content">
-            <p class="category">Fixed Issues</p>
-            <h3 class="title">75</h3>
+            <p class="category">New Users</p>
+            <h3 class="title">+{{numberOfNewUsers}}</h3>
           </template>
 
           <template slot="footer">
             <div class="stats">
-              <md-icon>local_offer</md-icon>Tracked from Github
+              <md-icon>date_range</md-icon>In The Last Month
             </div>
           </template>
         </stats-card>
@@ -160,13 +142,13 @@
           </template>
 
           <template slot="content">
-            <p class="category">Folowers</p>
-            <h3 class="title">+245</h3>
+            <p class="category">Users</p>
+            <h3 class="title">{{numberOfUsers}}</h3>
           </template>
 
           <template slot="footer">
             <div class="stats">
-              <md-icon>update</md-icon>Just Updated
+              <md-icon>update</md-icon>Over All
             </div>
           </template>
         </stats-card>
@@ -213,6 +195,7 @@ export default {
   },
   data() {
     return {
+      nbProduct: 0,
       increase: 0,
       reRender: 0,
       revenue: 0,
@@ -220,6 +203,7 @@ export default {
       numberOfOrders: 0,
       numberOfUsers: 0,
       numberOfNewUsers: 0,
+      nbProductSold: 0,
       mostRated: null,
       dailyRevenue: null,
       bestSalesByBrand: null,
@@ -295,81 +279,32 @@ export default {
             }
           ]
         ]
-      },
-      dataCompletedTasksChart: {
-        data: {
-          labels: ["12am", "3pm", "6pm", "9pm", "12pm", "3am", "6am", "9am"],
-          series: [[230, 750, 450, 300, 280, 240, 200, 190]]
-        },
-
-        options: {
-          lineSmooth: this.$Chartist.Interpolation.cardinal({
-            tension: 0
-          }),
-          low: 0,
-          high: 1000,
-          chartPadding: {
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0
-          }
-        }
-      },
-      emailsSubscriptionChart: {
-        data: {
-          labels: [
-            "Ja",
-            "Fe",
-            "Ma",
-            "Ap",
-            "Mai",
-            "Ju",
-            "Jul",
-            "Au",
-            "Se",
-            "Oc",
-            "No",
-            "De"
-          ],
-          series: [[542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756, 895]]
-        },
-        options: {
-          axisX: {
-            showGrid: false
-          },
-          low: 0,
-          high: 1000,
-          chartPadding: {
-            top: 0,
-            right: 5,
-            bottom: 0,
-            left: 0
-          }
-        },
-        responsiveOptions: [
-          [
-            "screen and (max-width: 640px)",
-            {
-              seriesBarDistance: 5,
-              axisX: {
-                labelInterpolationFnc: function(value) {
-                  return value[0];
-                }
-              }
-            }
-          ]
-        ]
       }
     };
   },
 
   methods: {
+    getNumberOfProductSold() {
+      return axios
+        .get("http://localhost:3000/api/orders/nbSoldProductByBrand")
+        .then(({ data }) => (this.nbProductSold = data));
+    },
+    getNumberOfUsers() {
+      return axios
+        .get("http://localhost:3000/api/user/numberOfUser")
+        .then(({ data }) => (this.numberOfUsers = data));
+    },
+    getNumberOfNewUsers() {
+      return axios
+        .get("http://localhost:3000/api/user/numberOfNewUser/30")
+        .then(({ data }) => (this.numberOfNewUsers = data));
+    },
     getRevenue() {
       return axios
         .get(`http://localhost:3000/api/orders/revenuebyBrand`)
         .then(({ data }) => {
-          this.revenue = data;
+          data[0] ? (this.revenue = data[0].amount) : 0;
+          // this.revenue = data;
         });
     },
     getBestSales() {
@@ -399,10 +334,9 @@ export default {
       const series = [[]];
       let date = new Date().getDate();
       let i = 0;
-
-      while (i < array.length) {
-        let day = parseInt(array[i]._id.slice(8));
-        // console.log("day----------------", day);
+      while (series[0].length < 7) {
+        let day = 0;
+        array[i] ? (day = parseInt(array[i]._id.slice(8))) : (day = 0);
         if (day === date) {
           series[0].unshift(array[i].amount);
           if (this.dailySalesChart.options.high < array[i].amount) {
@@ -410,12 +344,11 @@ export default {
           }
           i++;
         } else {
-          data.series[0].unshift(0);
-          i--;
+          series[0].unshift(0);
         }
         date--;
       }
-      console.log("series=========", series);
+
       this.increase = (
         ((series[0][series[0].length - 1] - series[0][series[0].length - 2]) /
           series[0][series[0].length - 2]) *
@@ -447,15 +380,19 @@ export default {
         this.getBestSales(),
         this.getDailyRevenue(),
         this.getSalesByGender(),
-        this.getMostRatedProducts()
+        this.getMostRatedProducts(),
+        this.getNumberOfUsers(),
+        this.getNumberOfNewUsers(),
+        this.getNumberOfProductSold()
       ]);
     } catch (err) {
       console.log(err);
     }
-    console.log("hu");
-    console.log("--------------------", this.mostRated);
-    this.createRevenueCart(this.dailyRevenue);
-    this.createGenderSalesGraph(this.salesByGender);
+
+    this.dailyRevenue ? this.createRevenueCart(this.dailyRevenue) : 0;
+    this.salesByGender.length > 0
+      ? this.createGenderSalesGraph(this.salesByGender)
+      : 0;
   },
   watch: {
     "dailySalesChart.data": function() {}
