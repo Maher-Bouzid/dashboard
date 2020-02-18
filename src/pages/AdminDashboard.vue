@@ -11,17 +11,17 @@
         >
           <template slot="content">
             <h4 class="title">Daily Sales</h4>
-            <p class="category" v-if="increase >0">
+            <p class="category" v-if="increase > 0">
               <span class="text-success">
                 <i class="fas fa-long-arrow-alt-up"></i>
-                {{increase}}%
+                {{ increase }}%
               </span>
               increase in today sales.
             </p>
             <p class="category" v-else>
               <span class="text-danger">
                 <i class="fas fa-long-arrow-alt-down"></i>
-                {{increase}}%
+                {{ increase }}%
               </span>
               decrease in today sales.
             </p>
@@ -84,7 +84,7 @@
 
           <template slot="content">
             <p class="category">Revenue</p>
-            <h3 class="title">${{revenue}}</h3>
+            <h3 class="title">${{ revenue }}</h3>
           </template>
 
           <template slot="footer">
@@ -102,7 +102,7 @@
 
           <template slot="content">
             <p class="category">Number Of Orders</p>
-            <h3 class="title">{{numberOfOrders}}</h3>
+            <h3 class="title">{{ numberOfOrders }}</h3>
           </template>
 
           <template slot="footer">
@@ -120,7 +120,7 @@
 
           <template slot="content">
             <p class="category">New Users</p>
-            <h3 class="title">+{{numberOfNewUsers}}</h3>
+            <h3 class="title">+{{ numberOfNewUsers }}</h3>
           </template>
 
           <template slot="footer">
@@ -138,7 +138,7 @@
 
           <template slot="content">
             <p class="category">Users</p>
-            <h3 class="title">{{numberOfUsers}}</h3>
+            <h3 class="title">{{ numberOfUsers }}</h3>
           </template>
 
           <template slot="footer">
@@ -365,19 +365,30 @@ export default {
     }
   },
   async beforeMount() {
-    await Promise.all([
-      this.getRevenue(),
-      this.getBestSales(),
-      this.getNumberOfOrders(),
-      this.getNumberOfUsers(),
-      this.getMostRatedProducts(),
-      this.getNumberOfNewUsers(),
-      this.getDailyRevenue(),
-      this.getSalesByGender(),
-      this.getBestSalesByBrand()
-    ]);
+    var datePointer = new Date().getDay();
+    var weekDays = [];
+    for (var i = 0; i < 7; i++) {
+      if (datePointer < 0) {
+        datePointer += 7;
+      }
+      weekDays.unshift(this.$store.state.weekdays[datePointer]);
+      datePointer--;
+    }
+    this.dailySalesChart.data.labels = weekDays;
+    try {
+      await Promise.all([
+        this.getRevenue(),
+        this.getBestSales(),
+        this.getNumberOfOrders(),
+        this.getNumberOfUsers(),
+        this.getMostRatedProducts(),
+        this.getNumberOfNewUsers(),
+        this.getDailyRevenue(),
+        this.getSalesByGender(),
+        this.getBestSalesByBrand()
+      ]);
+    } catch (err) {}
     this.createRevenueCart(this.dailyRevenue);
-
     this.createGenderSalesGraph(this.salesByGender);
   },
   watch: {

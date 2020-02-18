@@ -73,9 +73,9 @@
                             <md-menu-item
                               v-for="selectedSize in $store.state.sizes"
                               @click="
-                            activeSize = true;
-                            newSize = selectedSize;
-                          "
+                                activeSize = true;
+                                newSize = selectedSize;
+                              "
                               :key="selectedSize"
                             >{{ selectedSize }}</md-menu-item>
                           </md-menu-content>
@@ -210,6 +210,29 @@
         </md-card>
       </div>
     </div>
+    <div id="notifications">
+      <div v-if="successNotif" class="alert alertTop alert-success">
+        <span>
+          <b>SUCCESS</b> : Changes Saved!
+        </span>
+        <button
+          type="button"
+          aria-hidden="true"
+          class="close"
+          @click="removeNotify('successNotif')"
+        >
+          <md-icon style="color: white">clear</md-icon>
+        </button>
+      </div>
+      <div v-if="errorNotif" class="alert alertTop alert-danger">
+        <span>
+          <b>ERROR ALERT</b> : Try again later ...
+        </span>
+        <button type="button" aria-hidden="true" class="close" @click="removeNotify('errorNotif')">
+          <md-icon style="color: white">clear</md-icon>
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -218,6 +241,9 @@ import axios from "axios";
 export default {
   data() {
     return {
+      errorNotif: false,
+      successNotif: false,
+      sending: false,
       editMode: false,
       product: null,
       colors: {},
@@ -231,6 +257,9 @@ export default {
     };
   },
   methods: {
+    removeNotify(notifyClass) {
+      this[notifyClass] = false;
+    },
     getSpanClass(quantity) {
       if (quantity > 0) {
         return "badge badge-pill badge-success";
@@ -294,12 +323,17 @@ export default {
       });
       let productId = window.location.pathname.slice(10);
       axios
-        .put(
-          `https://prodigy-rbk.herokuapp.com/api/products/${productId}`,
-          this.product
-        )
-        .then()
-        .catch();
+        .put(`http://localhost:3000/api/products/${productId}`, this.product)
+        .then(({ data }) => {
+          this.sending = false;
+          this.successNotif = true;
+          this.editMode = false;
+          this.hasChanged = false;
+        })
+        .catch(err => {
+          this.sending = false;
+          this.errorNotif = true;
+        });
     }
   },
   async beforeMount() {

@@ -176,9 +176,9 @@
                             <md-menu-item
                               v-for="selectedSize in $store.state.sizes"
                               @click="
-                            item.activeSize = true;
-                            item.size = selectedSize;
-                          "
+                                item.activeSize = true;
+                                item.size = selectedSize;
+                              "
                               :key="selectedSize"
                             >{{ selectedSize }}</md-menu-item>
                           </md-menu-content>
@@ -186,12 +186,6 @@
                       </div>
                     </div>
 
-                    <!-- <div class="md-layout-item md-small-size-100 md-size-25">
-                      <md-field>
-                        <label>Size</label>
-                        <md-input v-model="item.size" type="text"></md-input>
-                      </md-field>
-                    </div>-->
                     <div class="md-layout-item md-small-size-100 md-size-25" id="qte">
                       <md-field>
                         <label>Quantity</label>
@@ -261,10 +255,44 @@
                 <div class="md-layout-item md-size-50 text-right">
                   <md-button class="md-raised md-success" @click="addProduct">Add Product</md-button>
                 </div>
+                <div class="md-layout-item md-size-100">
+                  <md-progress-bar style="width: 100%" md-mode="indeterminate" v-if="sending" />
+                </div>
               </div>
             </md-card-content>
           </md-card>
         </form>
+      </div>
+    </div>
+    <div id="notifications">
+      <div v-if="successNotif" class="alert alertTop alert-success">
+        <span>
+          <b>SUCCESS</b> : Your product has been successfully added!
+        </span>
+        <button
+          type="button"
+          aria-hidden="true"
+          class="close"
+          @click="removeNotify('successNotif')"
+        >
+          <md-icon style="color: white">clear</md-icon>
+        </button>
+      </div>
+      <div v-if="errorNotif" class="alert alertTop alert-danger">
+        <span>
+          <b>ERROR ALERT</b> : Operation failed, Please try again later ...
+        </span>
+        <button type="button" aria-hidden="true" class="close" @click="removeNotify('errorNotif')">
+          <md-icon style="color: white">clear</md-icon>
+        </button>
+      </div>
+      <div v-if="imgNotif" class="alert alertTop alert-danger">
+        <span>
+          <b>ERROR ALERT</b> : Max limit reached ...
+        </span>
+        <button type="button" aria-hidden="true" class="close" @click="removeNotify('imgNotif')">
+          <md-icon style="color: white">clear</md-icon>
+        </button>
       </div>
     </div>
   </div>
@@ -276,6 +304,10 @@ import axios from "axios";
 export default {
   data() {
     return {
+      sending: false,
+      imgNotif: false,
+      errorNotif: false,
+      successNotif: false,
       genderValidator: false,
       categoryValidator: false,
       tagsValidator: false,
@@ -321,6 +353,16 @@ export default {
     };
   },
   methods: {
+    removeNotify(notifyClass) {
+      this[notifyClass] = false;
+    },
+    getSpanClass(quantity) {
+      if (quantity > 0) {
+        return "badge badge-pill badge-success";
+      } else {
+        return "badge badge-pill badge-warning";
+      }
+    },
     handleTags(selectedTag) {
       if (this.activeTags === false) {
         this.activeTags = true;
@@ -339,13 +381,6 @@ export default {
           .toString()
           .split(",")
           .join(", ");
-      }
-    },
-    imgCountFn() {
-      if (this.imagecount < 5) {
-        this.imagecount++;
-      } else {
-        //raise alert
       }
     },
     AddItem() {
@@ -383,7 +418,7 @@ export default {
           value: null
         });
       } else {
-        //notif max limit
+        this.imgNotif = true;
       }
     },
     addProduct() {
@@ -400,6 +435,7 @@ export default {
         this.titleValidator = true;
         this.descriptionValidator = true;
       } else {
+        this.sending = true;
         let productDetails = new FormData();
         productDetails.append("title", this.title);
         productDetails.append(
@@ -425,6 +461,12 @@ export default {
             }
           )
           .then(product => {
+            this.successNotif = true;
+            this.sending = false;
+          })
+          .catch(err => {
+            this.errorNotif = true;
+            this.sending = false;
           });
       }
     }

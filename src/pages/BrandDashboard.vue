@@ -157,21 +157,22 @@
         <md-card>
           <md-card-header data-background-color="orange">
             <h4 class="title">Best Sold Products</h4>
-            <p class="category">New employees on 15th September, 2016</p>
           </md-card-header>
           <md-card-content>
             <best-products-table :products="products" table-header-color="orange"></best-products-table>
           </md-card-content>
         </md-card>
       </div>
-      <md-card>
-        <md-card-header data-background-color="green">
-          <h4 class="title">Most 10 Rated Products</h4>
-        </md-card-header>
-        <md-card-content>
-          <OrderedTableForRanking table-header-color="green" :products="mostRated"></OrderedTableForRanking>
-        </md-card-content>
-      </md-card>
+      <div class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-50">
+        <md-card>
+          <md-card-header data-background-color="green">
+            <h4 class="title">Most 10 Rated Products</h4>
+          </md-card-header>
+          <md-card-content>
+            <OrderedTableForRanking table-header-color="green" :products="mostRated"></OrderedTableForRanking>
+          </md-card-content>
+        </md-card>
+      </div>
     </div>
   </div>
 </template>
@@ -377,6 +378,16 @@ export default {
     }
   },
   async beforeMount() {
+    var datePointer = new Date().getDay();
+    var weekDays = [];
+    for (var i = 0; i < 7; i++) {
+      if (datePointer < 0) {
+        datePointer += 7;
+      }
+      weekDays.unshift(this.$store.state.weekdays[datePointer]);
+      datePointer--;
+    }
+    this.dailySalesChart.data.labels = weekDays;
     try {
       await Promise.all([
         this.getRevenue(),
