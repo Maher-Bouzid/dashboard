@@ -31,11 +31,23 @@
                     </md-button>
                     <div id="notifications">
                       <div v-if="deleteNotif[item._id]" class="alert alertTop alert-success">
-                        <span> <b>SUCCESS</b> : Are you sure you want to delete this product? </span>
-                        <button type="button" aria-hidden="true" class="close" @click="deleteProduct(item._id)">
+                        <span>
+                          <b>SUCCESS</b> : Are you sure you want to delete this product?
+                        </span>
+                        <button
+                          type="button"
+                          aria-hidden="true"
+                          class="close"
+                          @click="deleteProduct(item._id)"
+                        >
                           <md-icon style="color: white">check</md-icon>
                         </button>
-                        <button type="button" aria-hidden="true" class="close" @click="removeNotify(item._id)">
+                        <button
+                          type="button"
+                          aria-hidden="true"
+                          class="close"
+                          @click="removeNotify(item._id)"
+                        >
                           <md-icon style="color: white">clear</md-icon>
                         </button>
                       </div>
@@ -64,11 +76,8 @@ export default {
   },
   methods: {
     confirmDelete(id) {
-      console.log(id);
       this.deleteNotif[id] = true;
       this.test++;
-      console.log(this.deleteNotif);
-      console.log(this.test);
     },
     removeNotify(id) {
       this.deleteNotif[id] = false;
@@ -83,7 +92,7 @@ export default {
     deleteProduct(id) {
       this.deleteNotif[id] = false;
       axios
-        .delete(`http://127.0.0.1:3000/api/products/${id}`)
+        .delete(`https://prodigy-rbk.herokuapp.com/api/products/${id}`)
         .then(({ data }) =>
           this.products.forEach((element, index) => {
             if (element._id === data._id) {
@@ -91,11 +100,13 @@ export default {
             }
           })
         )
-        .catch(err => console.log(err));
+        .catch();
     }
   },
   async beforeMount() {
-    let { data } = await axios.get(`http://localhost:3000/api/brand/one`);
+    let { data } = await axios.get(
+      `https://prodigy-rbk.herokuapp.com/api/brand/one`
+    );
     this.products = data.products;
   }
 };

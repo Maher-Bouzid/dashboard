@@ -4,52 +4,57 @@
 
     <side-bar>
       <mobile-menu slot="content"></mobile-menu>
-      <sidebar-link to="/admin-dashboard">
-        <md-icon>dashboard</md-icon>
-        <p>Dashboard</p>
-      </sidebar-link>
-      <sidebar-link to="/brand-dashboard">
-        <md-icon>dashboard</md-icon>
-        <p>Dashboard</p>
-      </sidebar-link>
-      <div :class="accordionClass('isOpenOne')">
-        <div id="headingOne" @click="toggleAccordion('isOpenOne')">
-          <sidebar-link to="##">
-            <md-icon>shopping_basket</md-icon>
-            <p>Products</p>
-            <i class="material-icons customIcon">keyboard_arrow_down</i>
-          </sidebar-link>
-        </div>
-        <div id="collapseOne" class="message-body">
-          <sidebar-link to="/products">
-            <md-icon>content_paste</md-icon>
-            <p>Product list</p>
-          </sidebar-link>
-          <sidebar-link to="/products/add">
-            <md-icon>add</md-icon>
-            <p>Add product</p>
-          </sidebar-link>
+      <div v-if="!userType">
+        <sidebar-link to="/admin-dashboard">
+          <md-icon>dashboard</md-icon>
+          <p>Dashboard</p>
+        </sidebar-link>
+        <div :class="accordionClass('isOpenTwo')">
+          <div id="headingTwo" @click="toggleAccordion('isOpenTwo')">
+            <sidebar-link to="#">
+              <md-icon>people</md-icon>
+              <p>Users</p>
+              <i class="material-icons customIcon">keyboard_arrow_down</i>
+            </sidebar-link>
+          </div>
+          <div id="collapseTwo" class="message-body">
+            <sidebar-link to="/brands">
+              <md-icon>content_paste</md-icon>
+              <p>Brand List</p>
+            </sidebar-link>
+            <sidebar-link to="/brands/add">
+              <md-icon>person_add</md-icon>
+              <p>Add Brand</p>
+            </sidebar-link>
+          </div>
         </div>
       </div>
-      <div :class="accordionClass('isOpenTwo')">
-        <div id="headingTwo" @click="toggleAccordion('isOpenTwo')">
-          <sidebar-link to="#">
-            <md-icon>people</md-icon>
-            <p>Users</p>
-            <i class="material-icons customIcon">keyboard_arrow_down</i>
-          </sidebar-link>
-        </div>
-        <div id="collapseTwo" class="message-body">
-          <sidebar-link to="/brands">
-            <md-icon>content_paste</md-icon>
-            <p>Brand List</p>
-          </sidebar-link>
-          <sidebar-link to="/brands/add">
-            <md-icon>person_add</md-icon>
-            <p>Add Brand</p>
-          </sidebar-link>
+      <div v-else>
+        <sidebar-link to="/brand-dashboard">
+          <md-icon>dashboard</md-icon>
+          <p>Dashboard</p>
+        </sidebar-link>
+        <div :class="accordionClass('isOpenOne')">
+          <div id="headingOne" @click="toggleAccordion('isOpenOne')">
+            <sidebar-link to="##">
+              <md-icon>shopping_basket</md-icon>
+              <p>Products</p>
+              <i class="material-icons customIcon">keyboard_arrow_down</i>
+            </sidebar-link>
+          </div>
+          <div id="collapseOne" class="message-body">
+            <sidebar-link to="/products">
+              <md-icon>content_paste</md-icon>
+              <p>Product list</p>
+            </sidebar-link>
+            <sidebar-link to="/products/add">
+              <md-icon>add</md-icon>
+              <p>Add product</p>
+            </sidebar-link>
+          </div>
         </div>
       </div>
+
       <sidebar-link to="/orders">
         <md-icon>notifications</md-icon>
         <p>Orders</p>
@@ -59,7 +64,7 @@
     <div class="main-panel">
       <top-navbar></top-navbar>
 
-      <dashboard-content> </dashboard-content>
+      <dashboard-content></dashboard-content>
 
       <content-footer v-if="!$route.meta.hideFooter"></content-footer>
     </div>
@@ -94,6 +99,11 @@ export default {
     },
     toggleAccordion: function(arg) {
       this.control[arg] = !this.control[arg];
+    }
+  },
+  computed: {
+    userType() {
+      return this.$store.state.user.type === "brand";
     }
   }
 };

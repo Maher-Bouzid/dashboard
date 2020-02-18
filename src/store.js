@@ -196,13 +196,12 @@ export default new Vuex.Store({
     },
     UPDATE_TYPE: (state, value) => {
       state.user.type = value;
-      console.log(state.user.type);
     }
   },
   actions: {
     VERIFY_TOKEN: async function(state) {
       await axios
-        .get("http://localhost:3000/api/brand/verifytoken")
+        .get("https://prodigy-rbk.herokuapp.com/api/brand/verifytoken")
         .then(res => {
           this.commit("UPDATE_LOGIN", true);
           this.commit("UPDATE_TYPE", res.data.type);

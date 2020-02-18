@@ -28,7 +28,9 @@
           </template>
 
           <template slot="footer">
-            <div class="stats"><md-icon>access_time</md-icon>Up To Date</div>
+            <div class="stats">
+              <md-icon>access_time</md-icon>Up To Date
+            </div>
           </template>
         </chart-card>
       </div>
@@ -47,7 +49,9 @@
           </template>
 
           <template slot="footer">
-            <div class="stats"><md-icon>access_time</md-icon>Up To Date</div>
+            <div class="stats">
+              <md-icon>access_time</md-icon>Up To Date
+            </div>
           </template>
         </chart-card>
       </div>
@@ -66,7 +70,9 @@
           </template>
 
           <template slot="footer">
-            <div class="stats"><md-icon>access_time</md-icon>Up To Date</div>
+            <div class="stats">
+              <md-icon>access_time</md-icon>Up To Date
+            </div>
           </template>
         </chart-card>
       </div>
@@ -82,7 +88,9 @@
           </template>
 
           <template slot="footer">
-            <div class="stats"><md-icon>date_range</md-icon>Last 24 Hours</div>
+            <div class="stats">
+              <md-icon>date_range</md-icon>Last 24 Hours
+            </div>
           </template>
         </stats-card>
       </div>
@@ -98,7 +106,9 @@
           </template>
 
           <template slot="footer">
-            <div class="stats"><md-icon>update</md-icon>Over All</div>
+            <div class="stats">
+              <md-icon>update</md-icon>Over All
+            </div>
           </template>
         </stats-card>
       </div>
@@ -114,7 +124,9 @@
           </template>
 
           <template slot="footer">
-            <div class="stats"><md-icon>date_range</md-icon>In The Last Month</div>
+            <div class="stats">
+              <md-icon>date_range</md-icon>In The Last Month
+            </div>
           </template>
         </stats-card>
       </div>
@@ -130,7 +142,9 @@
           </template>
 
           <template slot="footer">
-            <div class="stats"><md-icon>update</md-icon>Over All</div>
+            <div class="stats">
+              <md-icon>update</md-icon>Over All
+            </div>
           </template>
         </stats-card>
       </div>
@@ -159,7 +173,12 @@
 </template>
 
 <script>
-import { StatsCard, ChartCard, OrderedTableForSales, OrderedTableForRanking } from "@/components";
+import {
+  StatsCard,
+  ChartCard,
+  OrderedTableForSales,
+  OrderedTableForRanking
+} from "@/components";
 import axios from "axios";
 
 export default {
@@ -256,31 +275,49 @@ export default {
   },
   methods: {
     getRevenue() {
-      return axios.get("https://prodigy-rbk.herokuapp.com/api/orders/revenue").then(({ data }) => (this.revenue = data));
+      return axios
+        .get("https://prodigy-rbk.herokuapp.com/api/orders/revenue")
+        .then(({ data }) => (this.revenue = data));
     },
     getBestSales() {
-      return axios.get("https://prodigy-rbk.herokuapp.com/api/orders/bestSales").then(({ data }) => (this.bestSales = data));
+      return axios
+        .get("https://prodigy-rbk.herokuapp.com/api/orders/bestSales")
+        .then(({ data }) => (this.bestSales = data));
     },
     getNumberOfOrders() {
-      return axios.get("https://prodigy-rbk.herokuapp.com/api/orders/numberOfOrders").then(({ data }) => (this.numberOfOrders = data));
+      return axios
+        .get("https://prodigy-rbk.herokuapp.com/api/orders/numberOfOrders")
+        .then(({ data }) => (this.numberOfOrders = data));
     },
     getNumberOfUsers() {
-      return axios.get("https://prodigy-rbk.herokuapp.com/api/user/numberOfUser").then(({ data }) => (this.numberOfUsers = data));
+      return axios
+        .get("https://prodigy-rbk.herokuapp.com/api/user/numberOfUser")
+        .then(({ data }) => (this.numberOfUsers = data));
     },
     getNumberOfNewUsers() {
-      return axios.get("https://prodigy-rbk.herokuapp.com/api/user/numberOfNewUser/30").then(({ data }) => (this.numberOfNewUsers = data));
+      return axios
+        .get("https://prodigy-rbk.herokuapp.com/api/user/numberOfNewUser/30")
+        .then(({ data }) => (this.numberOfNewUsers = data));
     },
     getMostRatedProducts() {
-      return axios.get("https://prodigy-rbk.herokuapp.com/api/products/mostRated").then(({ data }) => (this.mostRated = data));
+      return axios
+        .get("https://prodigy-rbk.herokuapp.com/api/products/mostRated")
+        .then(({ data }) => (this.mostRated = data));
     },
     getDailyRevenue() {
-      return axios.get("https://prodigy-rbk.herokuapp.com/api/orders/revenueDaily").then(({ data }) => (this.dailyRevenue = data));
+      return axios
+        .get("https://prodigy-rbk.herokuapp.com/api/orders/revenueDaily")
+        .then(({ data }) => (this.dailyRevenue = data));
     },
     getBestSalesByBrand() {
-      return axios.get("https://prodigy-rbk.herokuapp.com/api/orders/bestSalesByBrand").then(({ data }) => (this.bestSalesByBrand = data));
+      return axios
+        .get("https://prodigy-rbk.herokuapp.com/api/orders/bestSalesByBrand")
+        .then(({ data }) => (this.bestSalesByBrand = data));
     },
     getSalesByGender() {
-      return axios.get("https://prodigy-rbk.herokuapp.com/api/orders/salesbyGender").then(({ data }) => (this.salesByGender = data));
+      return axios
+        .get("https://prodigy-rbk.herokuapp.com/api/orders/salesbyGender")
+        .then(({ data }) => (this.salesByGender = data));
     },
     createRevenueCart(array) {
       const series = [[]];
@@ -300,8 +337,11 @@ export default {
         }
         date--;
       }
-      console.log("hi");
-      this.increase = (((series[0][series[0].length - 1] - series[0][series[0].length - 2]) / series[0][series[0].length - 2]) * 100).toFixed(2);
+      this.increase = (
+        ((series[0][series[0].length - 1] - series[0][series[0].length - 2]) /
+          series[0][series[0].length - 2]) *
+        100
+      ).toFixed(2);
       this.dailySalesChart.data.series = series;
       this.reRender += 1;
     },
@@ -335,25 +375,24 @@ export default {
       datePointer--;
     }
     this.dailySalesChart.data.labels = weekDays;
-    await Promise.all([
-      this.getRevenue(),
-      this.getBestSales(),
-      this.getNumberOfOrders(),
-      this.getNumberOfUsers(),
-      this.getMostRatedProducts(),
-      this.getNumberOfNewUsers(),
-      this.getDailyRevenue(),
-      this.getSalesByGender(),
-      this.getBestSalesByBrand()
-    ]);
+    try {
+      await Promise.all([
+        this.getRevenue(),
+        this.getBestSales(),
+        this.getNumberOfOrders(),
+        this.getNumberOfUsers(),
+        this.getMostRatedProducts(),
+        this.getNumberOfNewUsers(),
+        this.getDailyRevenue(),
+        this.getSalesByGender(),
+        this.getBestSalesByBrand()
+      ]);
+    } catch (err) {}
     this.createRevenueCart(this.dailyRevenue);
-
     this.createGenderSalesGraph(this.salesByGender);
   },
   watch: {
-    "dailySalesChart.data": function() {
-      console.log(this.dailySalesChart.data);
-    }
+    "dailySalesChart.data": function() {}
   }
 };
 </script>
