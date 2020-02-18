@@ -26,10 +26,7 @@
                       </md-button>
                     </router-link>
 
-                    <md-button class="md-success md-just-icon">
-                      <md-icon>edit</md-icon>
-                    </md-button>
-                    <md-button class="md-danger md-just-icon">
+                    <md-button class="md-danger md-just-icon" @click="deleteProduct(item._id)">
                       <md-icon>close</md-icon>
                     </md-button>
                   </md-table-cell>
@@ -51,6 +48,20 @@ export default {
       selected: [],
       products: []
     };
+  },
+  methods: {
+    deleteProduct(id) {
+      axios
+        .delete(`http://127.0.0.1:3000/api/products/${id}`)
+        .then(({ data }) =>
+          this.products.forEach((element, index) => {
+            if (element._id === data._id) {
+              this.products.splice(index, 1);
+            }
+          })
+        )
+        .catch(err => console.log(err));
+    }
   },
   async beforeMount() {
     let { data } = await axios.get(`http://localhost:3000/api/brand/one`);
