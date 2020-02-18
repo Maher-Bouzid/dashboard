@@ -16,12 +16,7 @@
                     <div class="md-layout">
                       <div class="md-layout-item md-small-size-100 md-size-80">
                         <div class="md-autocomplete" v-if="color === 'new'">
-                          <md-autocomplete
-                            class="search"
-                            v-model="newColor"
-                            :md-options="$store.state.HTMLColors"
-                            :md-open-on-focus="false"
-                          >
+                          <md-autocomplete class="search" v-model="newColor" :md-options="$store.state.HTMLColors" :md-open-on-focus="false">
                             <label>Choose the color...</label>
                           </md-autocomplete>
                         </div>
@@ -29,21 +24,9 @@
                           <b>{{ color }}</b>
                         </h1>
                       </div>
-                      <div
-                        class="md-layout-item md-small-size-100 md-size-20"
-                        style="text-align: center"
-                      >
-                        <md-button
-                          v-if="color === 'new'"
-                          class="md-success md-round"
-                          @click="confirmColorName"
-                        >submit</md-button>
-                        <md-button
-                          v-else
-                          type="button"
-                          class="md-info md-round"
-                          @click="AddItem(color)"
-                        >Add variant</md-button>
+                      <div class="md-layout-item md-small-size-100 md-size-20" style="text-align: center">
+                        <md-button v-if="color === 'new'" class="md-success md-round" @click="confirmColorName">submit</md-button>
+                        <md-button v-else type="button" class="md-info md-round" @click="AddItem(color)">Add variant</md-button>
                       </div>
                     </div>
                   </md-table-toolbar>
@@ -56,28 +39,24 @@
                   </md-table-row>
 
                   <md-table-row v-for="(value, index) in Object.values(colors[color])" :key="index">
-                    <md-table-cell
-                      v-if="!(value[0] === 'size')"
-                      style="padding-left:30px"
-                    >{{ value[0] }}</md-table-cell>
+                    <md-table-cell v-if="!(value[0] === 'size')" style="padding-left:30px">{{ value[0] }}</md-table-cell>
                     <md-table-cell v-else style="padding-left:30px">
                       <div>
                         <md-menu md-size="big" class="big" md-align-trigger>
                           <md-button md-menu-trigger id="big">
-                            <span
-                              :style="[activeSize ? { color: 'black' } : { color: '#AAAAAA' }]"
-                            >{{ newSize }}</span>
+                            <span :style="[activeSize ? { color: 'black' } : { color: '#AAAAAA' }]">{{ newSize }}</span>
                             <md-icon>keyboard_arrow_down</md-icon>
                           </md-button>
                           <md-menu-content>
                             <md-menu-item
                               v-for="selectedSize in $store.state.sizes"
                               @click="
-                            activeSize = true;
-                            newSize = selectedSize;
-                          "
+                                activeSize = true;
+                                newSize = selectedSize;
+                              "
                               :key="selectedSize"
-                            >{{ selectedSize }}</md-menu-item>
+                              >{{ selectedSize }}</md-menu-item
+                            >
                           </md-menu-content>
                         </md-menu>
                       </div>
@@ -95,9 +74,7 @@
                       </md-field>
                     </md-table-cell>
                     <md-table-cell>
-                      <span
-                        :class="getSpanClass(value[1])"
-                      >{{ value[1] ? "In Stock" : "Out of Stock" }}</span>
+                      <span :class="getSpanClass(value[1])">{{ value[1] ? "In Stock" : "Out of Stock" }}</span>
                     </md-table-cell>
                     <md-table-cell v-if="value[0] === 'size'">
                       <md-button class="md-success md-round" @click="confirmItem(color, index)">
@@ -135,12 +112,7 @@
         </md-card>
         <div style="display: flex; justify-content: space-between">
           <md-button type="button" class="md-primary md-round" @click="addColor">Add new color</md-button>
-          <md-button
-            v-if="hasChanged"
-            type="button"
-            class="md-success md-round"
-            @click="saveChanges"
-          >Save Changes</md-button>
+          <md-button v-if="hasChanged" type="button" class="md-success md-round" @click="saveChanges">Save Changes</md-button>
         </div>
       </div>
       <div class="md-layout-item md-medium-size-100 md-size-33">
@@ -152,31 +124,17 @@
           <md-card-content>
             <h6 class="category text-gray">{{ product.gender }} - {{ product.category }}</h6>
             <div style="display: flex; place-items: center; place-content: center;">
-              <h4
-                v-if="!editMode"
-                class="card-title"
-                style="line-height: 40px; margin-right: 10px"
-              >{{ product.title }}</h4>
+              <h4 v-if="!editMode" class="card-title" style="line-height: 40px; margin-right: 10px">{{ product.title }}</h4>
               <div v-else class="md-layout-item md-small-size-100 md-size-50">
                 <md-field>
                   <label>Product title</label>
                   <md-input v-model="product.title" type="text"></md-input>
                 </md-field>
               </div>
-              <md-button
-                @click="activateEdit"
-                v-if="!editMode"
-                class="md-info md-just-icon"
-                style="height: 20px; min-width: 20px; width: 20px;"
-              >
+              <md-button @click="activateEdit" v-if="!editMode" class="md-info md-just-icon" style="height: 20px; min-width: 20px; width: 20px;">
                 <md-icon style="font-size: 11px !important">edit</md-icon>
               </md-button>
-              <md-button
-                @click="doneEdit"
-                v-else
-                class="md-success md-just-icon"
-                style="height: 20px; min-width: 20px; width: 20px;"
-              >
+              <md-button @click="doneEdit" v-else class="md-success md-just-icon" style="height: 20px; min-width: 20px; width: 20px;">
                 <md-icon style="font-size: 11px !important">done</md-icon>
               </md-button>
             </div>
@@ -210,6 +168,20 @@
         </md-card>
       </div>
     </div>
+    <div id="notifications">
+      <div v-if="successNotif" class="alert alertTop alert-success">
+        <span> <b>SUCCESS</b> : Changes Saved! </span>
+        <button type="button" aria-hidden="true" class="close" @click="removeNotify('successNotif')">
+          <md-icon style="color: white">clear</md-icon>
+        </button>
+      </div>
+      <div v-if="errorNotif" class="alert alertTop alert-danger">
+        <span> <b>ERROR ALERT</b> : Try again later ... </span>
+        <button type="button" aria-hidden="true" class="close" @click="removeNotify('errorNotif')">
+          <md-icon style="color: white">clear</md-icon>
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -218,6 +190,9 @@ import axios from "axios";
 export default {
   data() {
     return {
+      errorNotif: false,
+      successNotif: false,
+      sending: false,
       editMode: false,
       product: null,
       colors: {},
@@ -231,6 +206,9 @@ export default {
     };
   },
   methods: {
+    removeNotify(notifyClass) {
+      this[notifyClass] = false;
+    },
     getSpanClass(quantity) {
       if (quantity > 0) {
         return "badge badge-pill badge-success";
@@ -295,15 +273,21 @@ export default {
       let productId = window.location.pathname.slice(10);
       axios
         .put(`http://localhost:3000/api/products/${productId}`, this.product)
-        .then(({ data }) => console.log(data))
-        .catch(err => console.log(err));
+        .then(({ data }) => {
+          this.sending = false;
+          this.successNotif = true;
+          this.editMode = false;
+          this.hasChanged = false;
+        })
+        .catch(err => {
+          this.sending = false;
+          this.errorNotif = true;
+        });
     }
   },
   async beforeMount() {
     let productId = window.location.pathname.slice(10);
-    let { data } = await axios.get(
-      `http://localhost:3000/api/products/${productId}`
-    );
+    let { data } = await axios.get(`http://localhost:3000/api/products/${productId}`);
     data.availability.map(elem => {
       console.log(elem);
       if (Array.isArray(this.colors[elem.color])) {
@@ -442,8 +426,7 @@ export default {
   font-size: 1rem;
   line-height: 1.5;
   border-radius: 0.25rem;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 ::v-deep .btn:not(:disabled):not(.disabled) {
   cursor: pointer;
@@ -475,16 +458,14 @@ export default {
   border: 0;
   border-radius: 0.2rem;
   outline: 0;
-  transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1),
-    background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: box-shadow, transform;
 }
 ::v-deep .btn.btn-rose {
   color: #fff;
   background-color: #e91e63;
   border-color: #e91e63;
-  box-shadow: 0 2px 2px 0 rgba(233, 30, 99, 0.14),
-    0 3px 1px -2px rgba(233, 30, 99, 0.2), 0 1px 5px 0 rgba(233, 30, 99, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(233, 30, 99, 0.14), 0 3px 1px -2px rgba(233, 30, 99, 0.2), 0 1px 5px 0 rgba(233, 30, 99, 0.12);
 }
 ::v-deep .btn.btn-rose.btn-link {
   background-color: transparent;
@@ -495,17 +476,14 @@ export default {
   color: #fff;
   background-color: #f44336;
   border-color: #f44336;
-  box-shadow: 0 2px 2px 0 rgba(244, 67, 54, 0.14),
-    0 3px 1px -2px rgba(244, 67, 54, 0.2), 0 1px 5px 0 rgba(244, 67, 54, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(244, 67, 54, 0.14), 0 3px 1px -2px rgba(244, 67, 54, 0.2), 0 1px 5px 0 rgba(244, 67, 54, 0.12);
 }
 ::v-deep .btn,
 ::v-deep .btn.btn-default {
   color: #fff;
   background-color: #999999;
   border-color: #999999;
-  box-shadow: 0 2px 2px 0 rgba(153, 153, 153, 0.14),
-    0 3px 1px -2px rgba(153, 153, 153, 0.2),
-    0 1px 5px 0 rgba(153, 153, 153, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(153, 153, 153, 0.14), 0 3px 1px -2px rgba(153, 153, 153, 0.2), 0 1px 5px 0 rgba(153, 153, 153, 0.12);
 }
 ::v-deep .btn.btn-link,
 ::v-deep .btn.btn-default.btn-link {
@@ -622,8 +600,7 @@ img {
   text-align: center;
   vertical-align: middle;
   max-width: 250px;
-  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.42),
-    0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.42), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
 }
 ::v-deep .fileinput .thumbnail > img {
   max-height: 100%;
@@ -660,8 +637,7 @@ img {
   color: #fff;
   background-color: #e91e63;
   border-color: #e91e63;
-  box-shadow: 0 2px 2px 0 rgba(233, 30, 99, 0.14),
-    0 3px 1px -2px rgba(233, 30, 99, 0.2), 0 1px 5px 0 rgba(233, 30, 99, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(233, 30, 99, 0.14), 0 3px 1px -2px rgba(233, 30, 99, 0.2), 0 1px 5px 0 rgba(233, 30, 99, 0.12);
 }
 ::v-deep .btn.btn-rose.btn-link {
   background-color: transparent;
@@ -672,16 +648,13 @@ img {
   color: #fff;
   background-color: #f44336;
   border-color: #f44336;
-  box-shadow: 0 2px 2px 0 rgba(244, 67, 54, 0.14),
-    0 3px 1px -2px rgba(244, 67, 54, 0.2), 0 1px 5px 0 rgba(244, 67, 54, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(244, 67, 54, 0.14), 0 3px 1px -2px rgba(244, 67, 54, 0.2), 0 1px 5px 0 rgba(244, 67, 54, 0.12);
 }
 ::v-deep .btn,
 ::v-deep .btn.btn-default {
   color: #fff;
   background-color: #999999;
   border-color: #999999;
-  box-shadow: 0 2px 2px 0 rgba(153, 153, 153, 0.14),
-    0 3px 1px -2px rgba(153, 153, 153, 0.2),
-    0 1px 5px 0 rgba(153, 153, 153, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(153, 153, 153, 0.14), 0 3px 1px -2px rgba(153, 153, 153, 0.2), 0 1px 5px 0 rgba(153, 153, 153, 0.12);
 }
 </style>
