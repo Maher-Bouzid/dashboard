@@ -323,7 +323,10 @@ export default {
       });
       let productId = window.location.pathname.slice(10);
       axios
-        .put(`http://localhost:3000/api/products/${productId}`, this.product)
+        .put(
+          `https://prodigy-rbk.herokuapp.com/api/products/${productId}`,
+          this.product
+        )
         .then(({ data }) => {
           this.sending = false;
           this.successNotif = true;
